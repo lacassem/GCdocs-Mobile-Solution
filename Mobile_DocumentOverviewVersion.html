@@ -1,0 +1,111 @@
+[/*		
+	Title:	Display the overview for a version of a document
+	Author:	Pat Heard
+*/]
+
+[// Labels used for localization (french/english)
+[LL_REPTAG_'{
+	"at":					["at", "à"],
+	"breadcrumbs":			["Breadcrumbs", "Fils d&apos;Ariane"],
+	"close":				["Close", "Fermer"],	
+	"created_by":			["Created by", "Créé par"],
+	"download":				["Download", "Télécharger"],	
+	"of":					["of", "de"],	
+	"rename":				["Rename", "Renommer"],
+	"size":					["Size", "Taille"],
+	"size_b":				["b", "b"],
+	"size_gb":				["GB", "Go"],
+	"size_kb":				["KB", "Ko"],
+	"size_mb":				["MB", "Mo"],
+	"version":				["Version", "Version"],
+	"versions":				["Versions", "Versions"]
+}' FROMJSON SETVAR:labels /]
+
+[// Index of label to use; depends on the user's language preferences
+[LL_REPTAG_'1' SETVAR:langIdx /]
+[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+	[LL_REPTAG_'2' SETVAR:langIdx /]
+[LL_WEBREPORT_ENDIF /]
+
+[// Remove all ContentServer markup
+[LL_WEBREPORT_EXCLUDEHTML /]
+
+[LL_REPTAG_&objid VERINFO:FILENAME:[LL_REPTAG_&version /] SETVAR:versionName /]
+[LL_REPTAG_$MOBILE_HEADER_NODEID RUNTEMPLATE:name:"Version [LL_REPTAG_&version /] [LL_REPTAG_!versionName /]" SETVAR:templateHeaderMarkup /]
+[LL_REPTAG_$MOBILE_FOOTER_NODEID RUNTEMPLATE:showHelp:"TRUE" SETVAR:templateFooterMarkup /]
+
+[LL_REPTAG_%templateHeaderMarkup /]
+
+<nav role="navigation" property="breadcrumb">
+	<ul class="breadcrumbs list-inline margin-top-0 margin-bottom-lg">
+		<li>
+			<a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_&objid LLURL:INFO:VERSIONS /]&nextURL=[LL_REPTAG_&objid LLURL:OVERVIEW ESCAPEURL /]">
+				<small><span class="mi mi-chevron-left-large margin-fix"></span>[LL_REPTAG_%labels ASSOC:'versions' LIST:'[LL_REPTAG_!langIdx /]' /]</small>
+			</a>
+		</li>
+	</ul>
+</nav>
+
+<div class="well">
+	<a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_&objid LLURL:DOWNLOAD /]&vernum=[LL_REPTAG_&version /]">
+		<h1 class="title" id="cont">
+			<img src="[LL_REPTAG_&objid LLURL:GIF:LARGE:PATH /]" width="32" height="32" alt="[LL_REPTAG_&objid VERINFO:FILETYPE:[LL_REPTAG_&version /] /]">
+			<span class="name">
+				<strong class="display-block">[LL_REPTAG_%labels ASSOC:'version' LIST:'[LL_REPTAG_!langIdx /]' /] [LL_REPTAG_&version /]</strong>
+				[LL_REPTAG_!versionName /]
+			</span>
+		</h1>
+		<div class="button">	 
+			<strong class="underline">[LL_REPTAG_%labels ASSOC:'download' LIST:'[LL_REPTAG_!langIdx /]' /]</strong>				 
+			<span class="colour-light-green">
+				<span class="inv">[LL_REPTAG_%labels ASSOC:'size' LIST:'[LL_REPTAG_!langIdx /]' /]</span>
+				[LL_REPTAG_&objid VERINFO:FILEDATASIZE:[LL_REPTAG_&version /] SETVAR:fileSize /]
+				[LL_WEBREPORT_IF '[LL_REPTAG_%fileSize /]' < '1000' /]
+				    [LL_REPTAG_%fileSize /] [LL_REPTAG_%labels ASSOC:'size_b' LIST:'[LL_REPTAG_!langIdx /]' /]
+				[LL_WEBREPORT_ELSEIF '[LL_REPTAG_%fileSize /]' < '1000000' /]
+				    [LL_REPTAG_%fileSize DIVIDE:1000 ROUND:0 /] [LL_REPTAG_%labels ASSOC:'size_kb' LIST:'[LL_REPTAG_!langIdx /]' /]
+				[LL_WEBREPORT_ELSEIF '[LL_REPTAG_%fileSize /]' < '1000000000' /]
+				    [LL_REPTAG_%fileSize DIVIDE:1000000 ROUND:2 /] [LL_REPTAG_%labels ASSOC:'size_mb' LIST:'[LL_REPTAG_!langIdx /]' /]
+				[LL_WEBREPORT_ELSE /]
+				    [LL_REPTAG_%fileSize DIVIDE:1000000000 ROUND:2 /] [LL_REPTAG_%labels ASSOC:'size_gb' LIST:'[LL_REPTAG_!langIdx /]' /]
+				[LL_WEBREPORT_ENDIF /]
+			</span>
+		</div>
+	</a>
+</div>
+
+[LL_REPTAG_&objid VERINFO:COMMENT:[LL_REPTAG_&version /] ESCAPEHTML HTMLCR DEF:'' SETVAR:desc /]
+[LL_WEBREPORT_IF "[LL_REPTAG_!desc /]" != "" /]
+	<p class="doc-desc">[LL_REPTAG_!desc /]</p>
+[LL_WEBREPORT_ENDIF /]
+
+[// Document metadata (last modified, versions and activity)        
+[LL_REPTAG_&objid VERINFO:CREATEDATE:[LL_REPTAG_&version /] SETVAR:modifyDate /]
+[LL_REPTAG_&objid VERINFO:OWNER:[LL_REPTAG_&version /] USERINFO:FULLNAME:FORCE SETVAR:modifyOwner /]
+[LL_REPTAG_&objid VERINFO:OWNER:[LL_REPTAG_&version /] USERINFO:MAILADDRESS SETVAR:modifyOwnerEmail /]
+<ul class="list-unstyled">
+	<li>
+		[LL_REPTAG_%labels ASSOC:'version' LIST:'[LL_REPTAG_!langIdx /]' /]	[LL_REPTAG_&version /] 
+		[LL_REPTAG_%labels ASSOC:'of' LIST:'[LL_REPTAG_!langIdx /]' /]
+		<a data-action="current-version" href="[LL_REPTAG_&objid LLURL:OVERVIEW /]" class="break-word">[LL_REPTAG_&objid NODEINFO:NAME:USERLANG /]</a>
+	</li>
+	<li>
+		[LL_REPTAG_%labels ASSOC:'created_by' LIST:'[LL_REPTAG_!langIdx /]' /]		
+		
+		[LL_WEBREPORT_IF "[LL_REPTAG_!modifyOwnerEmail /]" != "?" AND "[LL_REPTAG_!modifyOwnerEmail /]" != "" /] 
+			<a href="mailto:[LL_REPTAG_!modifyOwnerEmail /]">[LL_REPTAG_!modifyOwner /]</a>
+		[LL_WEBREPORT_ELSEIF "[LL_REPTAG_!modifyOwner /]" != "" /] 
+			[LL_REPTAG_!modifyOwner /]
+		[LL_WEBREPORT_ELSE /]
+			[LL_REPTAG_&objid NODEINFO:USERID USERINFO:FULLNAME:FORCE /]			
+		[LL_WEBREPORT_ENDIF /]
+		
+		<span class="modify-date">
+			[LL_REPTAG_%modifyDate DATE:"%Y-%m-%d" /] 
+			[LL_REPTAG_%labels ASSOC:'at' LIST:'[LL_REPTAG_!langIdx /]' /] 
+			[LL_REPTAG_%modifyDate DATE:"%H:%M" /]
+		</span>
+	</li>
+</ul>
+
+[LL_REPTAG_%templateFooterMarkup /]

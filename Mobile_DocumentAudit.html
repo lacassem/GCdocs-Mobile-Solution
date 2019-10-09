@@ -1,0 +1,95 @@
+[/*		
+	Title: 		View document audit events
+	Author:     Pat Heard
+*/]
+
+[// Labels used for localization (french/english)
+[LL_REPTAG_'{
+"at":		    ["at", "à"],
+"back":		    ["Back", "Retour"],
+"by":		    ["by", "par"]
+}' FROMJSON SETVAR:labels /]
+
+[// Index of label to use; depends on the user's language preferences
+[LL_REPTAG_'1' SETVAR:langIdx /]
+[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+	[LL_REPTAG_'2' SETVAR:langIdx /]
+[LL_WEBREPORT_ENDIF /]
+
+[// Remove all ContentServer markup
+[LL_WEBREPORT_EXCLUDEHTML /]
+
+[// Template markup.  This needs to be done before the LL_WEBREPORT_STARTROW to workaround a bug that causes the RUNTEMPLATE output to be duplicated
+[LL_REPTAG_$MOBILE_HEADER_NODEID RUNTEMPLATE:name:"[LL_REPTAG_'COLLECTIONS_HTMLLABEL.Audit' XLATE /] - [LL_REPTAG_&objId NODEINFO:NAME:USERLANG /]" SETVAR:templateHeaderMarkup /]
+[LL_REPTAG_$MOBILE_FOOTER_NODEID RUNTEMPLATE SETVAR:templateFooterMarkup /]
+
+[// Header markup
+[LL_REPTAG_%templateHeaderMarkup /]
+
+<nav role="navigation" property="breadcrumb">
+	<ul class="breadcrumbs list-inline margin-top-0 margin-bottom-lg">
+		<li>
+			<a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_&nextURL /]">
+				<small>
+						<span class="mi mi-chevron-left-large dialog-breadcrumbs margin-fix"></span>[LL_REPTAG_&objId NODEINFO:NAME:USERLANG /]
+				</small>
+			</a>
+		</li>
+	</ul>
+</nav>
+
+<h1 id="cont">[LL_REPTAG_'COLLECTIONS_HTMLLABEL.Audit' XLATE /]</h1>
+
+<ul class="list-unstyled border-item-list">
+[LL_WEBREPORT_STARTROW /]
+	<li>
+		[LL_REPTAG=EventDisplayName /] 
+		[LL_REPTAG_%labels ASSOC:'by' LIST:'[LL_REPTAG_!langIdx /]' /]
+		 
+		[LL_REPTAG=ID USERINFO:FULLNAME:FORCE SETVAR:modifyOwner /]
+		[LL_REPTAG=ID USERINFO:MAILADDRESS SETVAR:modifyOwnerEmail /]
+		[LL_WEBREPORT_IF "[LL_REPTAG_!modifyOwnerEmail /]" != "?" AND "[LL_REPTAG_!modifyOwnerEmail /]" != "" /] 
+		<a href="mailto:[LL_REPTAG_!modifyOwnerEmail /]">[LL_REPTAG_!modifyOwner /]</a>
+		[LL_WEBREPORT_ELSEIF "[LL_REPTAG_!modifyOwner /]" != "" /] 
+			[LL_REPTAG_!modifyOwner /]
+		[LL_WEBREPORT_ELSE /]
+			[LL_REPTAG=DATAID NODEINFO:USERID USERINFO:FULLNAME:FORCE /]			
+		[LL_WEBREPORT_ENDIF /] 		
+			
+		<small class="display-block colour-dark-gray">
+			[LL_REPTAG=AuditDate DATE:"%Y-%m-%d" /] [LL_REPTAG_%labels ASSOC:'at' LIST:'[LL_REPTAG_!langIdx /]' /] [LL_REPTAG=AuditDate DATE:"%H:%M" /]
+		</small> 	
+	</li>
+[LL_WEBREPORT_ENDROW /]
+</ul>			
+
+[// Pagination
+[LL_WEBREPORT_IF "[LL_REPTAG_&TotalNoRows /]" > "[LL_REPTAG_@RESPONSEDATA.numRows DEF:50 /]" /]
+	[LL_REPTAG_'1' SETVAR:pageNum /]
+	[LL_REPTAG_&PageNo ADDVAR:pageNum /]			
+	<ul class="list-inline margin-top-lg margin-bottom-xl">
+		<li>
+			[LL_WEBREPORT_IF "[LL_REPTAG_!pageNum /]" == "1" /]
+				<span class="mi mi-chevron-left-large margin-fix">[LL_REPTAG_"WebNode_HTMLLabel.Previous" XLATE /]</span>
+			[LL_WEBREPORT_ELSE /]
+				<a href="javascript:window.history.back()"><span class="mi mi-chevron-left-large margin-fix">[LL_REPTAG_"WebNode_HTMLLabel.Previous" XLATE /]</span></a>
+			[LL_WEBREPORT_ENDIF /]
+		</li>                
+		<li><small>[LL_REPTAG_'ACTIVEVIEW_LABEL.Page' XLATE /] [LL_REPTAG_!pageNum /] [LL_REPTAG_'ACTIVEVIEW_LABEL.Of' XLATE /] [LL_REPTAG_&TotalNoPages /]</small></li>
+		<li>							
+			[LL_WEBREPORT_IF "[LL_REPTAG_%pageNum CURRENTVAL /]" == "[LL_REPTAG_&TotalNoPages /]" /]
+				<span class="mi mi-chevron-right-large">[LL_REPTAG_"WebNode_HTMLLabel.Next" XLATE /]</span>
+			[LL_WEBREPORT_ELSE /]
+				<a href="[LL_REPTAG_URLPREFIX /]?func=ll&objId=[LL_REPTAG_&objId /]&objAction=audit&nextURL=[LL_REPTAG_&nexturl ESCAPEFORJS:ENCODEURI /]&NumRows=[LL_REPTAG_@RESPONSEDATA.numRows DEF:50 /]&TotalNoRows=[LL_REPTAG_&TotalNoRows /]&PageNo=[LL_REPTAG_!pageNum /]&Identity=[LL_REPTAG_@DATA[last]_EventID /]"><span class="mi mi-chevron-right-large">[LL_REPTAG_"WebNode_HTMLLabel.Next" XLATE /]</span></a>
+			[LL_WEBREPORT_ENDIF /]
+		</li>
+	</ul>
+[LL_WEBREPORT_ENDIF /]
+
+
+<div class="form-group margin-top-lg">
+	<a href="[LL_REPTAG_&nextURL /]" class="mdc-button mdc-button--unelevated">[LL_REPTAG_%labels ASSOC:'back' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+</div>
+
+[// Footer markup
+[LL_REPTAG_%templateFooterMarkup /]

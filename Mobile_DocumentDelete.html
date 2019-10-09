@@ -1,0 +1,117 @@
+[/*		
+	Title: 		Document delete confirmation screen
+	Author:     Pat Heard
+*/]
+
+[// Labels used for localization (french/english)
+[LL_REPTAG_'{
+    "cancel":               ["Cancel", "Annuler"],      
+    "delete":               ["Delete", "Supprimer"],
+    "delete_confirm":       ["Are you sure you want to delete", "Êtes-vous sûr de vouloir supprimer"],
+    "folder_delete_fail":   ["Could not delete folder.  Please make sure the folder still exists and is empty.", "Impossible de supprimer le dossier.  Veuillez vous assurer que le dossier existe encore et qu\u0027il est vide."],    
+    "folder_delete_success":["Folder deleted", "Dossier supprimé"],    
+    "item_delete_fail":     ["Could not delete item.  Please check the item still exists.", "Impossible de supprimer l\u0027élément.  Veuillez vous assurer que l\u0027élément existe encore."],    
+    "item_delete_success":  ["Item deleted", "Élément supprimé"],
+    "question_mark":        ["?", " ?"]
+}' FROMJSON SETVAR:labels /]
+
+[// Index of label to use; depends on the user's language preferences
+[LL_REPTAG_'1' SETVAR:langIdx /]
+[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+	[LL_REPTAG_'2' SETVAR:langIdx /]
+[LL_WEBREPORT_ENDIF /]
+
+[// Remove all ContentServer markup
+[LL_WEBREPORT_EXCLUDEHTML /]
+
+[// Template markup.  This needs to be done before the LL_WEBREPORT_STARTROW to workaround a bug that causes the RUNTEMPLATE output to be duplicated
+[LL_REPTAG_$MOBILE_HEADER_NODEID RUNTEMPLATE:name:"[LL_REPTAG_!labels ASSOC:'delete' LIST:'[LL_REPTAG_!langIdx /]' /] - [LL_REPTAG_&objId NODEINFO:NAME:USERLANG /]" SETVAR:templateHeaderMarkup /]
+[LL_REPTAG_$MOBILE_FOOTER_NODEID RUNTEMPLATE SETVAR:templateFooterMarkup /]
+
+[// Header markup
+[LL_REPTAG_%templateHeaderMarkup /]
+
+<nav role="navigation" property="breadcrumb">
+    <ul class="breadcrumbs list-inline margin-top-0 margin-bottom-lg">
+        <li>
+            <a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_&nextURL /]">
+                <small>
+                    [LL_REPTAG_&objId NODEINFO:NAME:USERLANG SETVAR:breadcrumb /]
+                    [LL_WEBREPORT_IF "[LL_REPTAG_&breadcrumb /]" != "" /]
+                        [LL_REPTAG_&breadcrumb SETVAR:breadcrumb /]					
+                    [LL_WEBREPORT_ENDIF /]
+                    <span class="mi mi-chevron-left-large dialog-breadcrumbs margin-fix"></span>[LL_REPTAG_!breadcrumb /]                    
+                </small>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<h1 id="cont">[LL_REPTAG_%labels ASSOC:'delete' LIST:'[LL_REPTAG_!langIdx /]' /]</h1>
+		
+<form action="[LL_REPTAG_URLPREFIX /]" method="post" id="deleteForm">
+    <input type="HIDDEN" name="func" value="ll">
+    <input type="HIDDEN" name="objAction" value="delete2">
+    <input type="HIDDEN" name="objID" value="[LL_REPTAG_&objId /]">
+    <input type="HIDDEN" name="nextURL" value="[LL_REPTAG_&nexturl /]">      
+    [LL_REPTAG_"Action-Delete" SECURETOKEN:FULLPARM URLTOPOST /] 
+
+    <p>
+        [LL_REPTAG_%labels ASSOC:'delete_confirm' LIST:'[LL_REPTAG_!langIdx /]' /]
+        <strong class="break-word">[LL_REPTAG_&objId NODEINFO:NAME:USERLANG /]</strong>[LL_REPTAG_%labels ASSOC:'question_mark' LIST:'[LL_REPTAG_!langIdx /]' /]
+    </p>
+
+    <div class="form-group margin-top-xl">
+        <input type="submit" id="submit" value="[LL_REPTAG_%labels ASSOC:'delete' LIST:'[LL_REPTAG_!langIdx /]' /]" class="mdc-button mdc-button--unelevated">
+        <a href="[LL_REPTAG_&nextURL /]" class="margin-left-sm">[LL_REPTAG_%labels ASSOC:'cancel' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+    </div>    
+    
+</form>
+
+[// Success and failure message for the delete operation
+[LL_REPTAG_'item_delete_success' SETVAR:msgDeleteSuccess /]
+[LL_REPTAG_'item_delete_fail' SETVAR:msgDeleteFail /]
+[LL_WEBREPORT_IF "[LL_REPTAG_&objId NODEINFO:SUBTYPE INT /]" == "0" /]
+    [LL_REPTAG_'folder_delete_success' SETVAR:msgDeleteSuccess /]
+    [LL_REPTAG_'folder_delete_fail' SETVAR:msgDeleteFail /]
+[LL_WEBREPORT_ENDIF /]
+
+<script>
+    window.addEventListener('DOMContentLoaded', function(){
+
+        // Click event handler on submit button
+        document.getElementById('submit').addEventListener('click', function(event){
+            // Don't allow the form to submit
+            event.preventDefault();
+
+            // Send the delete request and intercept the confirmation page
+            GCdocs.Ajax.post('[LL_REPTAG_URLPREFIX /]', {
+                func: 'll', 
+                objAction: 'delete2', 
+                objId: '[LL_REPTAG_&objId /]', 
+                securerequesttoken: document.querySelector('input[name="securerequesttoken"]').value
+
+            // Once delete has finished, get the status and redirect to item's parent folder
+            }).then(function(result){
+
+                // If status messages exist, it's an error
+                let snackbarMessage;
+                let messages = GCdocs.Message.getStatusMessages(result, ['.browseItemStatus.error', '.errorBox p']);
+                if(messages.length){
+                    GCdocs.Message.setSnackbarIndefinite(true);
+                    snackbarMessage = "[LL_REPTAG_!labels ASSOC:'[LL_REPTAG_!msgDeleteFail /]' LIST:'[LL_REPTAG_!langIdx /]' /]";
+                } else {
+                    snackbarMessage = "[LL_REPTAG_!labels ASSOC:'[LL_REPTAG_!msgDeleteSuccess /]' LIST:'[LL_REPTAG_!langIdx /]' /]";
+                }
+                GCdocs.Message.setSnackbarMessage(snackbarMessage);
+
+                // Redirect to item's parent folder
+                document.location.href = '[LL_REPTAG_URLPREFIX /][LL_REPTAG_&objId NODEINFO:PARENTID LLURL:BROWSE /]'
+            });
+        });
+        
+    });
+</script>
+
+[// Footer markup
+[LL_REPTAG_%templateFooterMarkup /]

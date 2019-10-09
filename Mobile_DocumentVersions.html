@@ -1,0 +1,114 @@
+[/*		
+	Title: 		View document versions
+	Author:     Pat Heard
+*/]
+
+[// Labels used for localization (french/english)
+[LL_REPTAG_'{
+"at":		    ["at", "à"],
+"back":		    ["Back", "Retour"]
+}' FROMJSON SETVAR:labels /]
+
+[// Index of label to use; depends on the user's language preferences
+[LL_REPTAG_'1' SETVAR:langIdx /]
+[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+	[LL_REPTAG_'2' SETVAR:langIdx /]
+[LL_WEBREPORT_ENDIF /]
+
+[// Remove all ContentServer markup
+[LL_WEBREPORT_EXCLUDEHTML /]
+            
+[// Template markup.  This needs to be done before the LL_WEBREPORT_STARTROW to workaround a bug that causes the RUNTEMPLATE output to be duplicated
+[LL_REPTAG_$MOBILE_HEADER_NODEID RUNTEMPLATE:name:"[LL_REPTAG_'COLLECTIONS_HTMLLABEL.Versions' XLATE /] - [LL_REPTAG_&objId NODEINFO:NAME:USERLANG /]" SETVAR:templateHeaderMarkup /]
+[LL_REPTAG_$MOBILE_FOOTER_NODEID RUNTEMPLATE SETVAR:templateFooterMarkup /]
+
+[// Header markup
+[LL_REPTAG_%templateHeaderMarkup /]
+
+<nav role="navigation" property="breadcrumb">
+    <ul class="breadcrumbs list-inline margin-top-0 margin-bottom-lg">
+        <li>
+            <a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_&nextURL /]">
+                <small>
+                        <span class="mi mi-chevron-left-large dialog-breadcrumbs margin-fix"></span>[LL_REPTAG_&objId NODEINFO:NAME:USERLANG /]
+                </small>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<h1 id="cont" data-doc="versions">[LL_REPTAG_'COLLECTIONS_HTMLLABEL.Versions' XLATE /]</h1>
+
+<ul class="list-unstyled border-item-list">
+    [LL_WEBREPORT_STARTROW /]
+        [LL_REPTAG=DATAID SETVAR:'objId' /]
+        [LL_REPTAG=VERSION SETVAR:'verNum' /]
+        <li>
+
+            <a href='
+                [LL_WEBREPORT_IF "[LL_REPTAG=SubType /]" == "128" /]
+                    [LL_REPTAG_URLPREFIX /]?func=ll&objId=[LL_REPTAG_%objId /]&objAction=initiate&paneindex=0&nexturl=[LL_REPTAG_URLPREFIX ESCAPEURL /]%3Ffunc%3Dll%26objId%3D[LL_REPTAG_%objId /]%26objAction%3Dversions%26nexturl%3D[LL_REPTAG_URLPREFIX ESCAPEURL /]%3Ffunc%253Dll%2526objid%253D[LL_REPTAG_%objId /]%2526objAction%253Dbrowse%2526sort%253Dname&version=[LL_REPTAG_%verNum CURRENTVAL /]
+                [LL_WEBREPORT_ELSEIF "[LL_REPTAG=SubType /]" == "30303" /]
+                    [LL_REPTAG_URLPREFIX /]?func=ll&objId=[LL_REPTAG_%objId /]&objAction=RunReport&verNum=[LL_REPTAG_%verNum CURRENTVAL /]&nexturl=[LL_REPTAG_URLPREFIX ESCAPEURL /]%3Ffunc%3Dll%26objId%3D[LL_REPTAG_%objId /]%26objAction%3Dversions%26nexturl%3D[LL_REPTAG_URLPREFIX ESCAPEURL /]%253Ffunc%253Dll%2526objid%253D[LL_REPTAG_%objId /]%2526objAction%253Dbrowse%2526sort%253Dname&version=[LL_REPTAG_%verNum CURRENTVAL /]
+                [LL_WEBREPORT_ELSEIF "[LL_REPTAG=SubType /]" == "30309" /]
+                    [LL_REPTAG_URLPREFIX /]?func=ll&objId=[LL_REPTAG_%objId /]&objAction=EditView&verNum=[LL_REPTAG_%verNum CURRENTVAL /]&nexturl=[LL_REPTAG_URLPREFIX ESCAPEURL /]%3Ffunc%3Dll%26objId%3D[LL_REPTAG_%objId /]%26objAction%3Dversions%26nexturl%3D[LL_REPTAG_URLPREFIX ESCAPEURL /]%253Ffunc%253Dll%2526objid%253D[LL_REPTAG_%objId /]%2526objAction%253Dbrowse%2526sort%253Dname&version=[LL_REPTAG_%verNum CURRENTVAL /]
+                [LL_WEBREPORT_ELSEIF "[LL_REPTAG=SubType /]" == "144" /]
+                    [LL_REPTAG_URLPREFIX /]?func=ll&objaction=overviewversion&objid=[LL_REPTAG_%objId /]&vernum=[LL_REPTAG_%verNum CURRENTVAL /]&version=[LL_REPTAG_%verNum CURRENTVAL /]
+                [LL_WEBREPORT_ELSE /]
+                    [LL_REPTAG_URLPREFIX /][LL_REPTAG=DATAID LLURL:DEFAULTLINK /]&vernum=[LL_REPTAG_%verNum CURRENTVAL /]&version=[LL_REPTAG_%verNum CURRENTVAL /]
+                [LL_WEBREPORT_ENDIF /]
+            '><strong>[LL_WEBREPORT_IF "[LL_REPTAG=Major /]" == "?" /][LL_REPTAG=VERSION /][LL_WEBREPORT_ELSE /][LL_REPTAG=VerMajor /].[LL_REPTAG=VerMinor /][LL_WEBREPORT_ENDIF /].</strong> <span class="break-word">[LL_REPTAG=FileName /]</span></a>
+            [LL_REPTAG_'WEBDOC_HTMLLABEL.CreatedBy' XLATE LOWER /]
+                       
+            [LL_REPTAG=Owner USERINFO:FULLNAME:FORCE SETVAR:modifyOwner /]
+            [LL_REPTAG=Owner USERINFO:MAILADDRESS SETVAR:modifyOwnerEmail /]
+            [LL_WEBREPORT_IF "[LL_REPTAG_!modifyOwnerEmail /]" != "?" AND "[LL_REPTAG_!modifyOwnerEmail /]" != "" /] 
+                <a href="mailto:[LL_REPTAG_!modifyOwnerEmail /]">[LL_REPTAG_!modifyOwner /]</a>
+            [LL_WEBREPORT_ELSEIF "[LL_REPTAG_!modifyOwner /]" != "" /] 
+                [LL_REPTAG_!modifyOwner /]
+            [LL_WEBREPORT_ELSE /]
+                [LL_REPTAG=DATAID NODEINFO:USERID USERINFO:FULLNAME:FORCE /]			
+            [LL_WEBREPORT_ENDIF /]            
+
+            <small class="display-block colour-dark-gray modify-date">
+                [LL_REPTAG=VerCreateDate DATE:"%Y-%m-%d" /] [LL_REPTAG_%labels ASSOC:'at' LIST:'[LL_REPTAG_!langIdx /]' /] [LL_REPTAG=VerCreateDate DATE:"%H:%M" /]
+            </small>                      
+        </li>
+    [LL_WEBREPORT_ENDROW /]
+</ul>       
+
+[// Pagination variables:
+[LL_REPTAG_@responseData.pageNumber INT DEF:1 SETVAR:pageNumber /]
+[LL_REPTAG_@responseData.pageSize INT DEF:25 SETVAR:numRowsDisplayed /]
+[LL_REPTAG_@responseData.pageCount INT DEF:1 SETVAR:totalPages /]
+[LL_REPTAG_!pageNumber INC:1 SETVAR:nextPageNum /]
+[LL_REPTAG_!pageNumber DEC:1 DECODE:0:1 SETVAR:prevPageNum /]
+[LL_REPTAG_OVERRIDEOBJID LLURL:INFO:VERSIONS SETVAR:baseUrl /][LL_REPTAG_"&nextURL=" CONCATVAR:baseUrl /][LL_REPTAG_NEXTURL CHECKURL ESCAPEURL CONCATVAR:baseUrl /]
+
+[// Pagination
+[LL_WEBREPORT_IF "[LL_REPTAG_!totalPages /]" ==  "1" /]
+    <ul class="list-inline margin-top-lg margin-bottom-xl">
+        <li>
+            [LL_WEBREPORT_IF "[LL_REPTAG_!pageNumber /]" == "1" /]
+                <span class="mi mi-chevron-left-large margin-fix">[LL_REPTAG_"WebNode_HTMLLabel.Previous" XLATE /]</span>
+            [LL_WEBREPORT_ELSE /]
+                <a href="[LL_REPTAG_!baseUrl /]&pageNumber=[LL_REPTAG_!prevPageNum /]&numRowsDisplayed=[LL_REPTAG_!numRowsDisplayed /]"><span class="mi mi-chevron-left-large margin-fix">[LL_REPTAG_"WebNode_HTMLLabel.Previous" XLATE /]</span></a>
+            [LL_WEBREPORT_ENDIF /]
+        </li>                
+        <li><small>[LL_REPTAG_"WebAdmin_HTMLLabel2.Page1Of2" XLATE REPLACE:"%1":[LL_REPTAG_!pageNumber /] REPLACE:"%2":[LL_REPTAG_!totalPages /] /]</small></li>
+        <li>
+            [LL_WEBREPORT_IF "[LL_REPTAG_!pageNumber /]" == "[LL_REPTAG_!totalPages /]" /]
+                <span class="mi mi-chevron-right-large">[LL_REPTAG_"WebNode_HTMLLabel.Next" XLATE /]</span>
+            [LL_WEBREPORT_ELSE /]
+                <a href="[LL_REPTAG_!baseUrl /]&pageNumber=[LL_REPTAG_!nextPageNum /]&numRowsDisplayed=[LL_REPTAG_!numRowsDisplayed /]"><span class="mi mi-chevron-right-large">[LL_REPTAG_"WebNode_HTMLLabel.Next" XLATE /]</span></a>
+            [LL_WEBREPORT_ENDIF /]
+        </li>
+    </ul>
+[LL_WEBREPORT_ENDIF /]
+
+<div class="form-group margin-top-lg">
+    <a href="[LL_REPTAG_&nextURL /]" class="mdc-button mdc-button--unelevated">[LL_REPTAG_%labels ASSOC:'back' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+</div>
+
+[// Footer markup
+[LL_REPTAG_%templateFooterMarkup /]

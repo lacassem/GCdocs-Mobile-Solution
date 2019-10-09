@@ -1,0 +1,369 @@
+[/*		
+	Title:	GCdocs Document Browse template
+	Author:	Rudy Hallé and Patrick Heard
+	
+	UseCases: 
+	isFavoritePage       //No objectID available, No breadcumbs, secondary text should be parent folder
+	isPersonnalHomePageRoot  //ObjectId does not return node name and parentID for breadcrumb -  Objecttype=142 or ObjectID=25744 
+	isRecentDocumentsPage //No breadcumbs, parent folder could aslo be diplayed as secondary text - Objecttype=327
+	
+	Within Content Area particularity
+	Only documents (type 144) can be downloaded with default link to go direct to download URL
+	..
+*/]
+
+[// Labels used for localization (french/english)
+[LL_REPTAG_'{
+"add_folder":			["Folder", "Dossier"],
+"add_item":				["Item", "Élément"],
+"add_item_folder":		["Add item or folder", "Ajout d&apos;élément ou dossier"],
+"add_version":			["Add version", "Ajout de version"], 
+"and":					["and", "et"], 
+"at":					["at", "à"],
+"breadcrumbs":			["Breadcrumbs", "Fils d&apos;Ariane"],
+"clear":				["Clear", "Effacer"],
+"document_reserved_by":	["Document reserved by", "Document réservé par"],
+"emailattachement":     ["Email as attachment", "Envoyer comme pièce jointe"],
+"emaillink":			["Email a link", "Envoyer un lien"],
+"favorite_tab":			["Favorite tab", "Onglet favoris"],
+"favorite_tab_view":	["View favorite tab", "Afficer l&apos;onglet favoris"],
+"filter":				["Filter", "Filtre"],
+"filter_items":			["Filter items", "Filtrer les éléments"],
+"filtering_with":		["Filtering with", "Filtrer avec"],
+"item":					["item", "élément"],
+"items":				["items", "éléments"],
+"my_favorites":			["My favorites", "Mes favoris"],
+"my_workspace":			["My workspace", "Mon espace de travail"],
+"more_actions":			["More actions", "Actions"],
+"no_title_exception":	["No title", "Aucun titre"],
+"of":					["of", "de"],
+"details":				["View details", "Plus de détails"],
+"optional":				["optional", "facultatif"],
+"recent_documents":		["My recent documents", "Mes documents récents"],
+"remove_favorite":		["Remove from favorites", "Enlever le favori"],
+"rename":				["Rename", "Renommer"],
+"required":				["required", "requis"],
+"reserved":				["Reserved", "Réservé"],
+"showing":				["Showing", "Affichant"],
+"to":					["to", "à"],
+"view_as_web_page":		["View as web page", "Afficher en tant que page Web"]
+
+}' FROMJSON SETVAR:labels /]
+
+[// Index of label to use; depends on the user's language preferences
+[LL_REPTAG_'1' SETVAR:langIdx /]
+[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+	[LL_REPTAG_'2' SETVAR:langIdx /]
+[LL_WEBREPORT_ENDIF /]
+
+[// The folder's DATAID and PARENTID.  We don't always have this in the request URL objID param, so we get these from the response object as a failsafe.
+[LL_REPTAG_RESPONSE ASSOC:data ASSOC:nodeRec RECORD:DataID SETVAR:DATAID /]
+[LL_REPTAG_RESPONSE ASSOC:data ASSOC:nodeRec RECORD:ParentID SETVAR:PARENTID /]
+
+[// default usecase variables to FALSE    
+[LL_REPTAG_'FALSE' SETVAR:isFavoritePage /]
+[LL_REPTAG_'FALSE' SETVAR:isPersonnalHomePageRoot /]
+[LL_REPTAG_'FALSE' SETVAR:isRecentDocumentsPage /]
+
+
+[// Defining use case variables with title
+[LL_WEBREPORT_IF  "[LL_REPTAG_&func /]" == "Personal.Favorites" /]
+    [LL_REPTAG_'TRUE' SETVAR:isFavoritePage /]
+    [LL_REPTAG_"[LL_REPTAG_!labels ASSOC:'my_favorites' LIST:'[LL_REPTAG_!langIdx /]' /]" SETVAR:pageTitle /]
+[LL_WEBREPORT_ELSEIF "[LL_REPTAG_&objtype /]" == "142" OR  "[LL_REPTAG_!DATAID /]" == "25744" /]  
+	[LL_REPTAG_'TRUE' SETVAR:isPersonnalHomePageRoot /]
+	[LL_REPTAG_"[LL_REPTAG_!labels ASSOC:'my_workspace' LIST:'[LL_REPTAG_!langIdx /]' /]" SETVAR:pageTitle /]
+[LL_WEBREPORT_ELSEIF "[LL_REPTAG_&objtype /]" == "327" /]	
+    [LL_REPTAG_'TRUE' SETVAR:isRecentDocumentsPage /]
+    [LL_REPTAG_"[LL_REPTAG_!labels ASSOC:'recent_documents' LIST:'[LL_REPTAG_!langIdx /]' /]" SETVAR:pageTitle /]
+[LL_WEBREPORT_ELSEIF "[LL_REPTAG_!DATAID /]" > "0"  /]
+    [LL_REPTAG_"[LL_REPTAG_!DATAID NODEINFO:NAME:USERLANG /]" SETVAR:pageTitle /]
+[LL_WEBREPORT_ELSEIF "[LL_REPTAG_&func /]" == "llworkspace" /]
+    [LL_REPTAG_"[LL_REPTAG_'WEBNODE_LABEL.Enterprise' XLATE /]" SETVAR:pageTitle /]
+[LL_WEBREPORT_ELSE /]
+    [LL_REPTAG_"[LL_REPTAG_!labels ASSOC:'no_title_exception' LIST:'[LL_REPTAG_!langIdx /]' /]" SETVAR:pageTitle /]
+[LL_WEBREPORT_ENDIF /]
+
+[// Remove all ContentServer markup
+[LL_WEBREPORT_EXCLUDEHTML /]
+
+[// Template markup.  This needs to be done before the LL_WEBREPORT_STARTROW to workaround a bug that causes the RUNTEMPLATE output to be duplicated
+[LL_REPTAG_$MOBILE_HEADER_NODEID RUNTEMPLATE:name:[LL_REPTAG_!pageTitle /] SETVAR:templateHeaderMarkup /]
+[LL_REPTAG_$MOBILE_FOOTER_NODEID RUNTEMPLATE:showHelp:"TRUE" SETVAR:templateFooterMarkup /]
+
+[LL_REPTAG_%templateHeaderMarkup /]
+
+[//Breadcrumb    
+[//Prevent Up a folder button on personal workspace  ###### Might be needed for other special browsing
+[LL_WEBREPORT_IF "[LL_REPTAG_!DATAID /]" != "" && "[LL_REPTAG_!DATAID /]" != "0" && "[LL_REPTAG_!PARENTID /]" != "-1" /]
+<nav role="navigation" property="breadcrumb">
+    <ul class="breadcrumbs list-inline margin-top-0 margin-bottom-lg">
+	    <li>
+	        <a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_!DATAID NODEINFO:PARENTID LLURL:BROWSE /]">
+    		    <span class="mi mi-chevron-left-large dialog-breadcrumbs margin-fix"></span><small>[LL_REPTAG_!DATAID NODEINFO:PARENTID NODEINFO:NAME:USERLANG /]</small>
+		    </a>
+	    </li>	
+    </ul>
+</nav>
+[LL_WEBREPORT_ENDIF /]
+
+<h1 class="cont" data-doc="[LL_REPTAG_!pageTitle REPLACE:" ":"" ESCAPEFORJS:ESCAPE /]">[LL_REPTAG_!pageTitle /]</h1>
+
+[// Filtering of items (doesn't work on favorites page)
+[LL_WEBREPORT_IF "[LL_REPTAG_!isFavoritePage /]" == "FALSE" /]
+	<div role="search">
+		<form id="filterForm" method="get" action="[LL_REPTAG_MYURL /]">
+			<label for="filterValue" class="inv"><span class="field-name">[LL_REPTAG_!labels ASSOC:'filter_items' LIST:'[LL_REPTAG_!langIdx /]' /]</span> ([LL_REPTAG_!labels ASSOC:'required' LIST:'[LL_REPTAG_!langIdx /]' /]):</label>
+			<input type="search" name="filterValue" id="filterValue" value="[LL_REPTAG_&filterValue ESCAPEHTML /]" placeholder="[LL_REPTAG_!labels ASSOC:'filter_items' LIST:'[LL_REPTAG_!langIdx /]' /]" class="form-control">
+			<input type="submit" value="[LL_REPTAG_!labels ASSOC:'filter' LIST:'[LL_REPTAG_!langIdx /]' /]" class="inv">
+		</form>
+
+	[LL_WEBREPORT_IF "[LL_REPTAG_&filterValue /]" != "" /]
+		<p class="margin-top-md filter-count">
+				[LL_REPTAG_!labels ASSOC:'filtering_with' LIST:'[LL_REPTAG_!langIdx /]' /] <strong>[LL_REPTAG_&filterValue ESCAPEHTML /]</strong>.  
+			<a href="[LL_REPTAG_MYCACHEURL /]">[LL_REPTAG_!labels ASSOC:'clear' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+		</p>
+	[LL_WEBREPORT_ENDIF /]
+	</div>
+[LL_WEBREPORT_ENDIF /]
+
+[// Favorites page with tabs
+[LL_WEBREPORT_IF "[LL_REPTAG_!isFavoritePage /]" == "TRUE" AND "[LL_REPTAG_RESPONSE ASSOC:data ASSOC:Tabs ASSOC:2 /]" != "" /]
+	[LL_REPTAG_RESPONSE ASSOC:data ASSOC:Tab SETVAR:currentTab /]
+
+	<form name="TabSelect" action="[LL_REPTAG_URLPREFIX /]" method="get">
+		<input type="hidden" name="func" value="Personal.Favorites">
+		<input type="hidden" name="sort" value="name">
+
+		<div class="form-group button-inline">
+			<label for="tab" class="inv"><span class="field-name">[LL_REPTAG_!labels ASSOC:'favorite_tab' LIST:'[LL_REPTAG_!langIdx /]' /]</span>:</label>
+			<select name="tab" id="tab" class="form-control">
+
+			[// Loop over tab association and get the tab label
+			[LL_WEBREPORT_FOR DATA:[LL_REPTAG_RESPONSE ASSOC:data ASSOC:Tabs /] VAR:tab /]
+				[LL_REPTAG_'' SETVAR:selected /]
+				[LL_WEBREPORT_IF "[LL_REPTAG_!tab_index /]" == "[LL_REPTAG_!currentTab /]" /]
+					[LL_REPTAG_'selected' SETVAR:selected /]
+				[LL_WEBREPORT_ENDIF /]
+				<option value="[LL_REPTAG_!tab_index /]" [LL_REPTAG_!selected /]>[LL_REPTAG_!tab LIST:2 ASSOC:Label /]</option>
+			[LL_WEBREPORT_ENDFOR /]
+
+			</select>
+			<button type="submit" class="button">
+				<span class="mi mi-chevron-right"></span>
+				<span class="inv">[LL_REPTAG_!labels ASSOC:'favorite_tab_view' LIST:'[LL_REPTAG_!langIdx /]' /]</span>
+			</button>
+		</div>
+	</form>
+
+[LL_WEBREPORT_ENDIF /]
+
+<ul class="list-unstyled margin-top-lg doc-list">
+[LL_WEBREPORT_STARTROW /]
+
+	[// Setup sorting of the doc list
+	[LL_WEBREPORT_SORT @PREDEFKEY REF:type PARM:"[LL_REPTAG=SUBTYPE /]" @PREDEFKEY REF:name PARM:"[LL_REPTAG=NAME /]" @PREDEFKEY REF:size PARM:"[LL_REPTAG=SIZE /]" @PREDEFKEY REF:modified PARM:"[LL_REPTAG=MODIFYDATE /]" /]
+	
+	[// Is this item an office doc or email message?  Determines the item's main link: download for office docs, doc properties for everything else.
+	[LL_REPTAG_'FALSE' SETVAR:isOfficeDoc /]
+	[LL_REPTAG_'144,749' SETVAR:officeDocSubTypes /]
+	[LL_REPTAG=DATAID LLURL:DEFAULTLINK SETVAR:itemLink /]
+	[LL_WEBREPORT_IF "[LL_REPTAG=DATAID NODEINFO:SUBTYPE INT /]" IN "[LL_REPTAG_!officeDocSubTypes /]" /]
+		[LL_REPTAG_'TRUE' SETVAR:isOfficeDoc /]
+		[LL_REPTAG=DATAID LLURL:DOWNLOAD SETVAR:itemLink /]
+	[LL_WEBREPORT_ENDIF /]
+	
+	<li data-doc="[LL_REPTAG=NAME REPLACE:" ":"" ESCAPEFORJS:ESCAPE /]">
+
+		<a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_!itemLink /]&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">
+			<span>[LL_REPTAG=DATAID LLURL:GIF:LARGE /]</span>
+			<span class="doc-name">				
+				<span class="underline">[LL_REPTAG=DATAID NODEINFO:NAME:USERLANG /]</span>
+				[LL_WEBREPORT_IF "[LL_REPTAG=DATAID NODEINFO:RESERVED /]" != "0" /]
+					<span class="mi small mi-lock colour-red">[LL_REPTAG_%labels ASSOC:'reserved' LIST:'[LL_REPTAG_!langIdx /]' /]</span>
+				[LL_WEBREPORT_ENDIF /]
+
+				[// Parent folder is useful for favorites and recent documents, date is more useful for documents... size could be also there
+				[LL_WEBREPORT_IF "[LL_REPTAG_!isFavoritePage /]" == "TRUE" OR "[LL_REPTAG_!isRecentDocumentsPage /]" == "TRUE" AND "[LL_REPTAG=DATAID NODEINFO:PARENTID /]" > "0" /] 
+					<small class="meta">/[LL_REPTAG=DATAID NODEINFO:PARENTID NODEINFO:NAME:USERLANG /]</small>
+				[LL_WEBREPORT_ELSEIF "[LL_REPTAG_!isOfficeDoc /]" == "TRUE" /]
+					<small class="meta">[LL_REPTAG=MODIFYDATE DATE:"%Y-%m-%d" /] - [LL_REPTAG=DATAID NODEINFO:SIZE /]</small>
+				[LL_WEBREPORT_ENDIF /]						
+			</span>
+		</a>
+
+		[// Document actions
+		<button type="button" class="link colour-dark-gray dialog-more-actions" aria-haspopup="true" aria-expanded="false" aria-controls="dialog-more-actions"><span class="mi mi-more-vert">[LL_REPTAG_"[LL_REPTAG_!labels ASSOC:'more_actions' LIST:'[LL_REPTAG_!langIdx /]' /]" /]: <span class="doc-name">[LL_REPTAG=NAME /]</span></span></button>
+		<div class="doc-actions display-none">
+			<ul class="list-unstyled border-top-gray" role="menu" aria-orientation="vertical">
+				[LL_REPTAG_'' SETVAR:cssClass /]
+				
+				[//More details and add version for office documents
+				[LL_WEBREPORT_IF "[LL_REPTAG_!isOfficeDoc /]" == "TRUE" /]
+				[LL_REPTAG_'border-top-gray border-top-gap' SETVAR:cssClass /]
+					[LL_WEBREPORT_IF "[LL_REPTAG=DATAID NODEINFO:SUBTYPE INT /]" == "144" /]
+						<li role="none"><a role="menuitem" data-action="details" href="[LL_REPTAG_URLPREFIX /][LL_REPTAG=DATAID LLURL:DEFAULTLINK /]&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">[LL_REPTAG_!labels ASSOC:'details' LIST:'[LL_REPTAG_!langIdx /]' /]</a></li>
+					[LL_WEBREPORT_ENDIF /]
+					[LL_WEBREPORT_IF "[LL_REPTAG=DATAID PERMCHECK:EDIT /]" == "TRUE" /]
+						[LL_WEBREPORT_IF "[LL_REPTAG=DATAID NODEINFO:RESERVED /]" == "0" OR "[LL_REPTAG=DATAID NODEINFO:RESERVEDBY /]" == "[LL_REPTAG_ACTUALUSERID /]" /]
+							<li role="none"><a role="menuitem" data-action="add-version" href="[LL_REPTAG_URLPREFIX /]?func=doc.AddVersion&nodeid=[LL_REPTAG=DATAID /]&amp;nextURL=[LL_REPTAG_MYURL ESCAPEURL /]&amp;breadcrumb=[LL_REPTAG_!pageTitle ESCAPEFORJS:ENCODEURI /]">[LL_REPTAG_%labels ASSOC:'add_version' LIST:'[LL_REPTAG_!langIdx /]' /]</a></li>
+						[LL_WEBREPORT_ENDIF /]		
+					[LL_WEBREPORT_ENDIF /]					
+				[LL_WEBREPORT_ENDIF /]
+				
+				[//Send email link (ShortLink)
+				<li role="none" class="[LL_REPTAG_!cssClass /]"><a role="menuitem" data-action="email" href="mailto:?body=[LL_REPTAG=NAME ESCAPEFORJS:ESCAPE /]%0d%0a[LL_REPTAG_URLPREFIXFULL ESCAPEFORJS:ESCAPE /][LL_REPTAG=DATAID LLURL:SHORTLINK ESCAPEFORJS:ESCAPE /]">[LL_REPTAG_!labels ASSOC:'emaillink' LIST:'[LL_REPTAG_!langIdx /]' /]</a></li>
+                
+                [//Set/Remove from favorites
+				[LL_WEBREPORT_IF "[LL_REPTAG_!isFavoritePage /]" == "TRUE" /]
+					<li role="none"><a role="menuitem" data-action="remove-favorite" href="[LL_REPTAG_URLPREFIX /]?func=home.removefavorite&amp;nodeid=[LL_REPTAG=DATAID /]&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">[LL_REPTAG_!labels ASSOC:'remove_favorite' LIST:'[LL_REPTAG_!langIdx /]' /]</a></li>
+				[LL_WEBREPORT_ELSE /]
+					<li role="none"><a role="menuitem" data-action="add-favorite" href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objaction=MakeFavorite&amp;objid=[LL_REPTAG=DATAID /]&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">[LL_REPTAG_'HOME_LABEL.MakeFavorite' XLATE /]</a></li>
+				[LL_WEBREPORT_ENDIF /]
+				
+				[//Delete
+				[LL_WEBREPORT_IF "[LL_REPTAG=DATAID PERMCHECK:EDIT /]" == "TRUE" /]
+					<li role="none" class="border-top-gray border-top-gap"><a role="menuitem" data-action="rename" href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objId=[LL_REPTAG=DATAID /]&amp;objAction=rename&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]&amp;breadcrumb=[LL_REPTAG_!pageTitle ESCAPEFORJS:ENCODEURI /]">[LL_REPTAG_!labels ASSOC:'rename' LIST:'[LL_REPTAG_!langIdx /]' /]</a></li>
+					[LL_WEBREPORT_IF "[LL_REPTAG=DATAID PERMCHECK:DELETE /]" == "TRUE" /]
+						<li role="none"><a role="menuitem" data-action="delete" href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objId=[LL_REPTAG=DATAID /]&amp;objAction=delete&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]&amp;breadcrumb=[LL_REPTAG_!pageTitle ESCAPEFORJS:ENCODEURI /]">[LL_REPTAG_'WEBDOC_HTMLLABEL.Delete' XLATE /]</a></li>
+					[LL_WEBREPORT_ENDIF /]
+				[LL_WEBREPORT_ENDIF /]
+				
+				[//Reserve document
+				[LL_WEBREPORT_IF "[LL_REPTAG_!isOfficeDoc /]" == "TRUE" AND "[LL_REPTAG=DATAID PERMCHECK:RESERVE /]" == "TRUE" /]
+					[LL_WEBREPORT_IF "[LL_REPTAG=DATAID NODEINFO:RESERVED /]" != "0" AND "[LL_REPTAG=DATAID NODEINFO:RESERVEDBY /]" == "[LL_REPTAG_ACTUALUSERID /]" /]
+						<li role="none"><a role="menuitem" data-action="unreserve" href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objId=[LL_REPTAG=DATAID /]&amp;objAction=unreservedoc&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]&amp;breadcrumb=[LL_REPTAG_!pageTitle ESCAPEFORJS:ENCODEURI /]">[LL_REPTAG_'WEBDOC_HTMLLABEL.Unreserve' XLATE /]</a></li>
+					[LL_WEBREPORT_ELSEIF "[LL_REPTAG=DATAID NODEINFO:RESERVED /]" == "0"  /]
+						<li role="none"><a role="menuitem" data-action="reserve" href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objId=[LL_REPTAG=DATAID /]&amp;objAction=reservedoc&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]&amp;breadcrumb=[LL_REPTAG_!pageTitle ESCAPEFORJS:ENCODEURI /]">[LL_REPTAG_'WEBDOC_HTMLLABEL.Reserve' XLATE /]</a></li>	
+					[LL_WEBREPORT_ENDIF /]
+				[LL_WEBREPORT_ENDIF /]
+			</ul>
+		</div>
+
+	</li>
+				
+[LL_WEBREPORT_ENDROW /]		
+</ul>
+
+[// Pagination
+[LL_REPTAG_@RESPONSEDATA.pages SETVAR:pageTotal /]
+[LL_REPTAG_@RESPONSEDATA.page SETVAR:pageNum /]
+[LL_REPTAG_@RESPONSEDATA.PageSize SETVAR:pageSize /]
+[LL_REPTAG_@RESPONSEDATA.totalCount SETVAR:totalCount /]
+[LL_WEBREPORT_IF "[LL_REPTAG_!pageTotal /]" > "1" /]
+	[LL_REPTAG_'1' SETVAR:pageNext /]
+	[LL_REPTAG_'-1' SETVAR:pagePrev /]
+	[LL_REPTAG_!pageNum ADDVAR:pageNext /]
+	[LL_REPTAG_!pageNum ADDVAR:pagePrev /]
+
+	<ul class="list-inline margin-top-lg margin-bottom-lg margin-left-sm paging-links">
+		<li>
+			[LL_WEBREPORT_IF "[LL_REPTAG_!pageNum /]" == "1" /]
+				<span class="mi mi-chevron-left-large margin-fix colour-dark-gray">[LL_REPTAG_"WebNode_HTMLLabel.Previous" XLATE /]</span>
+			[LL_WEBREPORT_ELSE /]
+				<a href="[LL_REPTAG_MYCACHEURL /]&amp;page=[LL_REPTAG_!pagePrev /]"><span class="mi mi-chevron-left-large margin-fix">[LL_REPTAG_"WebNode_HTMLLabel.Previous" XLATE /]</span></a>
+			[LL_WEBREPORT_ENDIF /]
+		</li>                
+		<li><small>[LL_REPTAG_'ACTIVEVIEW_LABEL.Page' XLATE /] [LL_REPTAG_!pageNum /] [LL_REPTAG_'ACTIVEVIEW_LABEL.Of' XLATE /] [LL_REPTAG_!pageTotal /]</small></li>
+		<li>							
+			[LL_WEBREPORT_IF "[LL_REPTAG_!pageNum /]" == "[LL_REPTAG_!pageTotal /]" /]
+				<span class="mi mi-chevron-right-large colour-dark-gray">[LL_REPTAG_"WebNode_HTMLLabel.Next" XLATE /]</span>
+			[LL_WEBREPORT_ELSE /]
+				<a href="[LL_REPTAG_MYCACHEURL /]&amp;page=[LL_REPTAG_!pageNext /]"><span class="mi mi-chevron-right-large">[LL_REPTAG_"WebNode_HTMLLabel.Next" XLATE /]</span></a>
+			[LL_WEBREPORT_ENDIF /]
+		</li>
+		<li>
+			[LL_REPTAG_!pageNum SUBTRACT:1 MULTIPLY:[LL_REPTAG_!pageSize /] ADD:1 SETVAR:itemStart /]
+			[LL_REPTAG_!pageNum MULTIPLY:[LL_REPTAG_!pageSize /] SETVAR:itemEnd /] 
+			<small>
+				[LL_REPTAG_!labels ASSOC:'showing' LIST:'[LL_REPTAG_!langIdx /]' /] [LL_REPTAG_!itemStart /]
+				[LL_REPTAG_!labels ASSOC:'to' LIST:'[LL_REPTAG_!langIdx /]' /] 
+				[LL_WEBREPORT_IF "[LL_REPTAG_!itemEnd /]" > "[LL_REPTAG_!totalCount /]" /]
+					[LL_REPTAG_!totalCount /]
+				[LL_WEBREPORT_ELSE /]
+					[LL_REPTAG_!itemEnd /]
+				[LL_WEBREPORT_ENDIF /]
+				[LL_REPTAG_!labels ASSOC:'of' LIST:'[LL_REPTAG_!langIdx /]' /] [LL_REPTAG_!totalCount /]
+			</small>
+		</li>
+	</ul>
+[LL_WEBREPORT_ELSEIF "[LL_REPTAG_!totalCount /]" != "" /]	
+	<small class="display-block margin-top-lg margin-bottom-lg paging-count">
+		[LL_REPTAG_!labels ASSOC:'showing' LIST:'[LL_REPTAG_!langIdx /]' /] [LL_REPTAG_!totalCount /] 
+		[LL_WEBREPORT_IF "[LL_REPTAG_!totalCount /]" == "1" /]
+			[LL_REPTAG_!labels ASSOC:'item' LIST:'[LL_REPTAG_!langIdx /]' /]
+		[LL_WEBREPORT_ELSE /]
+			[LL_REPTAG_!labels ASSOC:'items' LIST:'[LL_REPTAG_!langIdx /]' /]
+		[LL_WEBREPORT_ENDIF /]
+	</small>
+[LL_WEBREPORT_ENDIF /]
+
+
+[// Check if the user has the right to add document and folders to the current folder.  This is done by checking LLURL:ADDITEM:ITEMMENU to see if it contains
+[// add folder and document links.  This was used instead of PERMCHECK because it was the only consistent way to match the classic view add item links.
+[// PERMCHECK also does not allow the granularity to check for adding documents vs folders.  It only checks for the ability to ADDITEMS.
+[LL_REPTAG_'FALSE' SETVAR:isAddItem /]
+[LL_REPTAG_'FALSE' SETVAR:isAddFolder /]
+
+[// Loop over the ADDITEM menu looking for the folder and document subtypes.  If they exist, the user can add them.
+[LL_REPTAG_!DATAID LLURL:ADDITEM:ITEMMENU:RAW SETVAR:addItemMenu /]
+[LL_WEBREPORT_FOR DATA:[LL_REPTAG_!addItemMenu /] VAR:"menuItem" /]
+	[LL_WEBREPORT_IF "[LL_REPTAG_!menuItem RECORD:subtype /]" == "0" /]
+		[LL_REPTAG_'TRUE' SETVAR:isAddFolder /]
+	[LL_WEBREPORT_ELSEIF "[LL_REPTAG_!menuItem RECORD:subtype /]" == "144" /]
+		[LL_REPTAG_'TRUE' SETVAR:isAddItem /]
+	[LL_WEBREPORT_ENDIF /]
+[LL_WEBREPORT_ENDFOR /]
+
+[LL_WEBREPORT_IF "[LL_REPTAG_!isAddItem /]" == "TRUE" || "[LL_REPTAG_!isAddFolder /]" == "TRUE" /]
+	<!-- Floating action button to add items/folders -->
+	<div class="floating-action">
+		<button type="button" aria-haspopup="true" aria-expanded="false" aria-controls="fab-actions">
+			<span class="mi mi-add"></span>
+			<span class="inv">[LL_REPTAG_!labels ASSOC:'add_item_folder' LIST:'[LL_REPTAG_!langIdx /]' /]</span>
+		</button>
+
+		<div class="actions">
+			<h2 class="inv">[LL_REPTAG_!labels ASSOC:'add_item_folder' LIST:'[LL_REPTAG_!langIdx /]' /]</h2>
+			<ul role="menu" aria-orientation="vertical" id="fab-actions" class="list-unstyled">
+				[LL_WEBREPORT_IF "[LL_REPTAG_!isAddItem /]" == "TRUE" /]
+					<li role="none"><a role="menuitem" href="[LL_REPTAG_URLPREFIX /]/llisapi.dll?func=ll&objType=144&objAction=create&parentId=[LL_REPTAG_!DATAID /]&nextURL=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">[LL_REPTAG_!labels ASSOC:'add_item' LIST:'[LL_REPTAG_!langIdx /]' /]<span class="mi mi-insert-drive-file margin-left-sm"></span></a></li>
+				[LL_WEBREPORT_ENDIF /]
+				[LL_WEBREPORT_IF "[LL_REPTAG_!isAddFolder /]" == "TRUE" /]
+					<li role="none" class="margin-top-md"><a role="menuitem" href="[LL_REPTAG_URLPREFIX /]/llisapi.dll?func=ll&objType=0&objAction=create&parentId=[LL_REPTAG_!DATAID /]&nextURL=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">[LL_REPTAG_!labels ASSOC:'add_folder' LIST:'[LL_REPTAG_!langIdx /]' /]<span class="mi mi-folder margin-left-sm"></span></a></li>
+				[LL_WEBREPORT_ENDIF /]
+			</ul>
+		</div>
+		<div class="scrim"></div>
+	</div>
+[LL_WEBREPORT_ENDIF /]
+
+<!-- More actions -->
+<div class="mdc-dialog" id="dialog-more-actions" role="alertdialog" aria-modal="true" aria-labelledby="dialog-more-actions-title" aria-describedby="dialog-more-actions-content">
+	<div class="mdc-dialog__container">
+		<div class="mdc-dialog__surface">
+			<h2 class="mdc-dialog__title break-word" id="dialog-more-actions-title">[LL_REPTAG_!labels ASSOC:'more_actions' LIST:'[LL_REPTAG_!langIdx /]' /]</h2>
+			<div class="mdc-dialog__content action-menu" id="dialog-more-actions-content"></div>
+			<footer class="mdc-dialog__actions">
+				<button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+					<span class="mdc-button__label">[LL_REPTAG_'WEBDOC_HTMLLABEL.CloseButtonLabel' XLATE /]</span>
+				</button>
+			</footer>
+		</div>
+	</div>
+	<div class="mdc-dialog__scrim"></div>
+</div>
+
+<script>
+	window.addEventListener('DOMContentLoaded', function(){
+		GCdocs.Events.bindBrowseMoreActions();		
+
+		// Bind the filter form behaviour if it exists
+		var filterForm = document.querySelector('#filterForm');
+		if(filterForm){			
+			GCdocs.Events.filterSubmit();						
+		}
+	});
+</script>
+
+[LL_REPTAG_%templateFooterMarkup /]

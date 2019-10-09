@@ -1,0 +1,167 @@
+[/*		
+	Title: 		Add item or folder for the document browse screen
+	Author:     Pat Heard
+*/]
+
+[// Labels used for localization (french/english)
+[LL_REPTAG_'{
+"add":  					["Add", "Ajouter"],
+"add_folder":  				["Add folder", "Ajouter un dossier"],
+"add_item":  				["Add item", "Ajouter un élément"],
+"add_name_alt":  			["Add french name", "Ajouter le nom en anglais"],
+"cancel":  					["Cancel", "Annuler"],
+"colon":					[":", " :"],
+"description":				["Description", "Description"],
+"desktop_site":				["Desktop site", "Site complet"],
+"document":					["Document", "Document"],
+"name":						["Name", "Nom"],
+"name_alt":					["French name", "Nom en anglais"],
+"optional":					["optional", "facultatif"],
+"required":					["required", "requis"],
+"required_cats_warning_1":	["You need to use the", "Vous devez utiliser le"],
+"required_cats_warning_2":	["to add items to this folder.", "pour ajouter un élément à ce dossier."],
+"required_cats_warning_3":	["The folder has required categories which are not supported by the mobile site.", "Le dossier a des catégories obligatoires qui ne sont pas supportées par l&apos;interface mobile."]
+}' FROMJSON SETVAR:labels /]
+
+[// Index of label to use; depends on the user's language preferences
+[LL_REPTAG_'1' SETVAR:langIdx /]
+[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+	[LL_REPTAG_'2' SETVAR:langIdx /]
+[LL_WEBREPORT_ENDIF /]
+
+[// Determine if this is an add item or add folder action
+[LL_WEBREPORT_IF  "[LL_REPTAG_&objtype /]" == "144" /]
+	[LL_REPTAG_'TRUE' SETVAR:isAddItem /]
+	[LL_REPTAG_"[LL_REPTAG_!labels ASSOC:'add_item' LIST:'[LL_REPTAG_!langIdx /]' /]" SETVAR:pageTitle /]
+[LL_WEBREPORT_ELSE /]
+	[LL_REPTAG_'FALSE' SETVAR:isAddItem /]
+	[LL_REPTAG_"[LL_REPTAG_!labels ASSOC:'add_folder' LIST:'[LL_REPTAG_!langIdx /]' /]" SETVAR:pageTitle /]	
+[LL_WEBREPORT_ENDIF /]
+
+[// Check if there are required categories for this folder or one of its parents.
+[LL_REPTAG_'FALSE' SETVAR:isRequiredCategory /]
+[LL_WEBREPORT_FOR DATA:[LL_REPTAG_&parentid CAT:RAW /] VAR:"category" /]
+	[LL_WEBREPORT_IF "[LL_REPTAG_!category ASSOC:Required /]" == "true" /]
+		[LL_REPTAG_'TRUE' SETVAR:isRequiredCategory /]
+		[LL_WEBREPORT_BREAK /]
+	[LL_WEBREPORT_ENDIF /]
+[LL_WEBREPORT_ENDFOR /]
+
+[// Remove all ContentServer markup
+[LL_WEBREPORT_EXCLUDEHTML /]
+
+[// Header markup
+[LL_REPTAG_$MOBILE_HEADER_NODEID RUNTEMPLATE:name:"[LL_REPTAG_!pageTitle /] - [LL_REPTAG_&parentid NODEINFO:NAME:USERLANG /]" /]
+<nav role="navigation" property="breadcrumb">		
+	<ul class="breadcrumbs list-inline margin-top-0 margin-bottom-lg">
+		<li>
+			<a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_&nextURL /]">
+				<small>
+						<span class="mi mi-chevron-left-large dialog-breadcrumbs margin-fix"></span>[LL_REPTAG_&parentid NODEINFO:NAME:USERLANG /]
+				</small>
+			</a>
+		</li>
+	</ul>
+</nav>
+
+<h1 id="cont">[LL_REPTAG_!pageTitle /]</h1>
+
+[// Currently not possible to add items if there is a required category.  Give the user a message and link to switch to Classic View.
+[LL_WEBREPORT_IF "[LL_REPTAG_!isRequiredCategory /]" == "TRUE" && "[LL_REPTAG_!isAddItem /]" == "TRUE" /]
+
+<div class="alert alert-warning">
+	<p>
+		[LL_REPTAG_%labels ASSOC:'required_cats_warning_1' LIST:'[LL_REPTAG_!langIdx /]' /] 
+		<a href="[LL_REPTAG_MYURL /]&AVID=0">[LL_REPTAG_%labels ASSOC:'desktop_site' LIST:'[LL_REPTAG_!langIdx /]' LOWER /]</a> 
+		[LL_REPTAG_%labels ASSOC:'required_cats_warning_2' LIST:'[LL_REPTAG_!langIdx /]' /]
+	</p>	
+</div>
+<p>[LL_REPTAG_%labels ASSOC:'required_cats_warning_3' LIST:'[LL_REPTAG_!langIdx /]' /]</p>
+
+<div class="form-group">
+	<a href="[LL_REPTAG_MYURL /]&AVID=0" class="mdc-button mdc-button--unelevated">[LL_REPTAG_%labels ASSOC:'desktop_site' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+	<a href="[LL_REPTAG_&nextURL /]" class="mdc-button">[LL_REPTAG_%labels ASSOC:'cancel' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+</div>
+
+[LL_WEBREPORT_ELSE /]
+
+<form id="AddVersion" name="AddVersionForm" action="[LL_REPTAG_URLPREFIX /]" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="func" value="ll">
+	<input type="hidden" name="objType" value="[LL_REPTAG_&objtype /]">
+	<input type="hidden" name="objAction" value="create2">
+	<input type="hidden" name="parentId" value="[LL_REPTAG_&parentid /]">
+	<input type="hidden" name="nextURL" value="[LL_REPTAG_&nextURL /]">
+	[LL_REPTAG_"Action-Create" SECURETOKEN:FULLPARM URLTOPOST /]
+
+	[// Determine the meta lang code of the user's currently non-selected language
+	[LL_REPTAG_'FALSE' SETVAR:metaLangCode /]
+	[LL_REPTAG_RESPONSE ASSOC:data ASSOC:multilingual ASSOC:enabledLanguages SETVAR:enabledLanguages /]
+	[LL_WEBREPORT_FOR DATA:[LL_REPTAG_!enabledLanguages /] VAR:"language" /]
+		[LL_WEBREPORT_IF "[LL_REPTAG_!language RECORD:UserDefault /]" == "0" /]
+			[LL_REPTAG_!language RECORD:LanguageCode SETVAR:metaLangCode /]
+		[LL_WEBREPORT_ENDIF /]
+	[LL_WEBREPORT_ENDFOR /]	
+
+	[// Adding a new document
+	[LL_WEBREPORT_IF  "[LL_REPTAG_!isAddItem /]" == "TRUE" /]
+		<input type="hidden" name="ExOrNew" id="ExOrNewEx" value="Ex">
+		<input type="hidden" name="advVersionControl" value="FALSE">
+
+		<div class="form-group">
+			<label for="versionFile" class="required"><span class="field-name">[LL_REPTAG_%labels ASSOC:'document' LIST:'[LL_REPTAG_!langIdx /]' /]</span><span class="inv"> ([LL_REPTAG_%labels ASSOC:'required' LIST:'[LL_REPTAG_!langIdx /]' /])</span>[LL_REPTAG_%labels ASSOC:'colon' LIST:'[LL_REPTAG_!langIdx /]' /]</label>
+			<input type="file" size="40" title="[LL_REPTAG_'WEBLL_HTMLLABEL.Browse' XLATE /]" name="versionFile" id="versionFile" class="form-control" aria-required="true" required>
+		</div>
+	[LL_WEBREPORT_ENDIF /]
+
+	<div class="form-group">
+		<label for="name" class="required"><span class="field-name">[LL_REPTAG_%labels ASSOC:'name' LIST:'[LL_REPTAG_!langIdx /]' /]</span><span class="inv"> ([LL_REPTAG_%labels ASSOC:'required' LIST:'[LL_REPTAG_!langIdx /]' /])</span>[LL_REPTAG_%labels ASSOC:'colon' LIST:'[LL_REPTAG_!langIdx /]' /]</label>
+		<input type="text" id="name" name="name" value="" size="40" maxlength="248" class="form-control"  aria-required="true" required data-valid-name-unique="true" data-secure-token="[LL_REPTAG_'CheckObjectNameExists' SECURETOKEN /]">
+		[LL_WEBREPORT_IF "[LL_REPTAG_!metaLangCode /]" != "FALSE" /]
+			<button type="button" class="link underline padding-0 margin-top-sm toggle-display" aria-controls="name-alt">[LL_REPTAG_%labels ASSOC:'add_name_alt' LIST:'[LL_REPTAG_!langIdx /]' /]</button>
+		[LL_WEBREPORT_ENDIF /]
+	</div>	
+	
+	[LL_WEBREPORT_IF "[LL_REPTAG_!metaLangCode /]" != "FALSE" /]		
+		<div class="form-group display-none" id="name-alt" aria-hidden="true">
+			<label for="name_[LL_REPTAG_!metaLangCode /]"><span class="field-name">[LL_REPTAG_%labels ASSOC:'name_alt' LIST:'[LL_REPTAG_!langIdx /]' /]</span> ([LL_REPTAG_%labels ASSOC:'optional' LIST:'[LL_REPTAG_!langIdx /]' /])[LL_REPTAG_%labels ASSOC:'colon' LIST:'[LL_REPTAG_!langIdx /]' /]</label>
+			<input type="text" id="name_[LL_REPTAG_!metaLangCode /]" name="name_[LL_REPTAG_!metaLangCode /]" value="" size="40" maxlength="248" class="form-control">
+		</div>
+	[LL_WEBREPORT_ENDIF /]	
+
+	<div class="form-group">
+		<label for="comment">[LL_REPTAG_%labels ASSOC:'description' LIST:'[LL_REPTAG_!langIdx /]' /] ([LL_REPTAG_%labels ASSOC:'optional' LIST:'[LL_REPTAG_!langIdx /]' /])[LL_REPTAG_%labels ASSOC:'colon' LIST:'[LL_REPTAG_!langIdx /]' /]</label>
+		<textarea cols="40" rows="5"  name="comment" id="comment" class="form-control" maxlength="255"></textarea>
+	</div>
+
+	<div class="form-group">
+		<input type="submit" value="[LL_REPTAG_%labels ASSOC:'add' LIST:'[LL_REPTAG_!langIdx /]' /]" class="mdc-button mdc-button--unelevated" >
+		<a href="[LL_REPTAG_&nextURL /]" class="mdc-button">[LL_REPTAG_%labels ASSOC:'cancel' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+	</div>
+
+</form>
+
+
+
+<script>
+	window.addEventListener('DOMContentLoaded', function(){
+
+		GCdocs.Events.bindFormValidation(document.querySelector('#AddVersion'));
+
+		// Populate the file name when a file is selected
+		var versionFile = document.getElementById('versionFile');
+		var fileName = document.getElementById('name');
+		if(versionFile){
+			versionFile.addEventListener('change', function(event){
+				if(fileName.value === ""){
+					fileName.value = event.target.files[0].name;
+				}
+			});
+		}
+
+	});
+</script>
+
+[LL_WEBREPORT_ENDIF /]
+
+[// Footer markup
+[LL_REPTAG_$MOBILE_FOOTER_NODEID RUNTEMPLATE /]

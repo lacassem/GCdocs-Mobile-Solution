@@ -1,0 +1,110 @@
+[//	Title: ActiveView mobile footer.
+
+[// Labels used for localization (french/english)
+[LL_REPTAG_'{
+"close":                ["Close", "Fermer"],
+"email":				["Email", "Email"],
+"government_canada":	["Government of Canada", "Fouvernement du Canada"],
+"help":                 ["Help", "Aide"],
+"help_desk":            ["Help desk", "Bureau d&apos;aide"],
+"help_dialog_1_1":		["Read the guides", "Consultez les guides"],
+"help_dialog_1_2":		["to answer questions about using GCdocs.", "pour répondre à vos questions sur l&apos;utilisation de GCdocs."],
+"help_dialog_2":		["If you are having technical problems, please contact the GCdocs help desk:", "Si vous rencontrez des problèmes techniques, veuillez contacter le bureau d&apos;aide GCdocs :"],
+"help_guide_link":		["http://www.gcpedia.gc.ca/wiki/GCdocsProgram", "http://www.gcpedia.gc.ca/wiki/ProgrammeGCdocs"],
+"phone":				["Phone", "Téléphone"],
+"lang_code":	        ["en", "fr"]
+}' FROMJSON SETVAR:labels /]
+
+[// Index of label to use; depends on the user's language preferences
+[LL_REPTAG_'1' SETVAR:langIdx /]
+[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+	[LL_REPTAG_'2' SETVAR:langIdx /]
+[LL_WEBREPORT_ENDIF /]
+
+[// Used to check if a constant has not been set.  Uses the default Content Server value and 0, which is set by the ActiveView iMacro install scripts.
+[LL_REPTAG_'**Undefined constant**,0' SETVAR:undefinedConstant /]
+
+        [LL_WEBREPORT_IF "[LL_REPTAG_&showHelp /]" == "TRUE" /]
+        <!-- Help -->
+        <p class="margin-top-xl margin-bottom-lg"><a href="#" class="dialog-help" aria-haspopup="true" aria-expanded="false" aria-controls="dialog-help"><small><span class="mi mi-help margin-right-sm"></span>[LL_REPTAG_%labels ASSOC:'help' LIST:'[LL_REPTAG_!langIdx /]' /]</small></a></p>
+        <div class="mdc-dialog" id="dialog-help" role="alertdialog" aria-modal="true" aria-labelledby="dialog-help-title" aria-describedby="dialog-help-content">
+            <div class="mdc-dialog__container">
+                <div class="mdc-dialog__surface">
+                    <h2 class="mdc-dialog__title" id="dialog-help-title">[LL_REPTAG_%labels ASSOC:'help' LIST:'[LL_REPTAG_!langIdx /]' /]</h2>
+                    <div class="mdc-dialog__content" id="dialog-help-content">
+                        <p>
+                            [LL_WEBREPORT_IF "[LL_REPTAG_$ORG_SUPPORT_URL_ENG /]" NOTIN "[LL_REPTAG_!undefinedConstant /]" && "[LL_REPTAG_$ORG_SUPPORT_URL_FRA /]" NOTIN "[LL_REPTAG_!undefinedConstant /]" /]
+                                [LL_REPTAG_$ORG_SUPPORT_URL_ENG SETVAR:orgSupportUrl /]
+                                [LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+                                    [LL_REPTAG_$ORG_SUPPORT_URL_FRA SETVAR:orgSupportUrl /]
+                                [LL_WEBREPORT_ENDIF /]
+                                <a href="[LL_REPTAG_!orgSupportUrl STRIPHTML /]">[LL_REPTAG_%labels ASSOC:'help_dialog_1_1' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+                            [LL_WEBREPORT_ELSE /]
+                                <a href="[LL_REPTAG_%labels ASSOC:'help_guide_link' LIST:'[LL_REPTAG_!langIdx /]' /]">[LL_REPTAG_%labels ASSOC:'help_dialog_1_1' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+                            [LL_WEBREPORT_ENDIF /]
+                            [LL_REPTAG_%labels ASSOC:'help_dialog_1_2' LIST:'[LL_REPTAG_!langIdx /]' /]
+                        </p>
+                        [LL_WEBREPORT_IF "[LL_REPTAG_$ORG_SUPPORT_EMAIL /]" NOTIN "[LL_REPTAG_!undefinedConstant /]" OR "[LL_REPTAG_$ORG_SUPPORT_PHONE /]" NOTIN "[LL_REPTAG_!undefinedConstant /]" /]
+                            <p>[LL_REPTAG_%labels ASSOC:'help_dialog_2' LIST:'[LL_REPTAG_!langIdx /]' /]</p>	
+                            <ul>
+                                [LL_WEBREPORT_IF "[LL_REPTAG_$ORG_SUPPORT_PHONE /]" NOTIN "[LL_REPTAG_!undefinedConstant /]" /]
+                                    <li><strong>[LL_REPTAG_%labels ASSOC:'phone' LIST:'[LL_REPTAG_!langIdx /]' /]: </strong>[LL_REPTAG_$ORG_SUPPORT_PHONE STRIPHTML /]</li>
+                                [LL_WEBREPORT_ENDIF /]
+                                [LL_WEBREPORT_IF "[LL_REPTAG_$ORG_SUPPORT_EMAIL /]" NOTIN "[LL_REPTAG_!undefinedConstant /]" /]
+                                    <li><strong>[LL_REPTAG_%labels ASSOC:'email' LIST:'[LL_REPTAG_!langIdx /]' /]: </strong><a href="mailto:[LL_REPTAG_$ORG_SUPPORT_EMAIL STRIPHTML /]">[LL_REPTAG_%labels ASSOC:'help_desk' LIST:'[LL_REPTAG_!langIdx /]' /]</a></li>
+                                [LL_WEBREPORT_ENDIF /]
+                            </ul>				
+                        [LL_WEBREPORT_ENDIF /]
+                    </div>
+                    <footer class="mdc-dialog__actions">
+                        <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                            <span class="mdc-button__label">[LL_REPTAG_%labels ASSOC:'close' LIST:'[LL_REPTAG_!langIdx /]' /]</span>
+                        </button>
+                    </footer>
+                </div>
+            </div>
+            <div class="mdc-dialog__scrim"></div>
+        </div>
+        [LL_WEBREPORT_ENDIF /]
+
+    </div>
+</main>
+
+<!-- Departmental FIP -->
+<footer>
+    <div class="row">
+        <div class="col-6">
+            [// Allow organizations to set a custom FIP in the footer.  All FIP constants must be defined.  See Global_Constants for more details.
+            [LL_WEBREPORT_IF "[LL_REPTAG_$ORG_FIP_IMG_ID_ENG /]" NOTIN "[LL_REPTAG_!undefinedConstant /]" 
+                && "[LL_REPTAG_$ORG_FIP_IMG_ID_FRA /]" NOTIN "[LL_REPTAG_!undefinedConstant /]"
+                && "[LL_REPTAG_$ORG_FIP_IMG_STYLE /]" NOTIN "[LL_REPTAG_!undefinedConstant /]" 
+                && "[LL_REPTAG_$ORG_FIP_ALT_ENG /]" NOTIN "[LL_REPTAG_!undefinedConstant /]" 
+                && "[LL_REPTAG_$ORG_FIP_ALT_FRA /]" NOTIN "[LL_REPTAG_!undefinedConstant /]" /]
+                
+                [LL_REPTAG_$ORG_FIP_IMG_ID_ENG LLURL:DOWNLOAD SETVAR:imgSrc /]
+                [LL_REPTAG_$ORG_FIP_ALT_ENG SETVAR:imgAlt /]
+                [LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+                    [LL_REPTAG_$ORG_FIP_IMG_ID_FRA LLURL:DOWNLOAD SETVAR:imgSrc /]
+                    [LL_REPTAG_$ORG_FIP_ALT_FRA SETVAR:imgAlt /]
+                [LL_WEBREPORT_ENDIF /]                
+
+                <img src="[LL_REPTAG_!imgSrc STRIPHTML /]" alt="[LL_REPTAG_!imgAlt STRIPHTML /]" style="[LL_REPTAG_$ORG_FIP_IMG_STYLE STRIPHTML /]" >
+            [LL_WEBREPORT_ELSE /]
+                <img src="[LL_REPTAG_SUPPORTDIR /]custom/mobile/dist/img/sig-blk-[LL_REPTAG_%labels ASSOC:'lang_code' LIST:'[LL_REPTAG_!langIdx /]' /].svg" alt="[LL_REPTAG_%labels ASSOC:'government_canada' LIST:'[LL_REPTAG_!langIdx /]' /]" >
+            [LL_WEBREPORT_ENDIF /]
+        </div>
+    </div>
+</footer>
+
+<script src="[LL_REPTAG_SUPPORTDIR /]custom/mobile/dist/bundle.js"></script>
+
+<script>
+	window.addEventListener('DOMContentLoaded', function(){
+
+        // Language swap link clicks
+        document.getElementById('lang-swap').addEventListener('click', function(){
+            const locale = this.getAttribute('data-locale');
+            GCdocs.Menu.languageSwap(locale, '[LL_REPTAG_URLPREFIX /]');            
+        });
+	});
+</script>

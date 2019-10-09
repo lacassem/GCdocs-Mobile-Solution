@@ -1,0 +1,93 @@
+[/*		
+	Title: 		Add document version
+	Author:     Pat Heard
+*/]
+
+[// Labels used for localization (french/english)
+[LL_REPTAG_'{
+"add":  		["Add", "Ajouter"],
+"add_version":  ["Add version", "Ajout de version"],
+"cancel":  		["Cancel", "Annuler"],
+"colon":		[":", " :"],
+"comment":		["Comment", "Commentaire"],
+"name":			["Name", "Nom"],
+"new_version":  ["New version", "Nouvelle version"],
+"optional":		["optional", "facultatif"],
+"required":		["required", "requis"]
+}' FROMJSON SETVAR:labels /]
+
+[// Index of label to use; depends on the user's language preferences
+[LL_REPTAG_'1' SETVAR:langIdx /]
+[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+	[LL_REPTAG_'2' SETVAR:langIdx /]
+[LL_WEBREPORT_ENDIF /]
+
+
+[// Remove all ContentServer markup
+[LL_WEBREPORT_EXCLUDEHTML /]
+
+[// Header markup
+[LL_REPTAG_$MOBILE_HEADER_NODEID RUNTEMPLATE:name:"[LL_REPTAG_!labels ASSOC:'add_version' LIST:'[LL_REPTAG_!langIdx /]' /] - [LL_REPTAG_&nodeid NODEINFO:NAME:USERLANG /]" /]
+<nav role="navigation" property="breadcrumb">		
+	<ul class="breadcrumbs list-inline margin-top-0 margin-bottom-lg">
+		<li>
+			<a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_&nextURL /]">
+				<small>
+					[LL_REPTAG_&nodeid NODEINFO:NAME:USERLANG SETVAR:breadcrumb /]
+					[LL_WEBREPORT_IF "[LL_REPTAG_&breadcrumb /]" != "" /]
+						[LL_REPTAG_&breadcrumb SETVAR:breadcrumb /]					
+					[LL_WEBREPORT_ENDIF /]
+					<span class="mi mi-chevron-left-large dialog-breadcrumbs margin-fix"></span>[LL_REPTAG_!breadcrumb /]
+				</small>
+			</a>
+		</li>
+	</ul>
+</nav>	
+
+<h1 id="cont">[LL_REPTAG_%labels ASSOC:'add_version' LIST:'[LL_REPTAG_!langIdx /]' /]</h1>
+
+<form id="AddVersion" name="AddVersionForm" action="[LL_REPTAG_URLPREFIX /]" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="func" value="doc.addversion2">
+	<input type="hidden" name="volumeId" value="[LL_REPTAG_&nodeid NODEINFO:VOLUMEID /]">
+	<input type="hidden" name="nodeID" value="[LL_REPTAG_&nodeid /]">
+	<input type="hidden" name="secureRequestToken" value="[LL_REPTAG_'Action-Create' SECURETOKEN UNESCAPEURL /]" id="secureRequestToken">
+	<input type="hidden" name="nextURL" value="[LL_REPTAG_&nextURL /]">
+	<input type="hidden" name="ADDVERSION_Required" value="1">
+	<input type="hidden" name="ADDVERSION_Edited" value="0[LL_REPTAG_@RESPONSEDATA.EditedID /]">
+	<input type="hidden" name="ADDVERSION_CacheID" value="0[LL_REPTAG_@RESPONSEDATA.CacheID /]">									
+	<input type="hidden" name="ExOrNew" value="Ex" id="ExOrNewEx">
+	<input type="hidden" name="creationType" value="Ex" id="creationTypeEx"> 				
+	<input type="hidden" name="ADDVERSION_CatNames" value="[LL_REPTAG_@RESPONSEDATA.CatNames DEF:'' /]" id="ADDVERSION_CatNames">
+
+	<div class="form-group">
+		<dl>
+			<dt>[LL_REPTAG_%labels ASSOC:'name' LIST:'[LL_REPTAG_!langIdx /]' /][LL_REPTAG_%labels ASSOC:'colon' LIST:'[LL_REPTAG_!langIdx /]' /]</dt>
+			<dd class="break-word">[LL_REPTAG_&nodeid NODEINFO:NAME:USERLANG /]</dd>
+		</dl>
+	</div>
+
+	<div class="form-group">
+		<label for="versionFile" class="required"><span class="field-name">[LL_REPTAG_%labels ASSOC:'new_version' LIST:'[LL_REPTAG_!langIdx /]' /]</span><span class="inv"> ([LL_REPTAG_%labels ASSOC:'required' LIST:'[LL_REPTAG_!langIdx /]' /])</span>[LL_REPTAG_%labels ASSOC:'colon' LIST:'[LL_REPTAG_!langIdx /]' /]</label>
+		<input type="file" size="40" title="[LL_REPTAG_'WEBLL_HTMLLABEL.Browse' XLATE /]" name="versionFile" id="versionFile" class="form-control" aria-required="true" required>
+	</div>
+
+	<div class="form-group">
+		<label for="comment">[LL_REPTAG_%labels ASSOC:'comment' LIST:'[LL_REPTAG_!langIdx /]' /] ([LL_REPTAG_%labels ASSOC:'optional' LIST:'[LL_REPTAG_!langIdx /]' /])[LL_REPTAG_%labels ASSOC:'colon' LIST:'[LL_REPTAG_!langIdx /]' /]</label>
+		<textarea cols="40" rows="5" wrap="SOFT" name="comment" id="comment" class="form-control" maxlength="255"></textarea>
+	</div>
+
+	<div class="form-group">
+		<input type="submit" value="[LL_REPTAG_%labels ASSOC:'add' LIST:'[LL_REPTAG_!langIdx /]' /]" class="mdc-button mdc-button--unelevated" >
+		<a href="[LL_REPTAG_&nextURL /]" class="mdc-button">[LL_REPTAG_%labels ASSOC:'cancel' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+	</div>
+
+</form>
+
+<script>
+	window.addEventListener('DOMContentLoaded', function(){
+		GCdocs.Events.bindFormValidation(document.querySelector('#AddVersion'));
+	});
+</script>
+
+[// Footer markup
+[LL_REPTAG_$MOBILE_FOOTER_NODEID RUNTEMPLATE /]

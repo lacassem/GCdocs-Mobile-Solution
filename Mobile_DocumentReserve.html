@@ -1,0 +1,69 @@
+[/*		
+	Title: 		Document reserve screen
+	Author:     Pat Heard
+*/]
+
+[// Labels used for localization (french/english)
+[LL_REPTAG_'{
+    "cancel":           ["Cancel", "Annuler"],
+    "question_mark":    ["?", " ?"],
+    "reserve":	        ["Reserve", "Réserver"],
+    "reserve_confirm":  ["Are you sure you want to reserve", "Êtes-vous sûr de vouloir réserver"]
+}' FROMJSON SETVAR:labels /]
+
+[// Index of label to use; depends on the user's language preferences
+[LL_REPTAG_'1' SETVAR:langIdx /]
+[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+	[LL_REPTAG_'2' SETVAR:langIdx /]
+[LL_WEBREPORT_ENDIF /]
+
+[// Remove all ContentServer markup
+[LL_WEBREPORT_EXCLUDEHTML /]
+
+[// Template markup.  This needs to be done before the LL_WEBREPORT_STARTROW to workaround a bug that causes the RUNTEMPLATE output to be duplicated
+[LL_REPTAG_$MOBILE_HEADER_NODEID RUNTEMPLATE:name:"[LL_REPTAG_!labels ASSOC:'reserve' LIST:'[LL_REPTAG_!langIdx /]' /] - [LL_REPTAG_&objId NODEINFO:NAME:USERLANG /]" SETVAR:templateHeaderMarkup /]
+[LL_REPTAG_$MOBILE_FOOTER_NODEID RUNTEMPLATE SETVAR:templateFooterMarkup /]
+
+[// Header markup
+[LL_REPTAG_%templateHeaderMarkup /]
+
+<nav role="navigation" property="breadcrumb">
+    <ul class="breadcrumbs list-inline margin-top-0 margin-bottom-lg">
+        <li>
+            <a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG_&nextURL /]">
+                <small>
+                    [LL_REPTAG_&objId NODEINFO:NAME:USERLANG SETVAR:breadcrumb /]
+                    [LL_WEBREPORT_IF "[LL_REPTAG_&breadcrumb /]" != "" /]
+                        [LL_REPTAG_&breadcrumb SETVAR:breadcrumb /]					
+                    [LL_WEBREPORT_ENDIF /]
+                    <span class="mi mi-chevron-left-large dialog-breadcrumbs margin-fix"></span>[LL_REPTAG_!breadcrumb /] 
+                </small>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<h1 id="cont">[LL_REPTAG_%labels ASSOC:'reserve' LIST:'[LL_REPTAG_!langIdx /]' /]</h1>
+		
+<form name="ReservedByForm" action="[LL_REPTAG_URLPREFIX /]" method="post">
+    <input type="HIDDEN" name="func" value="ll">
+    <input type="HIDDEN" name="objAction" value="reserve2">
+    <input type="HIDDEN" name="objID" value="[LL_REPTAG_&objId /]">
+    <input type="HIDDEN" name="nextURL" value="[LL_REPTAG_&nexturl /]">      
+    <input type="hidden" name="ReservedBy" value="[LL_REPTAG_USERID /]">
+    [LL_REPTAG_"Action-Reserve" SECURETOKEN:FULLPARM URLTOPOST /] 
+
+    <p>
+        [LL_REPTAG_%labels ASSOC:'reserve_confirm' LIST:'[LL_REPTAG_!langIdx /]' /]
+        <strong class="break-word">[LL_REPTAG_&objId NODEINFO:NAME:USERLANG /]</strong>[LL_REPTAG_%labels ASSOC:'question_mark' LIST:'[LL_REPTAG_!langIdx /]' /]
+    </p>
+
+    <div class="form-group margin-top-xl">
+        <input type="submit" value="[LL_REPTAG_%labels ASSOC:'reserve' LIST:'[LL_REPTAG_!langIdx /]' /]" class="mdc-button mdc-button--unelevated">
+        <a href="[LL_REPTAG_&nextURL /]" class="margin-left-sm">[LL_REPTAG_%labels ASSOC:'cancel' LIST:'[LL_REPTAG_!langIdx /]' /]</a>
+    </div>    
+    
+</form>
+
+[// Footer markup
+[LL_REPTAG_%templateFooterMarkup /]

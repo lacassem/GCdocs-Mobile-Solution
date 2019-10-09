@@ -1,0 +1,180 @@
+[/*		
+	Title:	GCdocs DocumentOverview template
+	Author:	Pat Heard
+*/]
+
+[// Labels used for localization (french/english)
+[LL_REPTAG_'{
+"add_version":			["Add version", "Ajout de version"], 
+"and":					["and", "et"], 
+"at":					["at", "à"],
+"breadcrumbs":			["Breadcrumbs", "Fils d&apos;Ariane"],
+"created_by":			["Created by", "Créé par"],
+"document_reserved_by":	["Document reserved by", "Document réservé par"],
+"email":				["Email", "Email"],
+"modified_by":			["Modified by", "Modifié par"],
+"more_actions":			["Actions", "Actions"],
+"rename":				["Rename", "Renommer"],
+"view_as_web_page":		["View as web page", "Afficher en tant que page Web"],
+"viewed_by_nobody":		["viewed by 0 people", "0 personne y a accédé"],
+"viewed_by_person":		["viewed by 1 person", "1 personne y a accédé"],
+"viewed_by_people":		["viewed by %1 people", "%1 personnes y ont accédé"]
+}' FROMJSON SETVAR:labels /]
+
+[// Index of label to use; depends on the user's language preferences
+[LL_REPTAG_'1' SETVAR:langIdx /]
+[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+	[LL_REPTAG_'2' SETVAR:langIdx /]
+[LL_WEBREPORT_ENDIF /]
+
+[// Remove all ContentServer markup
+[LL_WEBREPORT_EXCLUDEHTML /]
+
+[// Template markup.  This needs to be done before the LL_WEBREPORT_STARTROW to workaround a bug that causes the RUNTEMPLATE output to be duplicated
+[LL_REPTAG_$MOBILE_HEADER_NODEID RUNTEMPLATE:name:[LL_REPTAG_&OBJID NODEINFO:NAME:USERLANG /] SETVAR:templateHeaderMarkup /]
+[LL_REPTAG_$MOBILE_FOOTER_NODEID RUNTEMPLATE:showHelp:"TRUE" SETVAR:templateFooterMarkup /]
+
+[LL_REPTAG_%templateHeaderMarkup /]
+[LL_WEBREPORT_STARTROW /]
+
+<nav role="navigation" property="breadcrumb">
+	<ul class="breadcrumbs list-inline margin-top-0 margin-bottom-lg">
+		<li>
+			<a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG=PARENTID LLURL:BROWSE /]">
+				<span class="mi mi-chevron-left-large dialog-breadcrumbs margin-fix"></span><small>[LL_REPTAG=PARENTID NODEINFO:NAME:USERLANG /]</small>
+			</a>
+		</li>
+	</ul>
+</nav>
+
+<div class="well">
+	<a href="[LL_REPTAG_URLPREFIX /][LL_REPTAG=DATAID LLURL:DOWNLOAD /]">
+		<h1 class="title" id="cont">
+			<img src="[LL_REPTAG=DATAID LLURL:GIF:LARGE:PATH /]" width="32" height="32" alt="[LL_REPTAG=DATAID VERINFO:FILETYPE /]">
+			<span class="name">[LL_REPTAG=NAME /]</span>
+		</h1>
+		<div class="button">	 
+			<strong>[LL_REPTAG_'WEBDOC_MENULABEL.Download' XLATE /]</strong>				 
+			<span class="colour-light-green"> 
+					<span class="inv">[LL_REPTAG_'WEBDOC_HTMLLABEL.Size_' XLATE /]</span> [LL_REPTAG=DATAID NODEINFO:SIZE /]
+			</span>	
+		</div>
+	</a>
+</div>
+
+[LL_REPTAG=DATAID NODEINFO:COMMENT:USERLANG ESCAPEHTML HTMLCR DEF:'' SETVAR:desc /]
+[LL_WEBREPORT_IF "[LL_REPTAG_!desc /]" != "" /]
+	<p class="doc-desc">[LL_REPTAG_!desc /]</p>
+[LL_WEBREPORT_ENDIF /]
+
+[// Document metadata (last modified, versions and activity)        
+[LL_REPTAG=DATAID VERINFO:CREATEDATE SETVAR:modifyDate /]
+[LL_REPTAG=DATAID NODEINFO:VERSIONNUM SETVAR:versionCount /]
+[LL_REPTAG=DATAID VERINFO:OWNER USERINFO:FULLNAME:FORCE SETVAR:modifyOwner /]
+[LL_REPTAG=DATAID VERINFO:OWNER USERINFO:MAILADDRESS SETVAR:modifyOwnerEmail /]
+[LL_REPTAG_RESPONSE ASSOC:data ASSOC:auditInfo ASSOC:accessCount SETVAR:accessCount /]	
+<ul class="list-unstyled">
+	<li>
+		[LL_WEBREPORT_IF "[LL_REPTAG_!versionCount /]" > "1" /]
+			[LL_REPTAG_%labels ASSOC:'modified_by' LIST:'[LL_REPTAG_!langIdx /]' /]
+		[LL_WEBREPORT_ELSE /]
+			[LL_REPTAG_%labels ASSOC:'created_by' LIST:'[LL_REPTAG_!langIdx /]' /]		
+		[LL_WEBREPORT_ENDIF /] 		
+		
+		[LL_WEBREPORT_IF "[LL_REPTAG_!modifyOwnerEmail /]" != "?" AND "[LL_REPTAG_!modifyOwnerEmail /]" != "" /] 
+			<a data-action="email-owner" href="mailto:[LL_REPTAG_!modifyOwnerEmail /]">[LL_REPTAG_!modifyOwner /]</a>
+		[LL_WEBREPORT_ELSEIF "[LL_REPTAG_!modifyOwner /]" != "" /] 
+			[LL_REPTAG_!modifyOwner /]
+		[LL_WEBREPORT_ELSE /]
+			[LL_REPTAG=DATAID NODEINFO:USERID USERINFO:FULLNAME:FORCE /]			
+		[LL_WEBREPORT_ENDIF /]
+		
+		<span class="modify-date">
+			[LL_REPTAG_%modifyDate DATE:"%Y-%m-%d" /] 
+			[LL_REPTAG_%labels ASSOC:'at' LIST:'[LL_REPTAG_!langIdx /]' /] 
+			[LL_REPTAG_%modifyDate DATE:"%H:%M" /]
+		</span>
+	</li>
+	<li>
+		<a data-action="versions" href="[LL_REPTAG_URLPREFIX /][LL_REPTAG=DATAID LLURL:INFO:VERSIONS /]&nextURL=[LL_REPTAG_MYURL ESCAPEURL /]">[LL_REPTAG_%versionCount /] [LL_REPTAG_'WEBDOC_HTMLLABEL.Version' XLATE LOWER /][LL_WEBREPORT_IF "[LL_REPTAG_%versionCount /]" != "1" /]s[LL_WEBREPORT_ENDIF /]</a> 
+		[LL_REPTAG_%labels ASSOC:'and' LIST:'[LL_REPTAG_!langIdx /]' /] 
+		<a data-action="audit" href="[LL_REPTAG_URLPREFIX /][LL_REPTAG=DATAID LLURL:INFO:AUDIT /]&nextURL=[LL_REPTAG_MYURL ESCAPEURL /]">
+		[LL_WEBREPORT_IF "[LL_REPTAG_!accessCount /]" == "0" /]
+			[LL_REPTAG_%labels ASSOC:'viewed_by_nobody' LIST:'[LL_REPTAG_!langIdx /]' /]
+		[LL_WEBREPORT_ELSEIF "[LL_REPTAG_!accessCount /]" == "1" /]
+			[LL_REPTAG_%labels ASSOC:'viewed_by_person' LIST:'[LL_REPTAG_!langIdx /]' /]
+		[LL_WEBREPORT_ELSE /]
+			[LL_REPTAG_%labels ASSOC:'viewed_by_people' LIST:'[LL_REPTAG_!langIdx /]' REPLACE:"%1":[LL_REPTAG_!accessCount /] /]
+		[LL_WEBREPORT_ENDIF /]
+		</a>
+	</li>
+</ul>
+
+[LL_REPTAG=DATAID NODEINFO:RESERVED SETVAR:isReserved /]
+[LL_REPTAG=DATAID NODEINFO:RESERVEDBY SETVAR:reserverUserId /]
+<ul class="button-group list-inline margin-top-xl margin-bottom-lg width-100">
+		[// Check user is allowed to add versions
+		[LL_WEBREPORT_IF "[LL_REPTAG=DATAID PERMCHECK:EDIT /]" == "TRUE" /]
+
+			[// Show "Add version" button if document is not reserved, or document is reserved by current user
+			[LL_WEBREPORT_IF "[LL_REPTAG_!isReserved /]" == "0" OR "[LL_REPTAG_!reserverUserId /]" == "[LL_REPTAG_ACTUALUSERID /]" /]
+				<li><a data-action="add-version" href="[LL_REPTAG_URLPREFIX /]?func=doc.AddVersion&nodeid=[LL_REPTAG=DATAID /]&nextURL=[LL_REPTAG_MYURL ESCAPEURL /]" class="mdc-button button button-secondary"><span class="mdc-button__label">[LL_REPTAG_%labels ASSOC:'add_version' LIST:'[LL_REPTAG_!langIdx /]' /]</span></a></li>
+			[LL_WEBREPORT_ENDIF /]
+
+		[LL_WEBREPORT_ENDIF /]
+		<li><a data-action="email" href="mailto:?body=[LL_REPTAG=NAME ESCAPEFORJS:ESCAPE /]%0d%0a[LL_REPTAG_URLPREFIXFULL ESCAPEFORJS:ESCAPE /][LL_REPTAG=DATAID LLURL:OVERVIEW ESCAPEFORJS:ESCAPE /]" class="mdc-button button button-secondary"><span class="mdc-button__label">[LL_REPTAG_%labels ASSOC:'email' LIST:'[LL_REPTAG_!langIdx /]' /]</span></a></li>
+		<li><button data-action="more-actions" type="button" class="mdc-button button button-secondary dialog-more-actions" aria-haspopup="true" aria-expanded="false" aria-controls="dialog-more-actions"><span class="mdc-button__label">[LL_REPTAG_%labels ASSOC:'more_actions' LIST:'[LL_REPTAG_!langIdx /]' /]</span></button></li>
+</ul>				
+
+[// Reserved status of the document
+[LL_WEBREPORT_IF "[LL_REPTAG_!isReserved /]" != "0" /]
+	[LL_REPTAG_!reserverUserId USERINFO:FULLNAME:FORCE SETVAR:reserveOwner /]
+	[LL_REPTAG_!reserverUserId USERINFO:MAILADDRESS SETVAR:reserveOwnerEmail /]
+	<p class="reserved">
+		<span class="mi mi-lock colour-red"></span> 
+		[LL_REPTAG_%labels ASSOC:'document_reserved_by' LIST:'[LL_REPTAG_!langIdx /]' /] 
+		[LL_WEBREPORT_IF "[LL_REPTAG_!reserveOwnerEmail /]" != "?" /] 
+			<a href="mailto:[LL_REPTAG_!reserveOwnerEmail /]">[LL_REPTAG_!reserveOwner /]</a>
+		[LL_WEBREPORT_ELSE /] 
+			[LL_REPTAG_!reserveOwner /]
+		[LL_WEBREPORT_ENDIF /] 
+	</p>
+[LL_WEBREPORT_ENDIF /]				
+	
+<!-- More actions -->
+<div class="mdc-dialog" id="dialog-more-actions" role="alertdialog" aria-modal="true" aria-labelledby="dialog-more-actions-title" aria-describedby="dialog-more-actions-content">
+	<div class="mdc-dialog__container">
+		<div class="mdc-dialog__surface">
+			<h2 class="mdc-dialog__title" id="dialog-more-actions-title">[LL_REPTAG_%labels ASSOC:'more_actions' LIST:'[LL_REPTAG_!langIdx /]' /]</h2>
+			<div class="mdc-dialog__content action-menu" id="dialog-more-actions-content">
+				<ul class="border-top-gray list-unstyled" role="menu" aria-orientation="vertical">
+					<li role="none"><a role="menuitem" data-action="download" href="[LL_REPTAG_URLPREFIX /][LL_REPTAG=DATAID LLURL:DOWNLOAD /]">[LL_REPTAG_'WEBDOC_MENULABEL.Download' XLATE /]</a></li>
+					<li role="none"><a role="menuitem" data-action="add-favorite" href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objaction=MakeFavorite&amp;objid=[LL_REPTAG=DATAID /]&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">[LL_REPTAG_'HOME_LABEL.MakeFavorite' XLATE /]</a></li>
+
+					[LL_WEBREPORT_IF "[LL_REPTAG=DATAID PERMCHECK:EDIT /]" == "TRUE" /]
+						<li role="none" class="border-top-gray border-top-gap"><a role="menuitem" data-action="rename" href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objId=[LL_REPTAG=DATAID /]&amp;objAction=rename&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">[LL_REPTAG_%labels ASSOC:'rename' LIST:'[LL_REPTAG_!langIdx /]' /]</a></li>
+						[LL_WEBREPORT_IF "[LL_REPTAG=DATAID PERMCHECK:DELETE /]" == "TRUE" /]
+							<li role="none"><a role="menuitem" data-action="delete" href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objId=[LL_REPTAG=DATAID /]&amp;objAction=delete&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">[LL_REPTAG_'WEBDOC_HTMLLABEL.Delete' XLATE /]</a></li>
+						[LL_WEBREPORT_ENDIF /]
+					[LL_WEBREPORT_ENDIF /]
+					[LL_WEBREPORT_IF "[LL_REPTAG=DATAID PERMCHECK:RESERVE /]" == "TRUE" /]
+						[LL_WEBREPORT_IF "[LL_REPTAG_!isReserved /]" != "0" AND "[LL_REPTAG_!reserverUserId /]" == "[LL_REPTAG_ACTUALUSERID /]" /]
+							<li role="none"><a role="menuitem" data-action="unreserve" href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objId=[LL_REPTAG=DATAID /]&amp;objAction=unreservedoc&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">[LL_REPTAG_'WEBDOC_HTMLLABEL.Unreserve' XLATE /]</a></li>
+						[LL_WEBREPORT_ELSEIF "[LL_REPTAG_!isReserved /]" == "0"  /]
+							<li role="none"><a role="menuitem" data-action="reserve" href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objId=[LL_REPTAG=DATAID /]&amp;objAction=reservedoc&amp;nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]">[LL_REPTAG_'WEBDOC_HTMLLABEL.Reserve' XLATE /]</a></li>	
+						[LL_WEBREPORT_ENDIF /]
+					[LL_WEBREPORT_ENDIF /]						
+				</ul>				
+			</div>
+			<footer class="mdc-dialog__actions">
+				<button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+					<span class="mdc-button__label">[LL_REPTAG_'WEBDOC_HTMLLABEL.CloseButtonLabel' XLATE /]</span>
+				</button>
+			</footer>
+		</div>
+	</div>
+	<div class="mdc-dialog__scrim"></div>
+</div>
+
+[LL_WEBREPORT_ENDROW /]	
+[LL_REPTAG_%templateFooterMarkup /]
