@@ -1,0 +1,22 @@
+﻿ll&objtype=142&objaction=browse
+
+'Slow down to avoid bugs
+SET !REPLAYSPEED MEDIUM
+
+'Go to the ActiveView folder
+TAG POS=1 TYPE=A ATTR=TXT:_System<SP>Administration
+
+'Check to see if folder exsists
+TAG POS=1 TYPE=A ATTR=TXT:ActiveView_Volume EXTRACT=TXT
+SET !VAR2 EVAL("var s=\"{{!EXTRACT}}\"; if(s == \"ActiveView_Volume\") { s = \"ActiveView_Volume\"; } else { s = \"GCwide_ActiveView_Volume\";} s;")
+SET !EXTRACT NULL
+TAG POS=1 TYPE=A ATTR=TXT:{{!VAR2}}
+
+'Rename ActiveView_Volume GCwide_ActiveView_Volume
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Rename
+TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:renameFrm ATTR=ID:docName CONTENT=GCwide_ActiveView_Volume
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:renameFrm ATTR=VALUE:Update
+
+'Go back to normal speed
+SET !REPLAYSPEED FAST

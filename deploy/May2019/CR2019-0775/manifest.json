@@ -1,0 +1,36 @@
+{
+    "Config":  {
+       "SkipReset":  "true",
+       "SkipCleanUpLogs":  "true",
+       "SkipStart":  "true",
+       "SkipStop":  "true",
+       "SkipBackup":  "true",
+       "SkipReport":  "true"
+    },
+   "Phase0": [
+		{"ID": "CR2019-0775\\Import", "Type": "CopyItems"}
+   ],
+   "Phase1": [
+		{"ID": "CR2019-0775\\1CreateActiveViewFolder", "Type": "IIM", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\2FolderPermission", "Type": "IIM", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\3ImportActiveViews", "Type": "IIM", "AdminOnly": "true"}, <--------Update URLs
+		{"ID": "CR2019-0775\\4GetObjectIDVariables", "Type": "IIM", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\4GetObjectIDVariables2", "Type": "IIM", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\4GetObjectIDVariables3", "Type": "IIM", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\5SetConstants-PROD", "Type": "preJS", "AdminOnly": "true"}, <--------Remove if NPE
+		{"ID": "CR2019-0775\\5SetConstants-DEV", "Type": "preJS", "AdminOnly": "true"}, <---------Remove if PROD
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID1", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID2", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID3", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID4", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID5", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID6", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID7", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID8", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID9", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID10", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID11", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID12", "Type": "preJS", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\6SettingGlobalConstantID13", "Type": "preJS", "AdminOnly": "true"}
+   ]
+}

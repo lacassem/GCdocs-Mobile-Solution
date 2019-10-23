@@ -1,0 +1,235 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>My favorites - GCdocs - Dept</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- GC web standards metadata profile -->
+  <meta name="description" content="Sign in to GCdocs"/>
+  <meta name="keywords" content=""/>
+  <meta name="author" content=""/>
+  <meta property="dcterms.title" content="Sign in"/>
+  <meta property="dcterms.description" content="Sign in to GCdocs"/>
+  <meta property="dcterms.creator" content=""/>
+  <meta property="dcterms.language" title="ISO639-2/T" content="eng"/>
+  <meta property="dcterms.subject" title="gccore" content=""/>
+  <meta property="dcterms.issued" title="W3CDTF" content="2018-10-07"/>
+  <meta property="dcterms.modified" title="W3CDTF" content="2018-10-07"/>
+  <meta property="dcterms.spatial" content="Canada"/>
+  <meta property="dcterms.type" content="navigation page"/>
+  <meta name="dcterms.source" content=""/>
+  <meta name="dcterms.identifier" content=""/>
+
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon" >
+  <link rel="stylesheet" href="bundle.css">
+</head>
+
+<body vocab="http://schema.org/" typeof="WebPage">
+
+  <ul id="skip" class="list-inline">
+    <li><a href="#cont" class="inv focusable">Skip to content</a></li>
+  </ul>
+
+  <!-- Header logo, department name and language swap -->
+  <header class="clearfix">
+
+    <div class="logo">
+      <img src="img/gcdocs-logo.svg" width="200" alt=""/>
+      <span class="inv">GCdocs</span>
+    </div>
+
+      <!-- Main menu -->  
+      <nav typeof="SiteNavigationElement">
+        <h2 class="inv">Menu and language selection</h2>
+
+        <button type="button" class="menu" aria-haspopup="true" aria-expanded="false" aria-controls="main-menu">
+          <span class="mi mi-menu">View menu</span> 
+        </button>
+        <button type="button" class="border" lang="fr"><span class="inv">Français: </span>FR</button>
+                
+        <div class="mdc-drawer mdc-drawer--modal action-menu mdc-drawer__content">    
+          <ul role="menu" id="main-menu" aria-orientation="vertical" class="list-unstyled">
+            <li><a href="#">Enterprise workspace</a></li>
+            <li><a href="#">My workspace</a></li>
+            <li><a href="#">My favorites</a></li>
+            <li><a href="#">My recent documents</a></li>                          
+            <li class="border-top-gray border-top-gap"><a href="#">Help us improve  <span class="mi mi-feedback"></span></a></li>
+            <li><a href="#">Desktop site</a></li>
+            <li><a href="#">Signout</a></li>                          
+          </ul>
+        </div>
+        <div class="mdc-drawer-scrim"></div> 
+      </nav>      
+
+  </header>
+
+  <!-- Main content panel -->
+  <main property="mainContentOfPage">
+
+    <div class="content clearfix">
+
+      <noscript>
+        <div class="alert alert-warning"><p>JavaScript is required to use GCdocs.  Please contact your departmental help desk for more information.</p></div>
+      </noscript>
+      
+      <h1>My favorites</h1>
+
+      <!--ul class="tabs list-unstyled">
+        <li><a href="#" class="active">All favorites</a></li>
+        <li><a href="#">Business analysis</a></li>
+        <li><a href="#">Pictures of cats</a></li>
+      </ul-->
+      <form name="TabSelect" action="" method="get">
+        <div class="form-group button-inline">
+          <label for="tab" class="inv"><span class="field-name">New version</span>:</label>
+          <select name="tab" id="tab" class="form-control">
+            <option value="1">All</option>
+            <option value="2">Business analysis</option>
+          </select>
+          <button type="submit" class="button">
+            <span class="mi mi-chevron-right"></span>
+            <span class="inv">View favorite tab</span>
+          </button>
+        </div>
+      </form>
+      
+      <ul class="list-unstyled margin-top-lg doc-list">
+        <li>
+          <a href="#">
+            <img alt="file icon" src="data:image/gif;base64,R0lGODlhIAAgAPcAAP////39/f/+7v//2Pz8/P//2f//1P/+1v/+2P/+zv//wP/+0P//wf/+zf/83v/9y///sP//uP/+wfn5+f/8yf/8x//8w/76zf/7uv79r/37u/z5u//7l//3wv73tv/7iP/4rPT08PLy8v/6h//5hPHx8f/3lP/3gP/1mP/4ge/v7//3fv/2e//1ev/1ef/2eP/0dv/0c//0eP/0ef/zcf/xg//zduvr6//zbf/yc//whf/ybv/xbvvwhP/xaP/xcPbstv/wZ//waenp6f/wa//wbP/vaP/vav/vW//uZ//uZf/tZP/tY//rbP/sYP/rXvvrbvnrc//qW//rXP/pWP/qWf/pV//pVvjoff/oVv/qR//oVP/nUP/nUvrpVf/oUf/lYP/mT//lVP/mTf/mSPnmVf/lTP/lSv/kSf/kR97e3vvkTf/jRP/iQ//kMv/iQf/hPv/hQN/dvv/gPf/hNf/gO//fOf/dOf/eNv/eNP/dNP/cMf/dMv/dM//eH//cLv/bLdXV1f/aKP3ZQf/aKv/ZJ//ZKP/YI//YJf/XIf7WIv/WHv/WHf/VHP/VG//VEv/WCv/UGf/UF//TFf/TE//SDv/SEv/SEePPgP/RD/PRLP/REP/QCv/QDf/PCP/NBP/OBv/OBP3PAP/NA/rNF/7MAv7LAf7MAc7Hs/3KAP7KAPzJAPzIAPvIAPnJAPrHAPnGAO7GIO3HGfbEDfjFAPfEAMDAwPbDAPXCAPTBAPPAAPK/ALy8vPG+APC9APG9AOm+Ddy6Ve+8APC7AO67AO27Au26AOy5AOu4AN23Juq3AOe2AOm2ANa0T+i1AOe0AOazAOaxAOWyAOSxAOOwAOKvAOWuAOGuAMasWeOsAOCtAN+sAOGrAN6rAN+pAN6nAN2mANylANukANmiANqjANihANegANafAMyYB8qXAMmWAMqUA8mUCsmVAMiVAMuUAMmUAMiUAMmTAMiTAMiSAMiRAMWSCMeQB6mHOaRwAKJvAKVuAKFuAKFtAKFrAKFqACH5BAUUAAAALAAAAAAgACAAAAj/AAEIHEiwoMGDCBMqXMiwocOHECNKnDgwGL16GDNmZIcpBIGI9C4IGEmSJJB7clQEgEjPgRAfMGPCjJEMm5oJLDuQ4cKzZ8819lCVgDhPxx8+SJMqjaVOo9N669DVaybiYzwwlShp3cqVEp0IEMKKHRv2XSARAOINesWqrdu3tZRNi0a3rt1oXvLZugEAHpRhvwILFqwMGBYDBRInPsCY8QVN/HgN6VsG2rLLmC/LitJAAocPoD+kGJ2ChWkP/iQDkNdjgevXFGJTwGDihe3bOXLnKMK7SD/V9Czcvk2jOJHjyJUoV/Kk+RMqVJD8nkwPRJDr2J1o116le5Uu4LuY/xlvhg0bLdMB0EORpb37MPDDoJmPpo39Ofjn4NmPx036eTXYJ2Ab+fG33x8I/iHIgoIk4qAfkU02TxN7VFghIRhieMiGhzTiYSOThDhJJiRCEmFaYiyi4oqStCjJJjBu4smMM5Zi442l6KNaPHdw4uOPnwQpZCpEFpkKLEgmCYuOk7mjiClQRvnKlFS+csuVWN6yy5Zc5qNaO6TUIuaYtehi5plmCqPmmsIg4yYyXk6mziy91GlnL8bkqacxzPTpZ5/SBCpNnACkU0wxyiSqqDLQNOpoo9VEKmk13VRKaDrWWMPNppxyA86noH46zqijnmOqqYTSowEDCrTq6quwxjfq6gapTdbMO/v848+uvPbq66+84rMXACIEYgsvyCar7LLMKmvLWQAQIMINQ1Rr7bXYZottVQEBADs="/>
+            <span class="doc-name">
+              <span class="underline">Another title</span>
+            </span>
+          </a>
+          <button type="button" class="link colour-dark-gray dialog-more-actions"><span class="mi mi-more-vert">More actions</span></button>
+        </li>
+        <li class="border-top-gray">
+          <a href="#">
+            <img alt="file icon" src="data:image/gif;base64,R0lGODlhIAAgAPcAAP////39/f/+7v//2Pz8/P//2f//1P/+1v/+2P/+zv//wP/+0P//wf/+zf/83v/9y///sP//uP/+wfn5+f/8yf/8x//8w/76zf/7uv79r/37u/z5u//7l//3wv73tv/7iP/4rPT08PLy8v/6h//5hPHx8f/3lP/3gP/1mP/4ge/v7//3fv/2e//1ev/1ef/2eP/0dv/0c//0eP/0ef/zcf/xg//zduvr6//zbf/yc//whf/ybv/xbvvwhP/xaP/xcPbstv/wZ//waenp6f/wa//wbP/vaP/vav/vW//uZ//uZf/tZP/tY//rbP/sYP/rXvvrbvnrc//qW//rXP/pWP/qWf/pV//pVvjoff/oVv/qR//oVP/nUP/nUvrpVf/oUf/lYP/mT//lVP/mTf/mSPnmVf/lTP/lSv/kSf/kR97e3vvkTf/jRP/iQ//kMv/iQf/hPv/hQN/dvv/gPf/hNf/gO//fOf/dOf/eNv/eNP/dNP/cMf/dMv/dM//eH//cLv/bLdXV1f/aKP3ZQf/aKv/ZJ//ZKP/YI//YJf/XIf7WIv/WHv/WHf/VHP/VG//VEv/WCv/UGf/UF//TFf/TE//SDv/SEv/SEePPgP/RD/PRLP/REP/QCv/QDf/PCP/NBP/OBv/OBP3PAP/NA/rNF/7MAv7LAf7MAc7Hs/3KAP7KAPzJAPzIAPvIAPnJAPrHAPnGAO7GIO3HGfbEDfjFAPfEAMDAwPbDAPXCAPTBAPPAAPK/ALy8vPG+APC9APG9AOm+Ddy6Ve+8APC7AO67AO27Au26AOy5AOu4AN23Juq3AOe2AOm2ANa0T+i1AOe0AOazAOaxAOWyAOSxAOOwAOKvAOWuAOGuAMasWeOsAOCtAN+sAOGrAN6rAN+pAN6nAN2mANylANukANmiANqjANihANegANafAMyYB8qXAMmWAMqUA8mUCsmVAMiVAMuUAMmUAMiUAMmTAMiTAMiSAMiRAMWSCMeQB6mHOaRwAKJvAKVuAKFuAKFtAKFrAKFqACH5BAUUAAAALAAAAAAgACAAAAj/AAEIHEiwoMGDCBMqXMiwocOHECNKnDgwGL16GDNmZIcpBIGI9C4IGEmSJJB7clQEgEjPgRAfMGPCjJEMm5oJLDuQ4cKzZ8819lCVgDhPxx8+SJMqjaVOo9N669DVaybiYzwwlShp3cqVEp0IEMKKHRv2XSARAOINesWqrdu3tZRNi0a3rt1oXvLZugEAHpRhvwILFqwMGBYDBRInPsCY8QVN/HgN6VsG2rLLmC/LitJAAocPoD+kGJ2ChWkP/iQDkNdjgevXFGJTwGDihe3bOXLnKMK7SD/V9Czcvk2jOJHjyJUoV/Kk+RMqVJD8nkwPRJDr2J1o116le5Uu4LuY/xlvhg0bLdMB0EORpb37MPDDoJmPpo39Ofjn4NmPx036eTXYJ2Ab+fG33x8I/iHIgoIk4qAfkU02TxN7VFghIRhieMiGhzTiYSOThDhJJiRCEmFaYiyi4oqStCjJJjBu4smMM5Zi442l6KNaPHdw4uOPnwQpZCpEFpkKLEgmCYuOk7mjiClQRvnKlFS+csuVWN6yy5Zc5qNaO6TUIuaYtehi5plmCqPmmsIg4yYyXk6mziy91GlnL8bkqacxzPTpZ5/SBCpNnACkU0wxyiSqqDLQNOpoo9VEKmk13VRKaDrWWMPNppxyA86noH46zqijnmOqqYTSowEDCrTq6quwxjfq6gapTdbMO/v848+uvPbq66+84rMXACIEYgsvyCar7LLMKmvLWQAQIMINQ1Rr7bXYZottVQEBADs="/>
+            <span class="doc-name">
+              <span class="underline">Another title now that wraps so we can see alignment</span>
+            </span>
+          </a>
+          <button type="button" class="link colour-dark-gray dialog-more-actions"><span class="mi mi-more-vert">More actions</span></button>
+        </li>
+        <li class="border-top-gray">
+          <a href="#">
+            <img alt="file icon" src="data:image/gif;base64,R0lGODlhIAAgAPcAAP////39/f/+7v//2Pz8/P//2f//1P/+1v/+2P/+zv//wP/+0P//wf/+zf/83v/9y///sP//uP/+wfn5+f/8yf/8x//8w/76zf/7uv79r/37u/z5u//7l//3wv73tv/7iP/4rPT08PLy8v/6h//5hPHx8f/3lP/3gP/1mP/4ge/v7//3fv/2e//1ev/1ef/2eP/0dv/0c//0eP/0ef/zcf/xg//zduvr6//zbf/yc//whf/ybv/xbvvwhP/xaP/xcPbstv/wZ//waenp6f/wa//wbP/vaP/vav/vW//uZ//uZf/tZP/tY//rbP/sYP/rXvvrbvnrc//qW//rXP/pWP/qWf/pV//pVvjoff/oVv/qR//oVP/nUP/nUvrpVf/oUf/lYP/mT//lVP/mTf/mSPnmVf/lTP/lSv/kSf/kR97e3vvkTf/jRP/iQ//kMv/iQf/hPv/hQN/dvv/gPf/hNf/gO//fOf/dOf/eNv/eNP/dNP/cMf/dMv/dM//eH//cLv/bLdXV1f/aKP3ZQf/aKv/ZJ//ZKP/YI//YJf/XIf7WIv/WHv/WHf/VHP/VG//VEv/WCv/UGf/UF//TFf/TE//SDv/SEv/SEePPgP/RD/PRLP/REP/QCv/QDf/PCP/NBP/OBv/OBP3PAP/NA/rNF/7MAv7LAf7MAc7Hs/3KAP7KAPzJAPzIAPvIAPnJAPrHAPnGAO7GIO3HGfbEDfjFAPfEAMDAwPbDAPXCAPTBAPPAAPK/ALy8vPG+APC9APG9AOm+Ddy6Ve+8APC7AO67AO27Au26AOy5AOu4AN23Juq3AOe2AOm2ANa0T+i1AOe0AOazAOaxAOWyAOSxAOOwAOKvAOWuAOGuAMasWeOsAOCtAN+sAOGrAN6rAN+pAN6nAN2mANylANukANmiANqjANihANegANafAMyYB8qXAMmWAMqUA8mUCsmVAMiVAMuUAMmUAMiUAMmTAMiTAMiSAMiRAMWSCMeQB6mHOaRwAKJvAKVuAKFuAKFtAKFrAKFqACH5BAUUAAAALAAAAAAgACAAAAj/AAEIHEiwoMGDCBMqXMiwocOHECNKnDgwGL16GDNmZIcpBIGI9C4IGEmSJJB7clQEgEjPgRAfMGPCjJEMm5oJLDuQ4cKzZ8819lCVgDhPxx8+SJMqjaVOo9N669DVaybiYzwwlShp3cqVEp0IEMKKHRv2XSARAOINesWqrdu3tZRNi0a3rt1oXvLZugEAHpRhvwILFqwMGBYDBRInPsCY8QVN/HgN6VsG2rLLmC/LitJAAocPoD+kGJ2ChWkP/iQDkNdjgevXFGJTwGDihe3bOXLnKMK7SD/V9Czcvk2jOJHjyJUoV/Kk+RMqVJD8nkwPRJDr2J1o116le5Uu4LuY/xlvhg0bLdMB0EORpb37MPDDoJmPpo39Ofjn4NmPx036eTXYJ2Ab+fG33x8I/iHIgoIk4qAfkU02TxN7VFghIRhieMiGhzTiYSOThDhJJiRCEmFaYiyi4oqStCjJJjBu4smMM5Zi442l6KNaPHdw4uOPnwQpZCpEFpkKLEgmCYuOk7mjiClQRvnKlFS+csuVWN6yy5Zc5qNaO6TUIuaYtehi5plmCqPmmsIg4yYyXk6mziy91GlnL8bkqacxzPTpZ5/SBCpNnACkU0wxyiSqqDLQNOpoo9VEKmk13VRKaDrWWMPNppxyA86noH46zqijnmOqqYTSowEDCrTq6quwxjfq6gapTdbMO/v848+uvPbq66+84rMXACIEYgsvyCar7LLMKmvLWQAQIMINQ1Rr7bXYZottVQEBADs="/>
+            <span class="doc-name">
+              <span class="underline">Shorter title</span>
+              <small class="meta">132 kb</small>
+            </span>            
+          </a>
+          <button type="button" class="link colour-dark-gray dialog-more-actions"><span class="mi mi-more-vert">More actions</span></button>
+        </li>
+        <li class="border-top-gray">
+          <a href="#">
+            <img alt="file icon" src="data:image/gif;base64,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">
+            <span class="doc-name">
+              <span class="underline">Org_chart_v1.0.pdf</span>
+            </span>
+          </a>
+          <button type="button" class="link colour-dark-gray dialog-more-actions"><span class="mi mi-more-vert">More actions</span></button>
+        </li>
+        <li class="border-top-gray">
+          <a href="#">
+            <img alt="file icon" src="data:image/gif;base64,R0lGODlhIAAgANUgAN7e3tff7GpoacrV5qyrq5WrzHqWwGCBs/n5+bzK3+Tq8oegxjdhoPL0+aK10srV5a2rrFN3rYiSo1+Bs3qWv6K100VrplJ2rZWrzUZsp1J2rHuWwKelpitXmpmZmf///////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMTEgNzkuMTU4MzI1LCAyMDE1LzA5LzEwLTAxOjEwOjIwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InV1aWQ6NUQyMDg5MjQ5M0JGREIxMTkxNEE4NTkwRDMxNTA4QzgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MDc5RkUzMzkwQjE1MTFFNkI2OUFDNzdEMUIxMzA2REQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MDc5RkUzMzgwQjE1MTFFNkI2OUFDNzdEMUIxMzA2REQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NEJERDQ2NDA5QkE5MTFFMUE2QTI5MDVGNUQ2MTVDQ0IiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NEJERDQ2NDE5QkE5MTFFMUE2QTI5MDVGNUQ2MTVDQ0IiLz4gPGRjOnRpdGxlPiA8cmRmOkFsdD4gPHJkZjpsaSB4bWw6bGFuZz0ieC1kZWZhdWx0Ij5Xb3JkXzAwMTwvcmRmOmxpPiA8L3JkZjpBbHQ+IDwvZGM6dGl0bGU+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEAQAAIAAsAAAAACAAIAAABv9AkHBILBqPSBBnyWw6OYCkkfOpWq9XCCEqHVKx4CoHse0Kv2EslcyVfj3wuBwuqLK76LQVfU/m9R95fUdvc4YCiIgcEBx+gI+NSBwBDw4FBwcdHY9iRRgbBxmao6QfhnKdRKSrpZyRQ6yxnIFFsaymp3CpsBcfCR0LHwUdAx+as69Cmg0KHQkfAx0KAceutcTGClUMHxXHubq0qh0FHwYfAR/BBtWQ1xPo5vEW7YDJIJrcHw2bH83f4HYp05TuV7Ff9fTcG1VgALsFDkchu2ZLIjgPAvFVlGht3MZ+7ogciPARV66MRCRUKkDhgIaEae4R+TNrj6OaYGR6ecKzp04FM0CJBAEAOw==">
+            <span class="doc-name">
+              <span class="underline">Worksplace 2.0 flooplan.docx</span>
+              <small class="meta">Office updates</small>
+            </span>
+          </a>
+          <button type="button" class="link colour-dark-gray dialog-more-actions"><span class="mi mi-more-vert">More actions</span></button>
+        </li> 
+        <li class="border-top-gray">
+          <a href="#">
+            <img alt="file icon" src="data:image/gif;base64,R0lGODlhIAAgANUgAN7e3tff7GpoacrV5qyrq5WrzHqWwGCBs/n5+bzK3+Tq8oegxjdhoPL0+aK10srV5a2rrFN3rYiSo1+Bs3qWv6K100VrplJ2rZWrzUZsp1J2rHuWwKelpitXmpmZmf///////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS42LWMxMTEgNzkuMTU4MzI1LCAyMDE1LzA5LzEwLTAxOjEwOjIwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InV1aWQ6NUQyMDg5MjQ5M0JGREIxMTkxNEE4NTkwRDMxNTA4QzgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MDc5RkUzMzkwQjE1MTFFNkI2OUFDNzdEMUIxMzA2REQiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MDc5RkUzMzgwQjE1MTFFNkI2OUFDNzdEMUIxMzA2REQiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NEJERDQ2NDA5QkE5MTFFMUE2QTI5MDVGNUQ2MTVDQ0IiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NEJERDQ2NDE5QkE5MTFFMUE2QTI5MDVGNUQ2MTVDQ0IiLz4gPGRjOnRpdGxlPiA8cmRmOkFsdD4gPHJkZjpsaSB4bWw6bGFuZz0ieC1kZWZhdWx0Ij5Xb3JkXzAwMTwvcmRmOmxpPiA8L3JkZjpBbHQ+IDwvZGM6dGl0bGU+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+Af/+/fz7+vn49/b19PPy8fDv7u3s6+rp6Ofm5eTj4uHg397d3Nva2djX1tXU09LR0M/OzczLysnIx8bFxMPCwcC/vr28u7q5uLe2tbSzsrGwr66trKuqqainpqWko6KhoJ+enZybmpmYl5aVlJOSkZCPjo2Mi4qJiIeGhYSDgoGAf359fHt6eXh3dnV0c3JxcG9ubWxramloZ2ZlZGNiYWBfXl1cW1pZWFdWVVRTUlFQT05NTEtKSUhHRkVEQ0JBQD8+PTw7Ojk4NzY1NDMyMTAvLi0sKyopKCcmJSQjIiEgHx4dHBsaGRgXFhUUExIREA8ODQwLCgkIBwYFBAMCAQAAIfkEAQAAIAAsAAAAACAAIAAABv9AkHBILBqPSBBnyWw6OYCkkfOpWq9XCCEqHVKx4CoHse0Kv2EslcyVfj3wuBwuqLK76LQVfU/m9R95fUdvc4YCiIgcEBx+gI+NSBwBDw4FBwcdHY9iRRgbBxmao6QfhnKdRKSrpZyRQ6yxnIFFsaymp3CpsBcfCR0LHwUdAx+as69Cmg0KHQkfAx0KAceutcTGClUMHxXHubq0qh0FHwYfAR/BBtWQ1xPo5vEW7YDJIJrcHw2bH83f4HYp05TuV7Ff9fTcG1VgALsFDkchu2ZLIjgPAvFVlGht3MZ+7ogciPARV66MRCRUKkDhgIaEae4R+TNrj6OaYGR6ecKzp04FM0CJBAEAOw==">
+            <span class="doc-name">
+              <span class="underline">Resume: Project Management/Analyst.docx</span>
+              <small class="meta">Office updates</small>
+            </span>
+          </a>
+          <button type="button" class="link colour-dark-gray dialog-more-actions"><span class="mi mi-more-vert">More actions</span></button>
+        </li>                             
+      </ul>
+
+      <p class="margin-top-xl margin-bottom-lg"><a href="#" class="dialog-help"><small><span class="mi mi-help margin-right-sm"></span>Help</small></a></p>
+
+      <!-- More actions -->
+      <div class="mdc-dialog" id="dialog-more-actions" role="alertdialog" aria-modal="true" aria-labelledby="dialog-more-actions-title" aria-describedby="dialog-more-actions-content">
+        <div class="mdc-dialog__container">
+          <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="dialog-more-actions-title">More actions</h2>
+            <div class="mdc-dialog__content action-menu" id="dialog-more-actions-content">
+              <ul class="border-top-gray list-unstyled" role="menu" aria-orientation="vertical">
+                <li><a href="#">Email as attachment</a></li>
+                <li><a href="#">Add to favorites</a></li>
+
+                <li class="border-top-gray border-top-gap"><a href="#">Rename</a></li>
+                <li><a href="#">Copy</a></li>
+                <li><a href="#">Move</a></li>
+                <li><a href="#">Delete</a></li>
+
+                <li class="border-top-gray border-top-gap"><a href="#">Permissions</a></li>
+                <li><a href="#">Permission manager</a></li>
+                <li><a href="#">Reserve</a></li>
+
+                <li class="border-top-gray border-top-gap"><a href="#">Properties</a></li>
+              </ul>
+            </div>
+            <footer class="mdc-dialog__actions">
+              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                <span class="mdc-button__label">Close</span>
+              </button>
+            </footer>
+          </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+      </div>
+      
+      <!-- Help -->
+      <div class="mdc-dialog" id="dialog-help" role="alertdialog" aria-modal="true"
+        aria-labelledby="dialog-help-title" aria-describedby="dialog-help-content">
+        <div class="mdc-dialog__container">
+          <div class="mdc-dialog__surface">
+            <h2 class="mdc-dialog__title" id="dialog-help-title">Help</h2>
+            <div class="mdc-dialog__content" id="dialog-help-content">
+              <p>Read the <a href="#">online guides</a> to answer questions about using GCdocs.</p>
+              <p>If you are having technical problems, please contact the GCdocs service desk:</p>
+              <ul>
+                <li><strong>Phone: </strong>1-844-423-6274</li>
+                <li><strong>Email: </strong><a href="mailto:TPSGC.GCdocsBureaudeService-GCdocsServiceDesk.PWGSC@tpsgc-pwgsc.gc.ca">Service desk</a></li>
+              </ul>
+
+              
+
+            </div>
+            <footer class="mdc-dialog__actions">
+              <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="close">
+                <span class="mdc-button__label">Close</span>
+              </button>
+            </footer>
+          </div>
+        </div>
+        <div class="mdc-dialog__scrim"></div>
+      </div>     
+    
+    </div>
+  </main>
+
+  <!-- Canada wordmark -->
+  <footer>
+    <div class="row">
+      <div class="col-6">
+          <img src="img/sig-blk-en.svg" alt="Government of Canada" >
+      </div>   
+    </div>
+  </footer>
+
+<script src="bundle.js"></script>
+
+</body>
+</html>

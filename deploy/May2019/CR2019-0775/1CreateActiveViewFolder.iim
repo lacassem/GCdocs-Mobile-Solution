@@ -1,0 +1,17 @@
+ll&objtype=142&objaction=browse
+
+'Slow down to avoid bugs
+SET !REPLAYSPEED MEDIUM
+
+'Go to the _System Administration folder
+TAG POS=1 TYPE=TR ATTR=CLASS:browseListHeader EXTRACT=TXT
+TAG POS=R1 TYPE=A ATTR=TXT:_System<SP>Administration
+
+'Add ActiveView_Volume folder
+TAG POS=1 TYPE=SPAN ATTR=ID:addItemMenu0Head
+TAG POS=1 TYPE=A ATTR=ID:menuItem_0
+TAG POS=1 TYPE=INPUT:TEXT FORM=ID:CreateForm ATTR=ID:name CONTENT=ActiveView_Volume
+TAG POS=1 TYPE=INPUT:BUTTON FORM=ID:CreateForm ATTR=ID:addButton
+
+'Go back to normal speed
+SET !REPLAYSPEED FAST

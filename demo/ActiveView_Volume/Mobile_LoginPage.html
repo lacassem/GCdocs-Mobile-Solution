@@ -1,0 +1,114 @@
+[/*	Title: Mobile_LoginPage for login page
+	Created by: Rudy Hallé
+	Created date:
+	Version: 0.9 (temp number until real release or real QA)
+	Modification comment:  format cleanup
+	Modified by: Dan Cloutier
+	Modified date: 2017-02-16
+	--------------------------------------------------------------------	
+
+*/]
+
+
+
+<link href="[LL_REPTAG_SUPPORTDIR /]/appearances/custom.css" type="text/css" rel="stylesheet">
+<script src="[LL_REPTAG_SUPPORTDIR /]/appearances/custom.js"></script>
+
+<link href="[LL_REPTAG_SUPPORTDIR /]custom/BB10_ActiveView.css" type="text/css" rel="stylesheet">
+<script src="[LL_REPTAG_SUPPORTDIR /]webreports/rktjslibs.js" type="text/javascript"></script>
+
+<STYLE type="text/css">
+input[class=filterInput]::-ms-clear{
+display: none;
+}
+
+
+a{
+    [// Remove text decoration from links 
+    text-decoration: none;
+}
+
+input[type=submit] {
+  	width: 100%;  height: 40px;
+	font-size:30px;
+}
+
+input[type="text"]{
+	line-height: 30px;
+	font-size:30px;
+}
+
+input[type="password"]{
+	line-height: 30px;
+	font-size:30px;
+}
+</STYLE>
+
+<script type="text/javascript">
+	rkt.load('jquery','1.4');
+	rkt.load('webreports','1.0');
+</script>
+
+<script type="text/javascript">
+	$(function() {
+		$("#Username").focus();
+		$("input.saveButton").click(function() {
+			$('input[name="CurrentClientTime"]').val( new Date().toLLDate() );
+		});
+	});
+</script>
+
+[// -------------------------------------
+[// Header
+[// -------------------------------------
+<div id="header-wrapper">
+	<a href="#"><img src="[LL_REPTAG_SUPPORTDIR /]custom/logo_goc.png" id="goc-logo" WIDTH=358px HEIGHT=36px></a>
+</div>
+<br/>
+<div id="title-wrapper">
+	<div id="title-left">
+		<div id="dark">
+			<span id="gcdocs"><a href="#">GCDocs</a></span>
+		</div>
+		<span id="environment">[LL_REPTAG_URLDOMAIN /]</span>
+			
+	</div>
+</div>
+<br/>
+<div id ="loginform">
+	<FORM NAME="LoginForm" METHOD="POST" ACTION="[LL_REPTAG_URLPREFIX /]"  >
+		<INPUT TYPE="HIDDEN" NAME="func" VALUE="ll.login">
+		<INPUT TYPE="HIDDEN" NAME="CurrentClientTime" VALUE="">
+		<INPUT TYPE="HIDDEN" NAME="NextURL" VALUE="[LL_REPTAG_&NEXTURL /]">
+		<TABLE>
+			<TR>
+				<TD class="aligncenter large_text">
+					[LL_REPTAG_'WEBDSP_HTMLLABEL.Username_' XLATE /]
+				</TD>
+				<TD class="aligncenter">
+					<INPUT CLASS="valueEditable" TYPE="TEXT" NAME="Username" ID="Username" SIZE="20"><br>
+				</TD>
+			</TR>
+			<TR>
+				<TD class="aligncenter large_text">
+					[LL_REPTAG_'WEBDSP_HTMLLABEL.Password_' XLATE /]			 
+				</TD>
+				<TD class="aligncenter">
+					<INPUT CLASS="valueEditable" TYPE="PASSWORD" NAME="Password" ID="Password" SIZE="20"><br>
+				</TD>
+			</TR>
+		
+			<TR>
+				<TD class="aligncenter">
+				</TD>
+				<TD class="alignright">
+					<div><INPUT CLASS="saveButton" TYPE="SUBMIT" VALUE="[LL_REPTAG_'WEBDSP_HTMLLABEL.Log_In' XLATE /]" BORDER="5"></div>
+				</TD>
+			</TR>
+		</TABLE>	
+	</FORM>
+</div>[LL_WEBREPORT_STARTROW /][LL_WEBREPORT_ENDROW /]<div id="footer">
+<div id="footer-goc-logo">
+    <IMG SRC="[LL_REPTAG_SUPPORTDIR /]custom/canada.png" ALT="Canada" WIDTH=109 HEIGHT=25>
+</div>
+</div>

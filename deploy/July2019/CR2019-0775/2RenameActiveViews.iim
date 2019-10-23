@@ -1,0 +1,25 @@
+﻿ll&objtype=142&objaction=browse
+
+'Slow down to avoid bugs
+SET !REPLAYSPEED MEDIUM
+
+'Go to the ActiveView folder
+TAG POS=1 TYPE=A ATTR=TXT:_System<SP>Administration
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+'Note, if Mobile_DocumentVersion or Mobile_DocumentOverviewVersion is missing, the active view folder will be renamed and this CR will fail.
+'I've left this error here to make it easier to confirm if the CR has failed or not
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentVersion EXTRACT=TXT
+SET !VAR2 EVAL("var s=\"{{!EXTRACT}}\"; if(s == \"Mobile_DocumentVersion\") { s = \"Mobile_DocumentVersion\"; } else { s = \"Mobile_DocumentOverviewVersion\";} s;")
+SET !EXTRACT NULL
+
+'Rename Mobile_DocumentVersion to Mobile_DocumentOverviewVersion
+TAG POS=1 TYPE=A ATTR=TXT:{{!VAR2}}
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Rename
+TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:renameFrm ATTR=ID:docName CONTENT=Mobile_DocumentOverviewVersion
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:renameFrm ATTR=VALUE:Update
+
+'Go back to normal speed
+SET !REPLAYSPEED FAST

@@ -1,0 +1,155 @@
+<!doctype html>
+<html class="no-js" lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Add version - GCdocs - Dept</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- GC web standards metadata profile -->
+  <meta name="description" content="Sign in to GCdocs"/>
+  <meta name="keywords" content=""/>
+  <meta name="author" content=""/>
+  <meta property="dcterms.title" content="Sign in"/>
+  <meta property="dcterms.description" content="Sign in to GCdocs"/>
+  <meta property="dcterms.creator" content=""/>
+  <meta property="dcterms.language" title="ISO639-2/T" content="eng"/>
+  <meta property="dcterms.subject" title="gccore" content=""/>
+  <meta property="dcterms.issued" title="W3CDTF" content="2018-10-07"/>
+  <meta property="dcterms.modified" title="W3CDTF" content="2018-10-07"/>
+  <meta property="dcterms.spatial" content="Canada"/>
+  <meta property="dcterms.type" content="navigation page"/>
+  <meta name="dcterms.source" content=""/>
+  <meta name="dcterms.identifier" content=""/>
+
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon" >
+  <link rel="stylesheet" href="bundle.css">
+</head>
+
+<body vocab="http://schema.org/" typeof="WebPage">
+
+  <ul id="skip" class="list-inline">
+    <li><a href="#cont" class="inv focusable">Skip to content</a></li>
+  </ul>
+
+  <!-- Header logo, department name and language swap -->
+  <header class="clearfix">
+
+    <div class="logo">
+      <img src="img/gcdocs-logo.svg" width="200" alt=""/>
+      <span class="inv">GCdocs</span>
+    </div>
+
+    <!-- Main menu -->  
+    <nav typeof="SiteNavigationElement">
+      <h2 class="inv">Menu and language selection</h2>
+
+      <button type="button" class="menu" aria-haspopup="true" aria-expanded="false" aria-controls="main-menu">
+        <span class="mi mi-menu">View menu</span> 
+      </button>
+      <button type="button" class="border" lang="fr"><span class="inv">Français: </span>FR</button>
+              
+      <div class="mdc-drawer mdc-drawer--modal action-menu mdc-drawer__content">    
+        <ul role="menu" id="main-menu" aria-orientation="vertical" class="list-unstyled">
+          <li role="none"><a role="menuitem" href="#">Enterprise workspace</a></li>
+          <li role="none"><a role="menuitem" href="#">My workspace</a></li>
+          <li role="none"><a role="menuitem" href="#">My favorites</a></li>
+          <li role="none"><a role="menuitem" href="#">My recent documents</a></li>                          
+          <li role="none" class="border-top-gray border-top-gap"><a role="menuitem" href="#">Help us improve  <span class="mi mi-feedback"></span></a></li>
+          <li role="none"><a role="menuitem" href="#">Desktop site</a></li>
+          <li role="none"><a role="menuitem" href="#">Signout</a></li>                          
+        </ul>
+      </div>
+      <div class="mdc-drawer-scrim"></div> 
+    </nav>       
+
+  </header>
+
+    <!-- Main content panel -->
+    <main property="mainContentOfPage">
+    
+        <div class="content clearfix">
+      
+          <noscript>
+            <div class="alert alert-warning"><p>JavaScript is required to use GCdocs.	Please contact your departmental help desk for more information.</p></div>
+          </noscript>
+        
+          <nav role="navigation" property="breadcrumb">
+            <ul class="breadcrumbs list-inline margin-top-0 margin-bottom-lg">
+                <li>
+                <a href="/otcs/llisapi.dll/otcs/llisapi.dll?func=ll&objaction=overview&objid=352777&nexturl=%2Fotcs%2Fllisapi%2Edll%3Ffunc%3Dll%26objaction%3Dbrowse%26objid%3D352994%26objtype%3D141%26reqcacheid%3D890514130">
+                    <small>
+                        <span class="mi mi-chevron-left-large dialog-breadcrumbs"></span>Back
+                    </small>
+                </a>
+                </li>
+            </ul>
+          </nav> 
+
+        <h1>
+          Add version            
+        </h1>
+  
+        <form name="AddVersionForm" action="/otcs/llisapi.dll" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="func" value="doc.addversion2">
+          <input type="hidden" name="volumeId" value="-2000">
+          <input type="hidden" name="nodeID" value="352777">
+          <input type="hidden" name="secureRequestToken" value="vJXSscYJOP4znQcWZFvSMrKMVQB0fcvavproO5wpSXaQuiz/hguYusYpvwNHKWsNzXiOzDAkgYE=" id="secureRequestToken">
+          <input type="hidden" name="nextURL" value="/otcs/llisapi.dll?func=ll&objaction=overview&objid=352777&nexturl=%2Fotcs%2Fllisapi%2Edll%3Ffunc%3Dll%26objaction%3Dbrowse%26objid%3D352994%26objtype%3D141%26reqcacheid%3D890514130">
+          <input type="hidden" name="ADDVERSION_Required" value="1">
+          <input type="hidden" name="ADDVERSION_Edited" value="0">
+          <input type="hidden" name="ADDVERSION_CacheID" value="0">									
+          <input type="hidden" name="ExOrNew" value="Ex" id="ExOrNewEx">
+          <input type="hidden" name="creationType" value="Ex" id="creationTypeEx"> 				
+          <input type="hidden" name="ADDVERSION_CatNames" value="" id="ADDVERSION_CatNames">
+  
+  
+          <dl class="form-group">
+            <dt>Name:</dt>
+            <dd>change-view.png</dd>
+          </dl>
+
+          <div class="form-group">
+            <label for="versionFile" class="required"><span class="field-name">New version</span>:</label>
+            <input type="file" size="40" title="Browse... Opens a new window." name="versionFile" id="versionFile" class="form-control" aria-required="true" required>
+          </div>
+
+          <div class="form-group">
+              <label for="name" class="required"><span class="field-name">Name</span>:</label>
+              <input type="text" size="40"  name="name" id="name" class="form-control" aria-required="true" required>
+            </div>          
+  
+          <div class="form-group">
+            <label for="comment"><span class="field-name">Comment</span> (optional):</label>
+            <textarea cols="40" rows="5" wrap="SOFT" name="comment" id="comment" class="form-control" maxlength="255"></textarea>
+          </div>
+  
+          <div class="form-group">
+            <input type="submit" value="Add" class="mdc-button mdc-button--unelevated" >
+            <a href="/otcs/llisapi.dll?func=ll&objaction=overview&objid=352777&nexturl=%2Fotcs%2Fllisapi%2Edll%3Ffunc%3Dll%26objaction%3Dbrowse%26objid%3D352994%26objtype%3D141%26reqcacheid%3D890514130" class="mdc-button">Cancel</a>
+          </div>
+  
+        </form>
+      </div>
+    </main>
+
+  <!-- Canada wordmark -->
+  <footer>
+    <div class="row">
+      <div class="col-6">
+          <img src="img/sig-blk-en.svg" alt="Government of Canada" >
+      </div>   
+    </div>
+  </footer>
+
+<script src="bundle.js" async></script>
+
+<script>
+  window.onload = function(){
+    GCdocs.Events.bindFormValidation(document.querySelector('[name="AddVersionForm"]'));
+  };
+</script>
+
+</body>
+</html>

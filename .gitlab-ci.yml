@@ -1,0 +1,86 @@
+# Gitlab runner command:
+# docker run -d --name gitlab-runner --restart always -v C:/path/to/gitlab-runner/config:/etc/gitlab-runner -v /var/run/docker.sock:/var/run/docker.sock gitlab/gitlab-runner:latest
+
+image: patheard/node-puppeteer:latest
+
+stages:
+  - build  
+  - test
+  - dist
+
+cache:
+  paths:
+    - $CI_PROJECT_DIR/template/dist
+    - $CI_PROJECT_DIR/template/node_modules
+
+before_script:
+  - cd $CI_PROJECT_DIR/template
+  - npm install
+
+# Run the webpack build process
+build:
+  stage: build
+  script:
+    - cd $CI_PROJECT_DIR/template
+    - npm run build
+
+# Unit tests
+unit-test:
+  stage: test
+  script:
+    - cd $CI_PROJECT_DIR/template
+    - npm test
+
+# Visual regression tests
+visual-a11y-test:
+  stage: test
+  script:
+    - cd $CI_PROJECT_DIR/template
+    - npm start &
+    - wget --retry-connrefused --tries 30 --waitretry 3 -qO- http://localhost:8080 &> /dev/null
+    - ENV=gitlab npm run test-visual-a11y
+  artifacts:
+    when: on_failure
+    name: "visual-a11y-$CI_COMMIT_REF_NAME"
+    paths:
+      - $CI_PROJECT_DIR/template/features/reports    
+      - $CI_PROJECT_DIR/template/features/screenshots
+    
+# Security
+security-audit:
+  stage: test
+  script:
+    - cd $CI_PROJECT_DIR/template
+    - npm audit
+  allow_failure: true  
+
+# Base distribution job logic shared by the dist-default and dist-tag jobs.
+.dist: &dist
+  stage: dist
+  script:
+    - cd $CI_PROJECT_DIR
+    - mkdir mobile
+    - mv src template/dist mobile
+    - printf "$CI_COMMIT_REF_NAME \nCommit SHA $CI_COMMIT_SHA \nBuilt `date`" > mobile/build-version.txt
+  artifacts:
+    name: "mobile-$CI_COMMIT_REF_NAME"
+    paths:
+      - $CI_PROJECT_DIR/mobile
+
+# Dist job for everything except tags
+dist-default:
+  <<: *dist
+  except:
+    - tags
+
+# Dist job for tags - keeps the artifacts for 1 year
+dist-tag:
+  <<: *dist
+  artifacts:
+    expire_in: 1 year
+    name: "mobile-$CI_COMMIT_REF_NAME"
+    paths:
+      - $CI_PROJECT_DIR/mobile
+  only:
+    refs:
+      - tags
