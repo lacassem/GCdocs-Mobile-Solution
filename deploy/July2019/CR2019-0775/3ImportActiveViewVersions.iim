@@ -1,0 +1,111 @@
+﻿ll&objtype=142&objaction=browse
+
+'Slow down to avoid bugs
+SET !REPLAYSPEED MEDIUM
+
+'Go to the ActiveView folder
+TAG POS=1 TYPE=A ATTR=TXT:_System<SP>Administration
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+'Upload new version of ActiveViews
+TAG POS=1 TYPE=A ATTR=TXT:Global_Constants
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Global_Constants.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_Browse
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_Browse.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_BrowseAdd
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_BrowseAdd.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentAddVersion
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_DocumentAddVersion.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentAudit
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_DocumentAudit.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentDelete
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_DocumentDelete.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentOverview
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_DocumentOverview.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentRename
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_DocumentRename.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentReserve
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_DocumentReserve.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentUnreserve
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_DocumentUnreserve.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentOverviewVersion
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_DocumentOverviewVersion.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentVersions
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_DocumentVersions.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_Footer
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_Footer.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_Header
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:menuItem_Add<SP>Template<SP>Version
+TAG POS=1 TYPE=INPUT:FILE FORM=NAME:AddVersionForm ATTR=ID:versionFile CONTENT=D:\GCDOCSAdmin\CRs\July2019\CR2019-0775\ActiveView\Mobile_Header.html
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:AddVersionForm ATTR=ID:addVersion
+TAG POS=1 TYPE=A ATTR=TXT:GCwide_ActiveView_Volume
+
+
+'Go back to normal speed
+SET !REPLAYSPEED FAST

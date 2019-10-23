@@ -1,0 +1,374 @@
+[/*	Title: Mobile_DocumentOverview for document overview, general and property tabs
+	Created by: Rudy Hallé
+	Created date: 2017-01-03
+	Version: 0.9
+	Modification comment:  Cleanup styles to CSS + Add reference to WebReport for Recent Documents
+	Modified by: Rudy Hallé
+	Modified date: 2017-03-06
+	--------------------------------------------------------------------	
+
+
+*/] 
+
+[// Hide the 'x' in IE10 on the name filter fields:
+
+<link href="[LL_REPTAG_SUPPORTDIR /]/appearances/custom.css" type="text/css" rel="stylesheet">
+<script src="[LL_REPTAG_SUPPORTDIR /]/appearances/custom.js"></script>
+<script src="[LL_REPTAG_SUPPORTDIR /]custom/cookieHistory.js"></script>
+
+[//To allow back button when switching language, see footer
+<script src="[LL_REPTAG_SUPPORTDIR /]custom/cookieHistory.js"></script>
+
+<link href="[LL_REPTAG_SUPPORTDIR /]custom/BB10_ActiveView.css" type="text/css" rel="stylesheet">
+
+<STYLE type="text/css">
+input[class=filterInput]::-ms-clear{
+display: none;
+}
+
+
+a{
+    [// Remove text decoration from links 
+    text-decoration: none;
+}
+
+a.locationDisplayTrailNonterminalElement, a.locationDisplayTrailTerminalElement{
+	font-size: X-Large;
+}
+
+
+a.sort{
+	font-size: X-Large;
+}
+	
+#nav {
+    font-size: 40px !important;
+}		
+</style>
+
+
+[//Remove CS content
+[LL_WEBREPORT_EXCLUDEHEADER /]
+[LL_WEBREPORT_APPEARTOPHEADEROFF /]
+[LL_WEBREPORT_APPEARBOTTOMOFF /]
+[LL_WEBREPORT_EXCLUDESEARCH /]
+[LL_WEBREPORT_EXCLUDETITLE /]
+[LL_WEBREPORT_EXCLUDEFOOTER /]
+
+[// -------------------------------------
+[// Header
+[// -------------------------------------
+<div id="header-wrapper">
+	<a href="[LL_REPTAG_URLPREFIX /]?func=llworkspace"">
+		<img src="[LL_REPTAG_SUPPORTDIR /]custom/logo_goc.png" id="goc-logo" WIDTH=358px HEIGHT=36px>
+	</a>
+	<a id="language-link" href="#" ONCLICK="doSaveSetting()">
+		[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+			English
+		[LL_WEBREPORT_ELSE /]
+			Fran&ccedil;ais
+		[LL_WEBREPORT_ENDIF /]
+	</A>
+</div>
+<br/>
+<div id="title-wrapper">
+	<div id="title-left">
+		<div id="dark">
+			<span id="gcdocs"><a href="[LL_REPTAG_URLPREFIX /]?func=llworkspace">GCDocs</a></span>
+		</div>
+		<span id="environment">[LL_REPTAG_URLDOMAIN /]</span>
+			
+	</div>
+</div>
+
+[// -------------------------------------
+[//Top Menu
+[// -------------------------------------
+<TABLE CELLSPACING="0" CELLPADDING="0" WIDTH="100%" BORDER="0">
+    <TR>
+        <TD  VALIGN="TOP" >
+            <DIV ID="mastheadComponent">
+            <div id="nav" class="csx">
+                <ul id="tGlobalMenus" class="menu-horizontal">
+			<script language="JavaScript1.2">__LeavePage = ''</script>
+            	        <li id="EnterpriseGlobalMenu" class="has-submenu">
+               		     	<a href="[LL_REPTAG_URLPREFIX /]?func=llworkspace" title="">
+                        		<span id="globalMenu_0" class="topmenu">
+						[LL_REPTAG_"WEBNODE_LABEL.Enterprise" XLATE /]
+                       			</span>
+                        	</a>
+                	</li>
+                	<li id="PersonalGlobalMenu" class="has-submenu">
+                   		<a href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objtype=142&amp;objaction=browse">
+                        		<span id="globalMenu_1" class="topmenu">
+						[LL_REPTAG_"NGD_LABEL.Personal" XLATE /]	
+                        		</span>
+                    		</a>
+                	</li>
+                	<li id="FavoritesGlobalMenu" class="has-submenu">
+                    		<a href="[LL_REPTAG_URLPREFIX /]?func=Personal.Favorites">
+                        		<span id="globalMenu_2" class="topmenu">
+						[LL_REPTAG_"HOME_LABEL.Favorites" XLATE /]
+                                         </span>
+                    		</a>
+                	</li>
+                	<li id="MoreGlobalMenu" class="has-submenu">
+                    		<a href="javascript:void(0)" onClick="return false;" title="">
+                        		<span id="globalMenu_3" class="topmenu">
+                            			[LL_REPTAG_"COLLECTIONS_HTMLLABEL.More" XLATE /]
+                          	         </span>
+                    		</a>
+                    		<ul id="More">
+                     			<li id="3.0">
+						<a href="javascript:void(0)" onclick="menu_callback( '[LL_REPTAG_URLPREFIX /]?func=ll&objId=[LL_REPTAG_$mobile_RecentDocID /]&objAction=RunReport&nexturl=[LL_REPTAG_MYURL ESCAPEURL /]','');return false;">
+							<span id="globalMenuItem_3.0" class="globalMenuItem">
+								[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+									Documents Récents
+								[LL_WEBREPORT_ELSE /]
+									Recent Documents
+								[LL_WEBREPORT_ENDIF /]
+							</span>
+						</a>
+					</li>
+                        		<li id="3.1">
+						<a href="javascript:void(0)" onclick="menu_callback( '[LL_REPTAG_URLPREFIX /]?func=help.index&amp;keyword=admin.index','');return false;">
+							<span id="globalMenuItem_3.1" class="globalMenuItem">
+								[LL_REPTAG_"WEBHELP_HTMLLABEL.Help" XLATE /]
+							</span>
+						</a>
+					</li>
+					<li id="3.2">
+						<a href="javascript:void(0)" onclick="menu_callback( '[LL_REPTAG_MYURL /]&AVID=0','');return false;">
+							<span id="globalMenuItem_3.2" class="globalMenuItem">
+								[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+									Site Complet
+								[LL_WEBREPORT_ELSE /]
+									Full Site
+								[LL_WEBREPORT_ENDIF /] 			
+							</span>
+						</a>
+					</li>
+                    		</ul>
+                	</li>
+		</ul>
+            </div>
+            <div class="dropshadow-bottom"></div>
+			<TABLE CELLSPACING="0" CELLPADDING="2" BORDER="0" WIDTH="100%">
+				<TR>
+					<TD WIDTH="100%">
+					</TD>
+				</TR>
+			</TABLE>
+
+	</TD>
+	</TR>	
+</TABLE>
+[// -------------------------------------
+[//Content Start
+[// -------------------------------------
+<div id="hyperlink"  style="text-decoration: none;" >
+	[LL_REPTAG_&objid LLURL:HYPERLINKTRAIL /]
+</div>
+<br/>
+<TABLE WIDTH="100%">
+
+[LL_WEBREPORT_STARTROW /][LL_REPTAG=DATAID SETVAR:'docID' /]
+[LL_REPTAG=Name SETVAR:'docName' /]
+
+<SCRIPT LANGUAGE="Javascript1.2">
+		function emailThisLink() {
+
+			var bodyText;
+			var	docName;
+			var inJapanese;
+			var url = 'http://[LL_REPTAG_&SERVER_NAME /][LL_REPTAG_URLPREFIX /]/overview/[LL_REPTAG=DATAID /]';
+
+			if ( NS ) {
+				inJapanese = ( window.navigator.language.indexOf( "jp" ) != -1 );
+
+			} else {
+				inJapanese = ( window.navigator.userLanguage.indexOf( "ja" ) != -1 );
+			}
+
+			if ( inJapanese ) {
+				window.open('mailto:?body=' + escape( url ) );
+			} else {
+				docName = escape( '[LL_REPTAG=NAME /]' );
+				bodyText = escape('"') + docName + escape('"') + '[LL_REPTAG_"NICKNAME_HTMLLABEL.Emailbody" XLATE /] ' + escape( url );
+				window.open('mailto:?subject=' + docName + '&body=' + bodyText );
+			}
+		}
+		</SCRIPT>
+
+<TR>
+	<TD width="75%">
+<!-- Display Image icon -->
+		<a href='[LL_REPTAG_URLPREFIX /][LL_REPTAG_%docID LLURL:DOWNLOAD /]&nexturl=[LL_REPTAG_MYCACHEURL ESCAPEURL /]'>
+			<div class="mobile_button">
+				<IMG SRC='[LL_REPTAG=FileType DECODE:"jpg":"[LL_REPTAG_URLPREFIX /]/[LL_REPTAG_%docID /]/[LL_REPTAG_%docName ESCAPEURL /]?func=doc.Fetch&amp;nodeid=[LL_REPTAG_%docID /]":"[LL_REPTAG_%docID LLURL:GIF:XLARGE:PATH /]" /]' WIDTH="145" ALT="[LL_REPTAG_'WEBDOC_HTMLLABEL.Document' XLATE /]">[LL_REPTAG=Name /]
+			</div>
+		</a>
+	</td>
+	<TD width="25%">
+<!-- Display AddVersion Icon -->
+		<a HREF="[LL_REPTAG_URLPREFIX /]?func=doc.AddVersion&nodeid=[LL_REPTAG=DATAID /]&nexturl=[LL_REPTAG_URLPREFIX ESCAPEURL /]%3Ffunc%3Dll%26objaction%3Doverview%26objid%3D[LL_REPTAG=DATAID /]">
+			<div class="mobile_button_add">
+				<IMG SRC="[LL_REPTAG_SUPPORTDIR /]custom/addversionXL.gif" ALT="[LL_REPTAG_'WEBDOC_HTMLLABEL.Addversion' XLATE /]" WIDTH=145 HEIGHT=145>[LL_REPTAG_'WEBDOC_HTMLLABEL.Addversion' XLATE /]
+			</div>
+		</a>
+	</td>
+
+</tr>
+
+</TABLE>
+<TABLE width="100%" >
+<!-- Name -->
+
+<TR>
+
+	<TD class="large_text" width="100%">
+		<!-- Top section: owner, description -->
+		<SPAN CLASS="aLabel">Owner: [LL_REPTAG=DATAID NODEINFO:USERID USERINFO:FULLNAME /]</SPAN>
+				<P>[LL_REPTAG=DATAID NODEINFO:COMMENT DEF:'' REPLACE:'':"[LL_REPTAG_'WEBDOC_HTMLLABEL.NoDescription' XLATE /]" /]
+				
+				<!-- Middle section: modified, versions, access -->
+				<HR>
+				<UL>
+					<LI>[LL_REPTAG_'ACTIVEVIEW_LABEL.ModifiedOn' XLATE /] [LL_REPTAG=ModifyDate DATE:"%m/%d/%Y %I:%M %p" /]
+					<LI>
+					<!-- File: douserdialog.html -->
+					[LL_WEBREPORT_IF "[LL_REPTAG=DATAID VERINFO:OWNER /]" == "[LL_REPTAG_USERID /]" /]
+
+						[LL_REPTAG_'WEBDOC_HTMLLABEL.You' XLATE /]
+
+					[LL_WEBREPORT_ELSE /]
+
+						[LL_REPTAG=DATAID VERINFO:OWNER USERINFO:LASTNAME /], [LL_REPTAG=DATAID VERINFO:OWNER USERINFO:FIRSTNAME /]
+
+					[LL_WEBREPORT_ENDIF /]
+
+					<!-- End File: douserdialog.html -->
+					added the most recent version at [LL_REPTAG=DATAID VERINFO:MODIFYDATE DATE:"%m/%d/%Y %I:%M %p" /]
+					[LL_WEBREPORT_IF "[LL_REPTAG=count /]" > "1" /]
+
+						&nbsp;<A HREF="[LL_REPTAG_URLPREFIX /]?func=ll&objId=[LL_REPTAG=DATAID /]&objAction=versions&nexturl=[LL_REPTAG_URLPREFIX ESCAPEURL /]%3Ffunc%3Dll%26objaction%3Doverview%26objid%3D[LL_REPTAG=DATAID /]">[LL_REPTAG=count /] [LL_REPTAG_'ACTIVEVIEW_LABEL.VersionsAreAvailableToYou' XLATE /]</A>
+
+					[LL_WEBREPORT_ENDIF /]
+				</UL>
+				<HR>
+	</TD>
+</TR>
+<TR>
+		<TD CLASS="buttoncenter"><A HREF="javascript:emailThisLink()">
+			<div id="email_button">
+				<IMG SRC="[LL_REPTAG_SUPPORTDIR /]webdoc/email.gif" ALT="[LL_REPTAG_'WEBDOC_HTMLLABEL.EMailThisLink' XLATE /]">						[LL_REPTAG_'WEBDOC_HTMLLABEL.EMailThisLink' XLATE /]
+			</div>
+		</A>&nbsp
+	</TD>
+</TR>
+
+
+[LL_WEBREPORT_ENDROW /]</TABLE>
+</div>
+<div id="footer">
+<div id="footer-goc-logo">
+    <IMG SRC="[LL_REPTAG_SUPPORTDIR /]custom/canada.png" ALT="Canada" WIDTH=109 HEIGHT=25>
+</div>
+</div>
+
+[// -------------------------------------
+[//Personnal Setting Form to Switch Language (default value bug fixed )
+[// -------------------------------------
+<FORM NAME="SwitchLanguage" METHOD="POST" ACTION="[LL_REPTAG_MYURL /]" ENCTYPE="multipart/form-data">
+<INPUT TYPE="HIDDEN" NAME="func" VALUE="ll.savesettings">
+<INPUT TYPE="HIDDEN" NAME="tab" VALUE="1">
+<INPUT TYPE="HIDDEN" NAME="cacheid" VALUE="0">
+
+	<INPUT TYPE="hidden" NAME="viewType" VALUE="-1">
+[//Bug workaround
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:DFTSTARTPAGE /]" == "* USERPREF: The second parameter is invalid *" /]
+		<INPUT TYPE="hidden" NAME="dftStartPage" VALUE="1">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" NAME="dftStartPage" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:DFTSTARTPAGE /]">
+	[LL_WEBREPORT_ENDIF /]
+	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:SHOWITEMDESC /]" == "true" /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="itemDescription" NAME="itemDescription" checked>
+	[LL_WEBREPORT_ELSE /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="itemDescription" NAME="itemDescription">
+	[LL_WEBREPORT_ENDIF /]
+
+	<INPUT TYPE="hidden" ID="locationType" NAME="locationType" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:NAVSTYLE /]">
+	
+
+[//Bug workaround
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:NEWDUR /]" == "? days" /]
+		<INPUT TYPE="hidden" ID="newIndDuration" NAME="newIndDuration" VALUE="2">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="newIndDuration" NAME="newIndDuration" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:NEWDUR /]">
+	[LL_WEBREPORT_ENDIF /]
+[//Bug workaround
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:MODDUR /]" == "? days" /]
+		<INPUT TYPE="hidden" ID="modIndDuration" NAME="modIndDuration" VALUE="7" >
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="modIndDuration" NAME="modIndDuration" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:MODDUR /]" >
+	[LL_WEBREPORT_ENDIF /]
+
+	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:ENHANCEDKYBD /]" == "true" /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="useJava" NAME="useJava" CHECKED>
+	[LL_WEBREPORT_ELSE /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="useJava" NAME="useJava">
+	[LL_WEBREPORT_ENDIF /]	
+
+	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:SBLOCATION /]" == "left" /]
+		<INPUT TYPE="hidden" ID="sidebarLocation" NAME="sidebarLocation" VALUE="0">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="sidebarLocation" NAME="sidebarLocation" VALUE="1">
+	[LL_WEBREPORT_ENDIF /]
+
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:SIDEBAR /]" == "true" /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="sidebarDefaultState" NAME="sidebarDefaultState" CHECKED>
+	[LL_WEBREPORT_ELSE /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="sidebarDefaultState" NAME="sidebarDefaultState">
+	[LL_WEBREPORT_ENDIF /]
+[//Bug workaround	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:EMAILLINK /]" == "* USERPREF: The second parameter is invalid *" /]
+		<INPUT TYPE="hidden" ID="emaillink" NAME="emaillink" Value="1" >
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="emaillink" NAME="emaillink" Value="[LL_REPTAG_USERID USERPREF:GENERAL:EMAILLINK /]" >
+	[LL_WEBREPORT_ENDIF /]
+	
+	[// switches language based on current language
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+		<INPUT TYPE="hidden" ID="localeType" NAME="localeType" VALUE="_en_US">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="localeType" NAME="localeType" VALUE="_fr"> 
+	[LL_WEBREPORT_ENDIF /]
+
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+		<INPUT TYPE="hidden" ID="metadataLang" NAME="metadataLang" value="en_CA" >
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="metadataLang" NAME="metadataLang" value="fr_CA" > 
+	[LL_WEBREPORT_ENDIF /]
+
+</FORM>
+
+
+<SCRIPT LANGUAGE="JavaScript">
+
+function doSaveSetting( )
+{
+	document.SwitchLanguage.submit();
+}
+
+//Saves the current URL as last page visited
+function saveLastURL(){
+	// triggered when the page is shown
+	var lastURL = "[LL_REPTAG_MYCACHEURL /]";
+	// make the cookie expire in 60 min
+	app.cookie.setCookie('lastPage', lastURL, 60, true);
+	
+}
+</SCRIPT>

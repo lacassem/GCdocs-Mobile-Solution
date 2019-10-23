@@ -1,0 +1,143 @@
+/* ==========================================================================
+    Material Design Components for Web
+   ========================================================================== */
+
+/* Control the Material Design Component (MDC) theme */
+$mdc-theme-primary: #046fc1;
+$mdc-theme-secondary: #306633;
+$mdc-theme-on-primary: #fff;
+$mdc-theme-on-secondary: #fff;
+
+$material-icons-font-path: '~material-icons/iconfont/';
+
+/* Import the required MDC styles for our elements */
+@import "@material/button/mdc-button";
+@import "@material/dialog/mdc-dialog";
+@import "@material/drawer/mdc-drawer";
+@import "@material/snackbar/mdc-snackbar";
+@import "~material-icons/css/material-icons.scss";
+@import "~material-icons/iconfont/material-icons.scss";
+
+/* Change the width of the drawer */
+.mdc-drawer {
+    @include mdc-drawer-width(82%);
+    top: 0;
+}
+
+.mdc-dialog {
+    &__title {
+        font-size: 1rem;
+        padding: 0 1em 1em 1em;
+    }
+
+    &__content {
+        padding: 1em;
+        font-family: arial, sans-serif;
+    }
+
+    & &__surface {
+        border-radius: 0;
+    }
+
+    &--scrollable {
+        .mdc-dialog__content {
+            padding-top: 0;
+            padding-bottom: 0;
+
+            ul {
+                &:first-child {
+                    border: 0;
+                }
+                li:first-child {
+                    border: 0;
+                }
+            }
+            
+        }
+    }
+}
+
+/* Expandable/collapsable container */
+.mdc-expansion {    
+    summary {
+        display: flex;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        &::after {
+            content: '\e313';
+            font: 24px 'Material Icons';
+            display: inline-flex;
+            flex-direction: column;
+            user-select: none;
+            justify-content: center;
+            transition: transform 200ms, color 200ms;
+            margin-left: auto;
+            color: rgba(0, 0, 0, .38);
+        }
+
+        &:focus {      
+            &::after {
+                color: rgba(0, 0, 0, .54);
+            }
+        }
+    }
+
+    &[open] {
+        summary {
+            font-weight: bold;
+            &::after {
+                transform: rotate(180deg);
+            }            
+        }
+    }    
+}
+
+.mdc-snackbar {
+    @include mdc-snackbar-label-ink-color(#fff);
+    .mdc-snackbar__surface {
+        padding: .2em;
+    }
+    .mdc-button {
+        font-size: .9em;
+        color: #a6cce8;
+    }
+    .mdc-icon-button {
+        background: none;
+        border: 0;
+    }
+}
+
+.ripple-surface {
+    @include mdc-ripple-surface;
+    @include mdc-ripple-radius-bounded;
+    @include mdc-states;
+    overflow: hidden;
+}
+
+.mi {
+    height: 24px;
+    width: 24px;
+    overflow: hidden;
+}
+
+.mi-chevron-left-large:before {
+    content: "\e5e0"
+}
+
+.mi-chevron-right-large:before {
+    content: "\e5e1"
+}
+
+.mdc-button {
+    font-size: 1rem;
+    text-transform: none;
+}
+
+.button-group {
+    .mdc-button {
+        font-size: 0.875rem;
+    }
+}

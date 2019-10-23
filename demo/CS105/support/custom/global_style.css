@@ -1,0 +1,431 @@
+/**********************************************************************************************************************************************************************************
+*************************************************************************** INSTRUCTIONS *****************************************************************************************
+1. Changing the background color of the "Important Notice" box
+*** A. Go to line 150 (#notice-wrapper) and replace the "background" property value to desired color code. The code for the yellow and red
+***    backgrounds are written in the comments to the right of the property 
+*** B. Go to line 153 and replace the "color" property value to the desired color code. Again the codes are written in a comment to the right of the property.
+*/
+			
+			html,
+			body {
+				height:100%;
+				width:100%;
+				margin:0;
+				padding:0;
+			}
+		
+			#overlay {
+				display:none;
+				width:100%;
+				height:100%;
+				margin:0;
+				padding:0;
+				background:#000;
+				position:absolute;
+				top:0;
+				left:0;
+				z-index:1000;
+			}
+			
+			.box-fr,
+			.box-en {
+				position:absolute;
+				top: -500px;
+				left:25%;
+				background:#FFFFFF;
+				width:50%;
+				display:none;
+				z-index:1100;
+			}
+			
+			.box-title,
+			.box-footer {
+				height:40px;
+				background: #2E6732;
+				color: #fff;
+			}
+			
+			.box-title h3 {
+				padding:10px;
+				float:left;
+				display:inline-block;
+				margin:0;
+			}
+			
+			.box-title span,
+			.box-footer span {
+				float:right;
+				display:inline-block;
+				padding:10px;
+				cursor:pointer;
+			}
+			
+			.box-title span:hover,
+			.box-footer span:hover {
+				text-decoration:underline;
+			}
+			
+			.box-content {
+				margin:0;
+				padding:0 10px 30px 10px;
+				
+			}
+			
+			.box-content h3 {
+				cursor: pointer;
+				margin-left: 5%;
+			}
+				.box-content h3:hover {
+					color: #666;
+				}
+				
+			.box-content p {
+				font-size: 1.2em;
+			}
+			
+			.box-content ul {
+				list-style: none;
+				margin-left: 6px;
+			}
+			.signature {
+				margin-left: 5%;
+			}
+			
+			.box-content div {
+				width: 85%;
+				background: #e1e4e7;
+				border: 1px solid #ccc;
+				border-radius: 5px;
+				padding: 10px 2.5% 10px 2.5%;
+				margin: 5px 5% 5px 5%;
+			}
+
+			.show-box {
+				font-size:1.4em;
+			}
+			
+				.show-box:hover {
+					text-decoration:underline;
+				}
+			
+			.close:hover {
+				text-decoration:underline;
+			}
+		
+			
+			
+			
+			#header-wrapper {
+				width: 100%;
+				min-width: 1005px;
+				height: 55px;
+				overflow: hidden;
+				margin: 0;
+				padding: 0;
+			}
+			
+			#header-left,
+			#header-center,
+			#header-right {
+				display: inline-block;
+				padding: 0;
+				height: 55px;
+				margin-top: -12px;
+			}
+			
+			#header-left,
+			#header-right {
+				width: 25%;
+			}
+			
+			#header-center {
+				width: 48%;
+			}
+			
+			#goc-logo {
+				margin: 0 0 0 8px;
+				padding: 0;
+				max-height: 40px;
+				height: 100%;
+			}
+			
+			#notice-wrapper {
+				margin: 5px auto;
+				padding: 0;
+				color: #000;         /* If background is yellow use "#000". If background is red, use #fff */
+				background: #FEFFC8;  /* Changing background color of "important Notice" box. For yellow -> #FEFFC8     For red -> #DE4945 */
+				height: 32px;
+				width: 300px;
+				border-radius: 4px;
+				border: 1px solid #000;
+			}
+			
+			#notice-fr,
+			#notice-en {
+				display: none;
+				font-size: 15px;
+				font-weight: bold;
+				margin: 8px auto;;
+				text-align: center;
+				cursor: pointer;
+				font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+			}
+				
+				#notice-fr:hover,
+				#notice-en:hover {
+					text-decoration: underline;
+				}
+			
+			
+			#title-wrapper {
+				background: #2E6732;
+				height: 45px;
+				width: 100%;
+				min-width: 1005px;
+				overflow: hidden;
+			}
+			
+			#environment-fr,
+			#environment-en {
+				color: #FFF;
+				display: inline-block;
+				margin: 14px 0 5px 60px;
+				font-size: 17px;
+				float: left;
+				z-index: 500;
+				display: none;
+				font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+			}
+			
+			#angled {
+				transform: rotate(45deg);
+				height: 200px;
+				width: 200px;
+				margin-top: -77px;
+				background: #2C522D;
+				float: left;
+				display: inline-block;
+			}
+			
+			#gcdocs-fr,
+			#gcdocs-en {
+				transform: rotate(-45deg);
+				color: #fff;
+				font-size: 18px;
+				position: relative;
+				margin: 120px 50px 50px 21px;
+				display: none;
+			}
+			
+			#gcdocs-fr {
+				margin: 121px 50px 50px 24px;
+			}
+			
+				#gcdocs-fr a,
+				#gcdocs-en a {
+					color: #fff;
+					font-size: 22px;
+					text-decoration: none;
+					font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+				}
+				#gcdocs-fr a {
+					font-size: 23px;
+				}
+			
+			#lbl-field-wrapper-fr,
+			#lbl-field-wrapper-en {
+				float: right;
+				font-size: 1.6em;
+				line-height: 37px;
+				margin: 0;
+				display: none;
+			}
+			
+			#search-wrapper-fr,
+			#search-wrapper-en {
+				width: 200px;
+				margin: 3px 15px;
+				background: #e1e4e7;
+				float: right;
+				display: inline-block;
+			}
+			
+			#search-field-fr,
+			#search-field-en {
+				border: 0;
+				display: inline-block;
+				height: 37px;
+				width: 150px;
+				padding: 0 5px;
+				margin: 0;
+				background: none;
+			}
+		
+			#search-button {
+				background: #2C522D url('http://innov10.ncr.pwgsc.gc.ca/innov10_img/custom/goto.png') no-repeat;
+				border: 0;
+				padding: 0;
+				margin: 0;
+				display: inline-block;
+				float: right;
+				height: 37px;
+				width: 40px;
+			}
+			
+			#title-left,
+			#title-right {
+				height: 45px;
+				display: inline-block;
+				margin: 0;
+				padding: 0;
+				position: relative;
+			}
+			
+			#title-left {
+				width: 37.5%;
+				float: left;
+			}
+			
+			#title-right {
+				float: right;
+				width: 37.5%;
+			}
+			
+			#tip-of-the-week-en,
+			#tip-of-the-week-fr {
+				font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+				font-size: 17px;
+				color: #fff;
+				display: none;
+				float: right;
+			}
+				
+				#tip-of-the-week-en span,
+				#tip-of-the-week-fr span {
+					font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+					font-size: 17px;
+					color: #fff;
+					padding: 12px 15px;
+					display: block;
+				}
+				
+				#tip-of-the-week-en a,
+				#tip-of-the-week-fr a {
+					font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+					font-size: 17px;
+					color: #fff;
+					text-decoration: underline;
+				}
+					#tip-of-the-week-en a:hover,
+					#tip-of-the-week-fr a:hover {
+						text-decoration: underline;
+					}
+			
+			#title-center {
+				display: inline-block;
+				height: 45px;
+				width: 25%;
+				margin-top: 0;
+				padding: 0;
+				position: relative;
+				clear: left;
+			}
+
+
+			/* FOOTER Styles */
+			#footer-wrapper-en,
+			#footer-wrapper-fr {
+				padding: 0;
+				padding-bottom: 20px;
+				margin: 0;
+				position: relative;
+				/*background: url('http://innov10.ncr.pwgsc.gc.ca/innov10_img/custom/canada.png') 99% 92% no-repeat;*/
+				background-color: #e1e4e7;
+				display: none;
+				border-bottom: 5px solid #2E6732;
+			}
+			
+			.footer {
+				width: 80%;
+				margin: 0 auto;
+				padding-bottom: 15px;
+			}
+			
+			#col-1,
+			#col-2,
+			#col-3,
+			#col-4 {
+				width: 23%;
+				min-height: 100px;
+				display: inline-block;
+				padding: 1em 1%;
+				margin: 0;
+				position: relative;
+			}
+			
+			#col-4,
+			#col-3 {
+				min-height: 100px;
+				display: inline-block;
+				margin: 0;
+				float: right;
+			}
+			
+			#col-1 {
+				float: left;
+			}
+			
+			#col-1 ul,
+			#col-2 ul,
+			#col-3 ul,
+			#col-4 ul {
+				list-style: none;
+				padding: 0 10px 5px 10px;
+				color: #000;
+			}
+			
+			#col-1 ul li,
+			#col-2 ul li,
+			#col-3 ul li,
+			#col-4 ul li {
+				padding: 0.5em 0;
+				font-size: 14px;
+			}
+			
+			#col-1 ul li a,
+			#col-2 ul li a,
+			#col-3 ul li a,
+			#col-4 ul li a {
+				padding: 0.5em 0;
+				font-size: 14px;
+			}
+			
+			
+			#col-1 h3,
+			#col-2 h3,
+			#col-3 h3,
+			#col-4 h3 {
+				font-size: 1.7em;
+				margin: 0;
+				padding: 0 10px;
+				color: #2C522D;
+			}
+			
+			#footer-goc-logo {
+				text-align: right;
+				line-height: 30px;
+			}
+			
+			#footer-goc-logo object {
+				margin-bottom: 10px;
+				margin-top: 20px;
+				height: 40px;
+				max-width: 100%;
+			}
+			
+			.bottom-wrapper {
+				width: 100%;
+				clear: both;
+			}
+			
+		

@@ -1,0 +1,369 @@
+[/*	Title: Mobile_Template_menu_ExcludeHTML
+	Created by: Rudy Hallé
+	Created date: 2017-03-06
+	Version: 0.9 (temp number until real release or real QA)
+	Modification comment:  
+	Modified by: Rudy Hallé
+	Modified date: 2017-03-0
+	--------------------------------------------------------------------	
+
+TODO:	
+*/] 
+
+
+[// -------------------------------------
+[// Start Regular header import for use with EXCLUDEHTML tag
+[// -------------------------------------
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+
+<HEAD>
+	<script type="text/javascript">
+		supportPath = "[LL_REPTAG_SUPPORTDIR /]";
+	</script>
+
+	<script TYPE="text/javascript">
+		var dhtmlHistorySupportDir = "[LL_REPTAG_SUPPORTDIR /]core/";
+	</script>
+
+
+	<LINK REL="stylesheet" TYPE="text/css" HREF="[LL_REPTAG_SUPPORTDIR /]style/jquery-ui-1.9.2.custom.min.css">
+	<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]core/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]core/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]core/ajax_dhtml_util.js?v=2125"></script>
+	<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]menu_en_US.js?v=2125"></script>
+	<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]menu.js?v=2125"></script>
+
+
+	[//  Import CSS And Scripts
+	<META http-equiv="content-type" content="text/html; charset=UTF-8">
+	<LINK REL="stylesheet" TYPE="text/css" HREF="[LL_REPTAG_SUPPORTDIR /]style/screen.css?v=2125">
+	<link rel="shortcut icon" href="[LL_REPTAG_SUPPORTDIR /]favicon.ico" type="image/x-icon">
+
+	<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]webnode/browse.js?v=2125"></script>
+
+	<script>
+	   baseURL = "[LL_REPTAG_URLPREFIX /]";
+	</script>
+
+	[//<script src="[LL_REPTAG_SUPPORTDIR /]core/otfunc_en_US.js?v=2125"></script>
+	[//<link href="[LL_REPTAG_SUPPORTDIR /]otfunc.css" type="text/css" rel="stylesheet">
+	[//<script src="[LL_REPTAG_SUPPORTDIR /]core/otfunc.js"></script>
+	<link href="[LL_REPTAG_SUPPORTDIR /]appearances/custom.css" type="text/css" rel="stylesheet">
+	<script src="[LL_REPTAG_SUPPORTDIR /]appearances/custom.js"></script>
+
+	<SCRIPT>
+		var isCompoundEmailItem = false;
+	</SCRIPT>
+	<SCRIPT>
+		var isCollectItems = false;
+	</SCRIPT>
+	<SCRIPT>
+		var cs105u201409OrLater = true;
+	</SCRIPT>
+	<SCRIPT>
+		var isSearchTemplate = false;
+	</SCRIPT>
+	<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]webnode/browsecoretable_en_US.js?v=2125"></script>
+	<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]/checkall.js?v=2125"></script>
+</HEAD>
+
+
+<script type="text/javascript">
+	/** Setting RTL flag */
+	setRTL( "false" );
+
+	/** Initialize all of our objects now. */
+	window.historyStorage.init();
+
+	/** This test is required for the History Support Directory
+	The test is to find out if dhtmlHistorySupportDir is already defined */
+
+	if( typeof dhtmlHistorySupportDir !== "undefined" && dhtmlHistorySupportDir !== null ) {
+		window.dhtmlHistory.create( dhtmlHistorySupportDir );
+	} else {
+		window.dhtmlHistory.create( "" );
+	}
+</script>
+[// -------------------------------------
+[// End Regular header import for use with EXCLUDEHTML tag
+[// -------------------------------------
+
+[//To allow back button when switching language, see footer
+<script src="[LL_REPTAG_SUPPORTDIR /]custom/cookieHistory.js"></script>
+
+<link href="[LL_REPTAG_SUPPORTDIR /]custom/BB10_ActiveView.css" type="text/css" rel="stylesheet">
+
+<STYLE type="text/css">
+
+input[class=filterInput]::-ms-clear{
+display: none;
+}
+
+
+a{
+    [// Remove text decoration from links 
+    text-decoration: none;
+}
+
+label,
+input[type="button"],
+input[type="reset"],
+input[type="file"]{
+font-size:Large;
+}
+
+input[type="button"],
+input[type="reset"]{
+	line-height: 30px;
+}
+
+textarea
+{
+  	width:92%;
+	padding:1%;
+}
+
+#nav {
+    	font-size: 40px !important;
+}
+</STYLE>
+
+[// -------------------------------------
+[//Remove CS content 
+[// -------------------------------------
+[LL_WEBREPORT_EXCLUDEHTML /]
+
+
+
+[// -------------------------------------
+[// Header
+[// -------------------------------------
+<div id="header-wrapper">
+	<a href="[LL_REPTAG_URLPREFIX /]?func=llworkspace"">
+		<img src="[LL_REPTAG_SUPPORTDIR /]custom/logo_goc.png" id="goc-logo" WIDTH=358px HEIGHT=36px>
+	</a>
+	<a id="language-link" href="#" ONCLICK="doSaveSetting()">
+		[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+			English
+		[LL_WEBREPORT_ELSE /]
+			Fran&ccedil;ais
+		[LL_WEBREPORT_ENDIF /]
+	</A>
+</div>
+<br/>
+<div id="title-wrapper">
+	<div id="title-left">
+		<div id="dark">
+			<span id="gcdocs"><a href="[LL_REPTAG_URLPREFIX /]?func=llworkspace">GCDocs</a></span>
+		</div>
+		<span id="environment">[LL_REPTAG_URLDOMAIN /]</span>
+			
+	</div>
+</div>
+[// -------------------------------------
+[//Top Menu
+[// -------------------------------------
+<TABLE CELLSPACING="0" CELLPADDING="0" WIDTH="100%" BORDER="0">
+	<TR>
+		<TD  VALIGN="TOP" >
+			<DIV ID="mastheadComponent">
+				<div id="nav" class="csx">
+					<ul id="tGlobalMenus" class="menu-horizontal">
+						<script language="JavaScript1.2">__LeavePage = ''</script>
+						<li id="EnterpriseGlobalMenu" class="has-submenu">
+							<a href="[LL_REPTAG_URLPREFIX /]?func=llworkspace" title="">
+								<span id="globalMenu_0" class="topmenu">
+									[LL_REPTAG_"WEBNODE_LABEL.Enterprise" XLATE /]
+								</span>
+							</a>
+						</li>
+						<li id="PersonalGlobalMenu" class="has-submenu">
+							<a href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objtype=142&amp;objaction=browse">
+								<span id="globalMenu_1" class="topmenu">
+									[LL_REPTAG_"NGD_LABEL.Personal" XLATE /]	
+								</span>
+							</a>
+						</li>
+						<li id="FavoritesGlobalMenu" class="has-submenu">
+							<a href="[LL_REPTAG_URLPREFIX /]?func=Personal.Favorites">
+								<span id="globalMenu_2" class="topmenu">
+									[LL_REPTAG_"HOME_LABEL.Favorites" XLATE /]
+								</span>
+							</a>
+						</li>
+						<li id="MoreGlobalMenu" class="has-submenu">
+							<a href="javascript:void(0)" onClick="return false;" title="">
+								<span id="globalMenu_3" class="topmenu">
+									[LL_REPTAG_"COLLECTIONS_HTMLLABEL.More" XLATE /]
+						   	         </span>
+                    					</a>
+                    					<ul id="More">
+                     						<li id="3.0">
+									<a href="javascript:void(0)" onclick="menu_callback( '[LL_REPTAG_URLPREFIX /]?func=ll&objId=2053&objAction=RunReport&nexturl=[LL_REPTAG_MYURL ESCAPEURL /]','');return false;">
+										<span id="globalMenuItem_3.0" class="globalMenuItem">
+											[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+												Documents Récents
+											[LL_WEBREPORT_ELSE /]
+												Recent Documents
+											[LL_WEBREPORT_ENDIF /]
+										</span>
+									</a>
+								</li>
+                        					<li id="3.1">
+									<a href="javascript:void(0)" onclick="menu_callback( '[LL_REPTAG_URLPREFIX /]?func=help.index&amp;keyword=admin.index','');return false;">
+										<span id="globalMenuItem_3.1" class="globalMenuItem">
+											[LL_REPTAG_"WEBHELP_HTMLLABEL.Help" XLATE /]
+										</span>
+									</a>
+								</li>
+								<li id="3.2">
+									<a href="javascript:void(0)" onclick="menu_callback( '[LL_REPTAG_MYURL /]&AVID=0','');return false;">
+										<span id="globalMenuItem_3.2" class="globalMenuItem">
+											[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+												Site Complet
+											[LL_WEBREPORT_ELSE /]
+												Full Site
+											[LL_WEBREPORT_ENDIF /] 			
+										</span>
+									</a>
+								</li>
+                    					</ul>
+                				</li>
+					</ul>
+				</div>
+			</DIV>
+           		<div class="dropshadow-bottom"></div>
+			<TABLE CELLSPACING="0" CELLPADDING="2" BORDER="0" WIDTH="100%">
+				<TR>
+					<TD WIDTH="100%">
+					</TD>
+				</TR>
+			</TABLE>
+			
+		</TD>
+	</TR>	
+</TABLE>
+
+[// -------------------------------------
+[//Content Start
+[// -------------------------------------
+
+<TITLE></TITLE>
+<DIV class="pageTitleIcon">
+	<img src="[LL_REPTAG_SUPPORTDIR /]custom/XXXXXXX.gif" width="32" height="32" border="0" alt="[LL_REPTAG_'WEBDOC_HTMLLABEL.XXXX' XLATE /]" title="[LL_REPTAG_'WEBDOC_HTMLLABEL.XXXX' XLATE /]"/>
+</DIV>
+<DIV class="pageTitleText">
+	<H1 ID="?_?">   [//Working to get objectID in header section
+		[LL_REPTAG_'WEBDOC_HTMLLABEL.XXXXX' XLATE /] 
+	</H1>
+</DIV>
+
+[LL_WEBREPORT_STARTROW /][LL_WEBREPORT_ENDROW /]<div id="footer">
+<div id="footer-goc-logo">
+    <IMG SRC="[LL_REPTAG_SUPPORTDIR /]custom/canada.png" ALT="Canada" WIDTH=109 HEIGHT=25>
+</div>
+</div>
+
+[// -------------------------------------
+[//Personnal Setting Form to Switch Language (default value bug fixed )
+[// -------------------------------------
+<FORM NAME="SwitchLanguage" METHOD="POST" ACTION="[LL_REPTAG_MYURL /]" ENCTYPE="multipart/form-data">
+<INPUT TYPE="HIDDEN" NAME="func" VALUE="ll.savesettings">
+<INPUT TYPE="HIDDEN" NAME="tab" VALUE="1">
+<INPUT TYPE="HIDDEN" NAME="cacheid" VALUE="0">
+
+	<INPUT TYPE="hidden" NAME="viewType" VALUE="-1">
+
+[//Bug workaround
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:DFTSTARTPAGE /]" == "* USERPREF: The second parameter is invalid *" /]
+		<INPUT TYPE="hidden" NAME="dftStartPage" VALUE="1">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" NAME="dftStartPage" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:DFTSTARTPAGE /]">
+	[LL_WEBREPORT_ENDIF /]
+	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:SHOWITEMDESC /]" == "true" /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="itemDescription" NAME="itemDescription" checked>
+	[LL_WEBREPORT_ELSE /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="itemDescription" NAME="itemDescription">
+	[LL_WEBREPORT_ENDIF /]
+
+	<INPUT TYPE="hidden" ID="locationType" NAME="locationType" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:NAVSTYLE /]">
+
+[//Bug workaround
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:NEWDUR /]" == "? days" /]
+		<INPUT TYPE="hidden" ID="newIndDuration" NAME="newIndDuration" VALUE="2">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="newIndDuration" NAME="newIndDuration" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:NEWDUR /]">
+	[LL_WEBREPORT_ENDIF /]
+
+[//Bug workaround
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:MODDUR /]" == "? days" /]
+		<INPUT TYPE="hidden" ID="modIndDuration" NAME="modIndDuration" VALUE="7" >
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="modIndDuration" NAME="modIndDuration" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:MODDUR /]" >
+	[LL_WEBREPORT_ENDIF /]
+
+	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:ENHANCEDKYBD /]" == "true" /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="useJava" NAME="useJava" CHECKED>
+	[LL_WEBREPORT_ELSE /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="useJava" NAME="useJava">
+	[LL_WEBREPORT_ENDIF /]	
+
+	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:SBLOCATION /]" == "left" /]
+		<INPUT TYPE="hidden" ID="sidebarLocation" NAME="sidebarLocation" VALUE="0">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="sidebarLocation" NAME="sidebarLocation" VALUE="1">
+	[LL_WEBREPORT_ENDIF /]
+
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:SIDEBAR /]" == "true" /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="sidebarDefaultState" NAME="sidebarDefaultState" CHECKED>
+	[LL_WEBREPORT_ELSE /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="sidebarDefaultState" NAME="sidebarDefaultState">
+	[LL_WEBREPORT_ENDIF /]
+
+[//Bug workaround	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:EMAILLINK /]" == "* USERPREF: The second parameter is invalid *" /]
+		<INPUT TYPE="hidden" ID="emaillink" NAME="emaillink" Value="1" >
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="emaillink" NAME="emaillink" Value="[LL_REPTAG_USERID USERPREF:GENERAL:EMAILLINK /]" >
+	[LL_WEBREPORT_ENDIF /]
+	
+	[// switches language based on current language
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+		<INPUT TYPE="hidden" ID="localeType" NAME="localeType" VALUE="_en_US">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="localeType" NAME="localeType" VALUE="_fr"> 
+	[LL_WEBREPORT_ENDIF /]
+
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+		<INPUT TYPE="hidden" ID="metadataLang" NAME="metadataLang" value="en_CA" >
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="metadataLang" NAME="metadataLang" value="fr_CA" > 
+	[LL_WEBREPORT_ENDIF /]
+
+</FORM>
+
+<SCRIPT LANGUAGE="JavaScript">
+
+function doSaveSetting( )
+{
+	document.SwitchLanguage.submit();
+}
+
+//Saves the current URL as last page visited
+function saveLastURL(){
+	// triggered when the page is shown
+	var lastURL = "[LL_REPTAG_MYCACHEURL /]";
+	// make the cookie expire in 60 min
+	app.cookie.setCookie('lastPage', lastURL, 60, true);
+	
+}
+
+saveLastURL();
+
+</SCRIPT>

@@ -1,0 +1,13 @@
+ll&objtype=142&objaction=browse
+
+'Slow down to avoid bugs
+SET !REPLAYSPEED MEDIUM
+
+'Go to the ActiveView folder
+TAG POS=1 TYPE=A ATTR=TXT:_System<SP>Administration
+
+'Remove folder if it exists
+TAG POS=1 TYPE=INPUT:CHECKBOX FORM=NAME:BrowseViewFrm ATTR=ID:ActiveView_Volume_checkbox CONTENT=YES
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:BrowseViewFrm ATTR=NAME:Delete
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:DeleteForm ATTR=ID:deleteButton
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:myForm ATTR=ID:okButton

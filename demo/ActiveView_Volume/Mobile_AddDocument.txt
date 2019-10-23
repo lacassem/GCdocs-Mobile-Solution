@@ -1,0 +1,737 @@
+[/*	Title: Mobile_AddDocment for the Add Item page override based on 38_add_item_page_sample.txt 
+	Created by: Rudy Hallé
+	Created date: 2017-02-09
+	Version: 0.9 (temp number until real release or real QA)
+	Modification comment:  Add reference to WebReport for Recent Documents
+	Modified by: Rudy Hallé
+	Modified date: 2017-03-06
+	--------------------------------------------------------------------	
+	- Designed to look and feel like a basic Add Item screen for Documents and Folders.  
+	- By default this template will work for Documents and Folders, but can be extended to support other subtypes as well.
+		- This is done by adding in any missing HTML input fields and values that are required by the subtype.
+	- Unpredictable behavior can occur if this template is used on nodes that aren't Documents and Folders.
+		- This can range from CS Errors to an SDNR/Error 500/trace log, unless the template is updated 
+		  with any missing HTML input fields or other data required by the subtype.
+	- Supports System Attributes, although this is commented out by default.
+	- Supports Category inheritance.
+	- Additional functionality can be added to tailor this template to a specific requirement.
+	- Supports multi-language environments.
+
+TODO: cleanup code from default template's mess
+*/] 
+
+[// -------------------------------------
+[// Start Regular header import for use with EXCLUDEHTML tag
+[// -------------------------------------
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+
+<HEAD>
+<script type="text/javascript">
+	supportPath = "[LL_REPTAG_SUPPORTDIR /]";
+</script>
+
+<script TYPE="text/javascript">
+	var dhtmlHistorySupportDir = "[LL_REPTAG_SUPPORTDIR /]core/";
+</script>
+
+
+<LINK REL="stylesheet" TYPE="text/css" HREF="[LL_REPTAG_SUPPORTDIR /]style/jquery-ui-1.9.2.custom.min.css">
+<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]core/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]core/jquery-ui-1.9.2.custom.min.js"></script>
+<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]core/ajax_dhtml_util.js?v=2125"></script>
+<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]menu_en_US.js?v=2125"></script>
+<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]menu.js?v=2125"></script>
+
+
+[//  Import CSS And Scripts
+<META http-equiv="content-type" content="text/html; charset=UTF-8">
+<LINK REL="stylesheet" TYPE="text/css" HREF="[LL_REPTAG_SUPPORTDIR /]style/screen.css?v=2125">
+<link rel="shortcut icon" href="[LL_REPTAG_SUPPORTDIR /]favicon.ico" type="image/x-icon">
+
+<script type="text/javascript" src="[LL_REPTAG_SUPPORTDIR /]webnode/browse.js?v=2125"></script>
+
+<script>
+   baseURL = "[LL_REPTAG_URLPREFIX /]";
+</script>
+
+[//<script src="[LL_REPTAG_SUPPORTDIR /]core/otfunc_en_US.js?v=2125"></script>
+[//<link href="[LL_REPTAG_SUPPORTDIR /]otfunc.css" type="text/css" rel="stylesheet">
+[//<script src="[LL_REPTAG_SUPPORTDIR /]core/otfunc.js"></script>
+<link href="[LL_REPTAG_SUPPORTDIR /]appearances/custom.css" type="text/css" rel="stylesheet">
+<script src="[LL_REPTAG_SUPPORTDIR /]appearances/custom.js"></script>
+
+<SCRIPT>
+	var isCompoundEmailItem = false;
+</SCRIPT>
+<SCRIPT>
+	var isCollectItems = false;
+</SCRIPT>
+<SCRIPT>
+	var cs105u201409OrLater = true;
+</SCRIPT>
+<SCRIPT>
+	var isSearchTemplate = false;
+</SCRIPT>
+<script type="text/javascript" src="/innov10_img/webnode/browsecoretable_en_US.js?v=2125"></script>
+<script type="text/javascript" src="/innov10_img/checkall.js?v=2125"></script>
+</HEAD>
+
+<BODY ONLOAD="onLoadFunc('/innov10_img/');window.document.CreateForm.name.focus();">
+<script type="text/javascript">
+	/** Setting RTL flag */
+	setRTL( "false" );
+
+	/** Initialize all of our objects now. */
+	window.historyStorage.init();
+
+	/** This test is required for the History Support Directory
+	The test is to find out if dhtmlHistorySupportDir is already defined */
+
+	if( typeof dhtmlHistorySupportDir !== "undefined" && dhtmlHistorySupportDir !== null ) {
+		window.dhtmlHistory.create( dhtmlHistorySupportDir );
+	} else {
+		window.dhtmlHistory.create( "" );
+	}
+</script>
+[// -------------------------------------
+[// End Regular header import for use with EXCLUDEHTML tag
+[// -------------------------------------
+
+[//To allow back button when switching language, see footer
+<script src="[LL_REPTAG_SUPPORTDIR /]custom/cookieHistory.js"></script>
+
+<link href="[LL_REPTAG_SUPPORTDIR /]custom/BB10_ActiveView.css" type="text/css" rel="stylesheet">
+
+<STYLE type="text/css">
+input[class=filterInput]::-ms-clear{
+display: none;
+}
+
+
+a{
+    [// Remove text decoration from links 
+    text-decoration: none;
+}
+
+label,
+input[type="button"],
+input[type="reset"]{
+font-size:Large;
+}
+
+input[type="button"],
+input[type="reset"]{
+	line-height: 30px;
+}
+
+#nav {
+    font-size: 40px !important;
+}
+</STYLE>
+
+[// -------------------------------------
+[//Remove CS content (OpenText Bug tracked under ticket 2935852)  ExludeHTML is used in the meantime
+[// -------------------------------------
+[LL_WEBREPORT_EXCLUDEHTML /]
+[//[LL_WEBREPORT_EXCLUDEHEADER /]
+[//[LL_WEBREPORT_APPEARTOPHEADEROFF /]
+[//[LL_WEBREPORT_APPEARBOTTOMOFF /]
+[//[LL_WEBREPORT_EXCLUDESEARCH /]
+[//[LL_WEBREPORT_EXCLUDETITLE /]
+[//[LL_WEBREPORT_EXCLUDEFOOTER /]
+
+
+[// -------------------------------------
+[// Header
+[// -------------------------------------
+<div id="header-wrapper">
+	<a href="[LL_REPTAG_URLPREFIX /]?func=llworkspace"">
+		<img src="[LL_REPTAG_SUPPORTDIR /]custom/logo_goc.png" id="goc-logo" WIDTH=358px HEIGHT=36px>
+	</a>
+	<a id="language-link" href="#" ONCLICK="doSaveSetting()">
+		[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+			English
+		[LL_WEBREPORT_ELSE /]
+			Fran&ccedil;ais
+		[LL_WEBREPORT_ENDIF /]
+	</A>
+</div>
+<br/>
+<div id="title-wrapper">
+	<div id="title-left">
+		<div id="dark">
+			<span id="gcdocs"><a href="[LL_REPTAG_URLPREFIX /]?func=llworkspace">GCDocs</a></span>
+		</div>
+		<span id="environment">[LL_REPTAG_URLDOMAIN /]</span>
+			
+	</div>
+</div>
+[// -------------------------------------
+[//Top Menu
+[// -------------------------------------
+<TABLE CELLSPACING="0" CELLPADDING="0" WIDTH="100%" BORDER="0">
+    <TR>
+        <TD  VALIGN="TOP" >
+            <DIV ID="mastheadComponent">
+            <div id="nav" class="csx">
+                <ul id="tGlobalMenus" class="menu-horizontal">
+			<script language="JavaScript1.2">__LeavePage = ''</script>
+            	        <li id="EnterpriseGlobalMenu" class="has-submenu">
+               		     	<a href="[LL_REPTAG_URLPREFIX /]?func=llworkspace" title="">
+                        		<span id="globalMenu_0" class="topmenu">
+						[LL_REPTAG_"WEBNODE_LABEL.Enterprise" XLATE /]
+                       			</span>
+                        	</a>
+                	</li>
+                	<li id="PersonalGlobalMenu" class="has-submenu">
+                   		<a href="[LL_REPTAG_URLPREFIX /]?func=ll&amp;objtype=142&amp;objaction=browse">
+                        		<span id="globalMenu_1" class="topmenu">
+						[LL_REPTAG_"NGD_LABEL.Personal" XLATE /]	
+                        		</span>
+                    		</a>
+                	</li>
+                	<li id="FavoritesGlobalMenu" class="has-submenu">
+                    		<a href="[LL_REPTAG_URLPREFIX /]?func=Personal.Favorites">
+                        		<span id="globalMenu_2" class="topmenu">
+						[LL_REPTAG_"HOME_LABEL.Favorites" XLATE /]
+                                         </span>
+                    		</a>
+                	</li>
+                	<li id="MoreGlobalMenu" class="has-submenu">
+                    		<a href="javascript:void(0)" onClick="return false;" title="">
+                        		<span id="globalMenu_3" class="topmenu">
+                            			[LL_REPTAG_"COLLECTIONS_HTMLLABEL.More" XLATE /]
+                          	         </span>
+                    		</a>
+                    		<ul id="More">
+                     			<li id="3.0">
+						<a href="javascript:void(0)" onclick="menu_callback( '[LL_REPTAG_URLPREFIX /]?func=ll&objId=2053&objAction=RunReport&nexturl=[LL_REPTAG_MYURL ESCAPEURL /]','');return false;">
+							<span id="globalMenuItem_3.0" class="globalMenuItem">
+								[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+									Documents Récents
+								[LL_WEBREPORT_ELSE /]
+									Recent Documents
+								[LL_WEBREPORT_ENDIF /]
+							</span>
+						</a>
+					</li>
+                        		<li id="3.1">
+						<a href="javascript:void(0)" onclick="menu_callback( '[LL_REPTAG_URLPREFIX /]?func=help.index&amp;keyword=admin.index','');return false;">
+							<span id="globalMenuItem_3.1" class="globalMenuItem">
+								[LL_REPTAG_"WEBHELP_HTMLLABEL.Help" XLATE /]
+							</span>
+						</a>
+					</li>
+					<li id="3.2">
+						<a href="javascript:void(0)" onclick="menu_callback( '[LL_REPTAG_MYURL /]&AVID=0','');return false;">
+							<span id="globalMenuItem_3.2" class="globalMenuItem">
+								[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+									Site Complet
+								[LL_WEBREPORT_ELSE /]
+									Full Site
+								[LL_WEBREPORT_ENDIF /] 			
+							</span>
+						</a>
+					</li>
+                    		</ul>
+                	</li>
+		</ul>
+            </div>
+            <div class="dropshadow-bottom"></div>
+			<TABLE CELLSPACING="0" CELLPADDING="2" BORDER="0" WIDTH="100%">
+				<TR>
+					<TD WIDTH="100%">
+					</TD>
+				</TR>
+			</TABLE>
+
+	</TD>
+	</TR>	
+</TABLE>
+[// -------------------------------------
+[//Content Start
+[// -------------------------------------
+
+
+[// Change page title if 
+[// 1-Add Folder
+[// 2-Add Version
+[// 3-Add Document (144)
+
+[LL_WEBREPORT_IF  "[LL_REPTAG_&objType /]" == "0" /]
+	<TITLE>[LL_REPTAG_"OTADMIN_HTMLLABEL.AddFolder" XLATE /]</TITLE>
+	<DIV class="pageTitleIcon">
+		<img src="[LL_REPTAG_SUPPORTDIR /]custom/ico-folder-addXL.gif" width="32" height="32" border="0" alt="[LL_REPTAG_"OTADMIN_HTMLLABEL.AddFolder" XLATE /]" title="[LL_REPTAG_"OTADMIN_HTMLLABEL.AddFolder" XLATE /]"/>
+	</DIV>
+	<DIV class="pageTitleText">
+		<H1 ID="?_?">
+			[LL_REPTAG_"OTADMIN_HTMLLABEL.AddFolder" XLATE /]
+		</H1>
+	</DIV>
+[LL_WEBREPORT_ELSEIF "[LL_REPTAG_&objType /]" == "144" /]
+	<TITLE>[LL_REPTAG_'WEBDOC_HTMLLABEL.AddNewItem_' XLATE /]</TITLE>
+		<DIV class="pageTitleIcon">
+			<img src="[LL_REPTAG_SUPPORTDIR /]custom/ico-doc-addXL.gif" width="32" height="32" border="0" alt="[LL_REPTAG_'WEBDOC_HTMLLABEL.AddNewItem_' XLATE /]" title="[LL_REPTAG_'WEBDOC_HTMLLABEL.AddNewItem_' XLATE /]"/>
+		</DIV>
+		<DIV class="pageTitleText">
+			<H1 ID="?_?">
+				[LL_REPTAG_'WEBDOC_HTMLLABEL.AddNewItem_' XLATE /]
+			</H1>
+		</DIV>
+[LL_WEBREPORT_ENDIF /]
+
+<!--ActiveView version [LL_REPTAG_SUBVERSION /]-->
+
+
+<script language="javascript" src="[LL_REPTAG_SUPPORTDIR /]webnode/create.js?v=1158" type="text/javascript"></script>
+<script language="JavaScript" type="text/javascript">
+var	createInPopup = false;
+var	isDirty = false;
+var	needSubmitActions = false;
+var	needName = true;
+var	needCheckCTTID = true;
+var	checkSwitchParent = false;
+var	submitActionFuncs = new Array();
+var multiMetadataLang = false;
+var	localMessages = {
+	attributesInvalidIfChangeCreateInTarget:"[LL_REPTAG_'WEBNODE_JAVAERRMSG.AttributesInvalidIfChangeCreateInTarget' XLATE /]",
+	categories:'[LL_REPTAG_"WEBATTRIBUTE_HTMLLABEL.Categories" XLATE /]',
+	confirmDiscard:"[LL_REPTAG_'WEBDOC_HTMLLABEL.ConfirmDiscard' XLATE /]",
+	editedAttributeDataChangingCreationLocationEraseData:"[LL_REPTAG_'WEBNODE_JAVAERRMSG.EditedAttributeDataChangingCreationLocationEraseData' XLATE /]",
+	nameCannotBeEmpty:"[LL_REPTAG_'LLAPI_MESSAGE.NameCannotBeEmpty' XLATE /]",
+	nameCannotContainColon:"[LL_REPTAG_'LLAPI_LLNODEERR.NameCannotContainColon' XLATE /]",
+	new1:"[LL_REPTAG_'WEBNODE_HTMLLABEL.New1' XLATE REPLACE:'%1':"[LL_REPTAG_@RESPONSEDATA.typeName /]" ESCAPEURL /]",
+	noNodeToInheritAttributes:"[LL_REPTAG_'WEBNODE_JAVAERRMSG.NoNodeToInheritAttributes' XLATE /]",
+	noNodeToInheritAttributes2:"[LL_REPTAG_'WEBNODE_JAVAERRMSG.NoNodeToInheritAttributes2' XLATE /]",
+	notDetermined:'[LL_REPTAG_"WEBATTRIBUTE_HTMLLABEL.NotDetermined" XLATE /]',
+	required:'[LL_REPTAG_"WEBATTRIBUTE_ALTTEXTLABEL.Required" XLATE /]',
+	uploadingDocument:"[LL_REPTAG_'WEBNODE_LABEL.UploadingDocument' XLATE /]",
+	youCanTEnterTextInByHandUseTheButtonToTheRight:"[LL_REPTAG_'WEBNODE_JAVAERRMSG.YouCanTEnterTextInByHandUseTheButtonToTheRight_' XLATE /]",
+	youMustSpecifyWhatContainerToCreateThe1ItemIn:"[LL_REPTAG_'WEBNODE_ERRMSG.YouMustSpecifyWhatContainerToCreateThe1ItemIn' XLATE REPLACE:'%1':'[LL_REPTAG_@RESPONSEDATE.typeName /]' /]"
+};
+
+// ensure we have an empty object.  If the object exists we will merge them together
+oscriptValues = ( typeof( oscriptValues ) == "object" )?oscriptValues:{};
+var	localOscriptValues = {
+	addDocWithoutRequiredAttribute:[LL_REPTAG_@RESPONSEDATA.addDocWithoutRequiredAttribute /],
+	createIn: [LL_REPTAG_@RESPONSEDATA.bCreateIn /],
+	CTT_PathSaved: [LL_REPTAG_@RESPONSEDATA.CTT_PathSaved /],
+	gCreate_OriginalCTTID:"[LL_REPTAG_&ParentID /]",
+	inheritFromParent: [LL_REPTAG_@RESPONSEDATA.inheritFromParent /],
+	inheritIDPrefix:'[LL_REPTAG_@RESPONSEDATE.InheritIDPrefix /]',
+	nodeAttrRequired:'[LL_REPTAG_@RESPONSEDATA.NodeAttrRequired DECODE:true:1:false:0 /]',
+	supportDirectory:"[LL_REPTAG_SUPPORTDIR /]",
+	switchParentWarning: [LL_REPTAG_@RESPONSEDATA.SwitchParentWarning DEF:false /],
+	typeImage:"[LL_REPTAG_@RESPONSEDATA.typeImage /]",
+	urlPrefix:"[LL_REPTAG_URLPREFIX /]"
+};
+// now merge our local version createOscriptValues with the more generic version oscriptValues
+jQuery.extend( true, oscriptValues, localOscriptValues );
+function doCreateIn( formname, fieldprefix ) {
+	var w;
+	w = window.open("[LL_REPTAG_URLPREFIX /]?func=ll&objID=[LL_REPTAG_&parentID /]&objAction=targetBrowse&headerLabel=[LL_REPTAG_'WEBDOC_HTMLLABEL.SelectContainerToCreateIn' XLATE ESCAPEURL /]&selectLabel=[LL_REPTAG_'WEBDOC_HTMLLABEL.Select' XLATE /]&selectScreen=[LL_REPTAG_@RESPONSEDATA.validCreateInTypes /]&selectPerm=[LL_REPTAG_@RESPONSEDATA.selectPerm /]&formname=" + formname + "&fieldprefix=" + fieldprefix + "" ,"SelectWidget","width=600,height=360,resizable=yes,menubar=no,scrollbars=yes,toolbar=no")
+	if ( w.focus ) {
+		w.focus();
+	}
+}
+</script>
+
+<script language="javascript" src="[LL_REPTAG_SUPPORTDIR /]webnode/createnewattributefunctions.js?v=1158" type="text/javascript"></script>
+[LL_WEBREPORT_TITLE /]
+<form onreset="ClearField(this)" enctype="multipart/form-data" method="post" action="[LL_REPTAG_URLPREFIX /]" name="CreateForm" id="CreateForm">
+	<input type="hidden" value="ll" name="func">
+	<input type="hidden" value="[LL_REPTAG_&objType /]" name="objType">
+	<input type="hidden" value="create2" name="objAction">
+	<input type="hidden" value="[LL_REPTAG_&parentId /]" name="parentId">
+	<input type="hidden" value="[LL_REPTAG_@RESPONSEDATA.noApplet /]" id="noApplet" name="noApplet">
+	<input type="HIDDEN" value="[LL_REPTAG_'Action-Create' SECURETOKEN UNESCAPEURL /]" id="secureRequestToken" name="secureRequestToken">
+	<input type="hidden" value="[LL_REPTAG_&nextURL /]" name="nextURL">
+	
+[// Parent Folder Info
+	<input type="HIDDEN" value="[LL_REPTAG_&parentID /]" name="CTT_ID">
+	<input type="HIDDEN" value="[LL_REPTAG_@RESPONSEDATA.CTT_PathSaved /]" name="CTT_PathSaved">
+	<input type="HIDDEN" size="40" value="[LL_REPTAG_&parentID NODEINFO:NAME /]" name="CTT_Path" id="CTT_Path" class="valueEditable">
+	
+	[// Additional field for LiveReports:
+	[LL_WEBREPORT_IF "[LL_REPTAG_&objType /]" == "299" /]
+	<input type="HIDDEN" value="EditReport" name="uponCreate">
+	[LL_WEBREPORT_ENDIF /]
+
+	<table width="60%" cellspacing="0" cellpadding="0" border="0" align="CENTER">
+		<tbody>
+		<tr valign="TOP">
+			<td>
+				<div class="shadow-right">
+					<table width="100%" cellspacing="1" cellpadding="0" border="0" class="tblBackground">
+						<tbody>
+						<tr>
+							<td class="tblForeground">
+								<table width="100%" cellspacing="0" cellpadding="0" border="0" id="create">
+							
+							[// Only applies when browsing for Document types:
+							[LL_WEBREPORT_IF "[LL_REPTAG_&objType /]" == "144" /]
+							
+									<script language="JavaScript">
+									needName = false;
+									needSubmitActions = true;
+									enableAutoDocumentName = true;
+									function submitActions( theForm ) {
+										var fileMethod;
+										var	retVal = true;
+										var i;
+										// check if value is stored in hidden value
+										if ( theForm.creationType.value !== undefined ) {
+											fileMethod = CreateForm.creationType.value;
+										} else {
+											// discover which radio button is checked
+											for (i=0;i<theForm.creationType.length;i++) {
+												if ( theForm.creationType[i].checked ) {
+													fileMethod = theForm.creationType[i].value;
+													break;
+												}
+											}	
+										}	
+										switch( fileMethod ) {
+											case 'Ex':
+											// upload from desktop
+												if ( theForm.versionFile.value == '' ) {
+													alert( "[LL_REPTAG_'WEBDOC_JAVAERRMSG.NeedSelectFileFromDesktop' XLATE /]" );
+													retVal = false;
+												}
+												break;
+											case 'New':
+												// New file
+												theForm.uponCreate.value = 'CreateDocument'; 
+												break;
+											case 'Template':
+												// Copied from template in Livelink
+												if ( theForm.Template_ID.value == '0' ) {
+													alert( "[LL_REPTAG_'WEBDOC_JAVAERRMSG.NeedSelectTemplate' XLATE /]" );
+													retVal = false;
+												}
+												break;
+											}
+										return retVal;
+									}
+									function getFileName( theForm ) {
+										var fileName;
+										var documentPath = theForm.versionFile.value;
+										var pathSeparator = '/';
+										// If the name field is empty, pretend the user has never modified the name value
+										if ( theForm.name.value.length == 0 ) {
+										enableAutoDocumentName = true;
+										}
+										// Don't overwrite anything the user provided
+										if ( enableAutoDocumentName ) {
+											// If no forward slashes are found in the document path, try backslashes
+											if ( documentPath.indexOf(pathSeparator) == -1 ) {
+												pathSeparator = '\\';
+											}
+											// The filename is everything after the last separator, and put that in the form's name field
+											fileName = documentPath.substring( documentPath.lastIndexOf( pathSeparator )+1, documentPath.length );
+											theForm.name.value = fileName;
+										}
+									}
+									</script>
+						
+								[// Browse for Document field:
+								<tbody>
+								<tr>
+									<td valign="TOP" nowrap="" class="label"><label for="versionFile">[LL_REPTAG_'WEBEDITSTRINGS.Document' XLATE /]</label></td>
+									<td background="[LL_REPTAG_SUPPORTDIR /]tbl-divider-ver.gif" style="background-repeat: repeat-y;" class="labelVerticalDividerRight">
+										<img height="1" width="2" border="0" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" alt="">
+									</td>
+									<td>
+									<table>
+										<tbody>
+										<tr>
+											[/* FileMethods used by fileTag.html for Mac NetScape:
+												  New 		= New file
+												  Ex 		= upload from desktop
+												  Template	= Copied from template in Livelink
+											*/]
+											<input type="HIDDEN" value="Ex" id="ExOrNewEx" name="ExOrNew">
+											<input type="HIDDEN" value="Ex" id="creationTypeEx" name="creationType"> 
+											<td>
+												<input type="file" onchange="getFileName(this.form)" size="40" title="[LL_REPTAG_'WEBLL_HTMLLABEL.Browse' XLATE /] [LL_REPTAG_'WEBLL_HTMLLABEL.OpensANewWindow' XLATE /]" name="versionFile" id="versionFile" class="valueEditable">
+											</td>
+										</tr>
+										</tbody>
+									</table>
+									</td>
+								</tr>
+								<tr class="horizontalCellDivider">
+									<td colspan="1" class="labelHorizontalDivider"><img height="1" width="1" border="0" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" alt=""></td>
+									<td colspan="100" class="valueHorizontalDivider"><img height="1" width="3" border="0" src="[LL_REPTAG_SUPPORTDIR /]tbl-divider-hor.gif" alt=""></td>
+								</tr>
+						[LL_WEBREPORT_ENDIF /]
+						
+						
+								[// Name field:
+								<tr>
+									<td nowrap="" class="label">
+										<label for="name">[LL_REPTAG_"WEBDOC_HTMLLABEL.Name_" XLATE /]</label>
+									</td>
+									<td background="[LL_REPTAG_SUPPORTDIR /]tbl-divider-ver.gif" style="background-repeat: repeat-y;" class="labelVerticalDividerRight">
+										<img height="1" width="2" border="0" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" alt="">
+									</td>
+									<td>
+										<input type="text" onchange="MarkNameAsUserChanged();" maxlength="248" size="40" value="" name="name" id="name" class="valueEditable multilingual"><span id="nameErrorMsg" class="error"></span>
+									</td>
+								</tr>
+								<tr class="horizontalCellDivider">
+									<td colspan="1" class="labelHorizontalDivider"><img height="1" width="1" border="0" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" alt=""></td>
+									<td colspan="2" class="valueHorizontalDivider"><img height="1" width="3" border="0" src="[LL_REPTAG_SUPPORTDIR /]tbl-divider-hor.gif" alt=""></td>
+								</tr>
+
+							
+								[// Description field:
+								<tr>
+									<td valign="TOP" nowrap="" class="label">
+										<label for="comment">[LL_REPTAG_"WEBDOC_HTMLLABEL.Description_" XLATE /]</label>
+									</td>
+									<td background="[LL_REPTAG_SUPPORTDIR /]tbl-divider-ver.gif" style="background-repeat: repeat-y;" class="labelVerticalDividerRight">
+										<img height="1" width="2" border="0" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" alt="">
+									</td>
+									<td><textarea cols="40" rows="5" wrap="SOFT" name="comment" id="comment" class="valueEditable multilingual"></textarea></td>
+								</tr>
+								<tr class="horizontalCellDivider">
+									<td colspan="1" class="labelHorizontalDivider"><img height="1" width="1" border="0" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" alt=""></td>
+									<td colspan="2" class="valueHorizontalDivider"><img height="1" width="3" border="0" src="[LL_REPTAG_SUPPORTDIR /]tbl-divider-hor.gif" alt=""></td>
+								</tr>
+								[// Validation for Description field:
+								<script language="JavaScript">
+								function markDirty( ){};
+
+								function CheckLength( textField ) {
+									if( textField.value.length > 32767 ) {  
+										if ( confirm( "[LL_REPTAG_'WEBADMIN_JAVAERRORMSG.ConfirmMultilineTextAttrExceed1CharactersWouldYouLikeToTruncate' XLATE REPLACE:'%1':'32767' /]" ) ) {
+											textField.value = textField.value.substring( 0, 32767 );
+										}
+										textField.focus();
+									}
+								}
+								</script>
+
+								
+								[// Additional System Attributes can be displayed using the [LL_REPTAG_@RESPONSEDATA.SysAttrs /] tag.
+								[// This tag returns a RecArray of each of the System Attributes, which can be looped through using the LL_WEBREPORT_FOR tag.
+								[// In this loop, you could draw out the required HTML to display and populate various elements/fields using
+								[// the RECORD subtag to reference the value in each row.
+								[/* The available fields for each record are:
+										NAME		- the Attr's DisplayName
+										DATATYPE	- Integer representing the type of attribute
+										DISPLAYTYPE - String representing the type of attribute
+										LENGTH		- Integer length of attribute
+										VALIDVALUES - List of values
+										VALUE		- the selected value
+										EDITABLE	- Boolean indicating if the attr is editable
+										REQUIRED	- Integer indicating if the attr is required
+										ATTRNAME	- The attr name as it appears in the Admin page
+										IsSystem	- Boolean indicating if the attr is a System attr
+								*/]
+								
+								[// By default this section is commented out, but the comments can be removed if you have System Attributes that need to be displayed.
+								[// NB - the HTML for each attribute type can be built out here:
+								[/*
+								[LL_WEBREPORT_FOR DATA:[LL_REPTAG_@RESPONSEDATA.SysAttrs /] VAR:'attr' /]
+									[// Checkbox attrs:
+									[LL_WEBREPORT_IF "[LL_REPTAG_%attr CURRENTVAL RECORD:DATATYPE /]" == "3" /]
+										<tr>
+											<td class="label">
+												<label for="sysat_[LL_REPTAG_%attr CURRENTVAL RECORD:ATTRNAME /]">[LL_REPTAG_%attr CURRENTVAL RECORD:NAME /]:</label>
+											</td>
+											<td background="[LL_REPTAG_SUPPORTDIR /]tbl-divider-ver.gif" style="background-repeat: repeat-y;" class="labelVerticalDividerRight">
+												<img height="1" width="2" border="0" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" alt="">
+											</td>
+											<td nowrap="" colspan="1" class="valueStatic">
+												<input type="HIDDEN" value="1" name="sysat_[LL_REPTAG_%attr CURRENTVAL RECORD:ATTRNAME /]">
+												<input type="CHECKBOX" onclick="if (this.checked) {this.form.sysat_[LL_REPTAG_%attr CURRENTVAL RECORD:ATTRNAME /].value='1'} else {this.form.sysat_[LL_REPTAG_%attr CURRENTVAL RECORD:ATTRNAME /].value='0'}" checked="[LL_REPTAG_%attr CURRENTVAL RECORD:VALUE DECODE:1:CHECKED:0:'' /]" id="[LL_REPTAG_%attr CURRENTVAL RECORD:NAME /]_checkbox">
+											</td>
+										</tr>
+										[// row divider:
+										<tr class="horizontalCellDivider">
+											<td colspan="1" class="labelHorizontalDivider"><img height="1" width="1" border="0" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" alt=""></td>
+											<td colspan="2" class="valueHorizontalDivider"><img height="1" width="3" border="0" src="[LL_REPTAG_SUPPORTDIR /]tbl-divider-hor.gif" alt=""></td>
+										</tr>
+									[LL_WEBREPORT_ENDIF /]
+								[LL_WEBREPORT_ENDFOR /]
+								*/]
+								
+
+							
+							
+								[// Categories field:
+								<input type="HIDDEN" value="[LL_REPTAG_@RESPONSEDATA.inheritRequired /]" name="InheritRequired">
+								<input type="HIDDEN" value="[LL_REPTAG_@RESPONSEDATA.NodeAttrRequired /]" name="CREATE_Required">
+								<input type="HIDDEN" value="0" name="CREATE_Edited">
+								<input type="HIDDEN" value="" name="CREATE_ChangeCacheID">
+								<input type="HIDDEN" value="[LL_REPTAG_@RESPONSEDATA.CREATE_CacheID /]" name="CREATE_CacheID">
+								<input type="HIDDEN" value="0" name="CREATE_VerNum">
+								[//<tr>
+								[//	<td nowrap="" class="label">
+								[//		<label for="CREATE_CatNames">[LL_REPTAG_"WEBNODE_HTMLLABEL.Categories_" XLATE /]</label>
+								[//		<img height="12" width="12" alt="" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" name="CREATE_CatRequiredIcon">
+								[//	</td>
+								[//	<td background="[LL_REPTAG_SUPPORTDIR /]tbl-divider-ver.gif" style="background-repeat: repeat-y;" class="labelVerticalDividerRight">
+								[//		<img height="1" width="2" border="0" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" alt="">
+								[//	</td>
+									[//<td nowrap="">
+										<input type="hidden" size="40" value="[LL_REPTAG_@RESPONSEDATA.CatNames DEF:'' /]" name="CREATE_CatNames" id="CREATE_CatNames" class="valueEditable">
+										
+									[//</td>
+								[//</tr>
+								<tr class="horizontalCellDivider">
+								<td colspan="1" class="labelHorizontalDivider"><img height="1" width="1" border="0" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif" alt=""></td>
+								<td colspan="2" class="valueHorizontalDivider"><img height="1" width="3" border="0" src="[LL_REPTAG_SUPPORTDIR /]tbl-divider-hor.gif" alt=""></td>
+								</tr>
+
+								[// Create In field:
+
+								</tbody>
+								</table>
+							</td>
+						</tr>
+						
+						
+						[// Add/Reset Buttons:
+						<tr>
+							<td>
+								<table width="100%" cellspacing="0" cellpadding="0" border="0" background="[LL_REPTAG_SUPPORTDIR /]fon-table-header-gray.gif" style="background-repeat: repeat-x;">
+									<tbody>
+									<tr>
+										<td><img height="28" width="1" alt="" src="[LL_REPTAG_SUPPORTDIR /]spacer.gif"></td>
+										<td align="CENTER">
+											<input type="BUTTON" onclick="return doSubmit( this.form );" value="[LL_REPTAG_'WEBDOC_HTMLLABEL.Add' XLATE /]" id="addButton" class="saveButton">
+											<input type="RESET" value="[LL_REPTAG_"WEBDOC_HTMLLABEL.Reset" XLATE /]" class="resetButton" id="resetButton">
+										</td>
+									</tr></tbody>
+								</table>
+							</td>
+						</tr>
+						
+						
+						</tbody>
+					</table>
+				</div>
+				<div class="bottom-shadows">
+					<div class="shadow-bottom-inside"></div>
+					<div class="shadow-bottom-right"></div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class="td-no-line-height">&nbsp;</td>
+			<td class="td-no-line-height">&nbsp;</td>
+		</tr>
+		</tbody>
+	</table>
+</form>[LL_WEBREPORT_STARTROW /][LL_WEBREPORT_ENDROW /]<div id="footer">
+<div id="footer-goc-logo">
+    <IMG SRC="[LL_REPTAG_SUPPORTDIR /]custom/canada.png" ALT="Canada" WIDTH=109 HEIGHT=25>
+</div>
+</div>
+
+[// -------------------------------------
+[//Personnal Setting Form to Switch Language (default value bug fixed )
+[// -------------------------------------
+<FORM NAME="SwitchLanguage" METHOD="POST" ACTION="[LL_REPTAG_MYURL /]" ENCTYPE="multipart/form-data">
+<INPUT TYPE="HIDDEN" NAME="func" VALUE="ll.savesettings">
+<INPUT TYPE="HIDDEN" NAME="tab" VALUE="1">
+<INPUT TYPE="HIDDEN" NAME="cacheid" VALUE="0">
+
+	<INPUT TYPE="hidden" NAME="viewType" VALUE="-1">
+
+[//Bug workaround
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:DFTSTARTPAGE /]" == "* USERPREF: The second parameter is invalid *" /]
+		<INPUT TYPE="hidden" NAME="dftStartPage" VALUE="1">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" NAME="dftStartPage" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:DFTSTARTPAGE /]">
+	[LL_WEBREPORT_ENDIF /]
+	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:SHOWITEMDESC /]" == "true" /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="itemDescription" NAME="itemDescription" checked>
+	[LL_WEBREPORT_ELSE /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="itemDescription" NAME="itemDescription">
+	[LL_WEBREPORT_ENDIF /]
+
+	<INPUT TYPE="hidden" ID="locationType" NAME="locationType" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:NAVSTYLE /]">
+
+[//Bug workaround
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:NEWDUR /]" == "? days" /]
+		<INPUT TYPE="hidden" ID="newIndDuration" NAME="newIndDuration" VALUE="2">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="newIndDuration" NAME="newIndDuration" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:NEWDUR /]">
+	[LL_WEBREPORT_ENDIF /]
+
+[//Bug workaround
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:MODDUR /]" == "? days" /]
+		<INPUT TYPE="hidden" ID="modIndDuration" NAME="modIndDuration" VALUE="7" >
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="modIndDuration" NAME="modIndDuration" VALUE="[LL_REPTAG_USERID USERPREF:GENERAL:MODDUR /]" >
+	[LL_WEBREPORT_ENDIF /]
+
+	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:ENHANCEDKYBD /]" == "true" /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="useJava" NAME="useJava" CHECKED>
+	[LL_WEBREPORT_ELSE /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="useJava" NAME="useJava">
+	[LL_WEBREPORT_ENDIF /]	
+
+	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:SBLOCATION /]" == "left" /]
+		<INPUT TYPE="hidden" ID="sidebarLocation" NAME="sidebarLocation" VALUE="0">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="sidebarLocation" NAME="sidebarLocation" VALUE="1">
+	[LL_WEBREPORT_ENDIF /]
+
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:SIDEBAR /]" == "true" /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="sidebarDefaultState" NAME="sidebarDefaultState" CHECKED>
+	[LL_WEBREPORT_ELSE /]
+		<INPUT STYLE="visibility:hidden" TYPE="CHECKBOX" ID="sidebarDefaultState" NAME="sidebarDefaultState">
+	[LL_WEBREPORT_ENDIF /]
+
+[//Bug workaround	
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:EMAILLINK /]" == "* USERPREF: The second parameter is invalid *" /]
+		<INPUT TYPE="hidden" ID="emaillink" NAME="emaillink" Value="1" >
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="emaillink" NAME="emaillink" Value="[LL_REPTAG_USERID USERPREF:GENERAL:EMAILLINK /]" >
+	[LL_WEBREPORT_ENDIF /]
+	
+	[// switches language based on current language
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+		<INPUT TYPE="hidden" ID="localeType" NAME="localeType" VALUE="_en_US">
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="localeType" NAME="localeType" VALUE="_fr"> 
+	[LL_WEBREPORT_ENDIF /]
+
+	[LL_WEBREPORT_IF "[LL_REPTAG_USERID USERPREF:GENERAL:LANGUAGE:CODE /]" == "_fr" /]
+		<INPUT TYPE="hidden" ID="metadataLang" NAME="metadataLang" value="en_CA" >
+	[LL_WEBREPORT_ELSE /]
+		<INPUT TYPE="hidden" ID="metadataLang" NAME="metadataLang" value="fr_CA" > 
+	[LL_WEBREPORT_ENDIF /]
+
+</FORM>
+
+<SCRIPT LANGUAGE="JavaScript">
+
+function doSaveSetting( )
+{
+	document.SwitchLanguage.submit();
+}
+
+//Saves the current URL as last page visited
+function saveLastURL(){
+	// triggered when the page is shown
+	var lastURL = "[LL_REPTAG_MYCACHEURL /]";
+	// make the cookie expire in 60 min
+	app.cookie.setCookie('lastPage', lastURL, 60, true);
+	
+}
+
+saveLastURL();
+
+</SCRIPT>

@@ -1,0 +1,31 @@
+ll&objtype=142&objaction=browse
+
+'Slow down to avoid bugs
+SET !REPLAYSPEED MEDIUM
+
+
+'Go to the ActiveView folder
+TAG POS=1 TYPE=TR ATTR=CLASS:browseListHeader EXTRACT=TXT
+TAG POS=R1 TYPE=A ATTR=TXT:_System<SP>Administration
+TAG POS=1 TYPE=A ATTR=TXT:ActiveView_Volume
+TAG POS=1 TYPE=A ATTR=TXT:Global_Constants
+
+'Set Constants
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:subMenuItem_Constants
+TAG POS=1 TYPE=A ATTR=TXT:here
+TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:InfoConstantFrm ATTR=ID:constantname_1 CONTENT=MOBILE_FOOTER_NODEID
+TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:InfoConstantFrm ATTR=ID:constantvalue_1 CONTENT={{!VAR2}}
+TAG POS=1 TYPE=IMG ATTR=TITLE:ADD<SP>Row
+TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:InfoConstantFrm ATTR=ID:constantname_1 CONTENT=MOBILE_HEADER_NODEID
+TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:InfoConstantFrm ATTR=ID:constantvalue_1 CONTENT={{!VAR3}}
+TAG POS=1 TYPE=IMG ATTR=TITLE:ADD<SP>Row
+TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:InfoConstantFrm ATTR=ID:constantname_1 CONTENT=BANNER_ENV_NAME
+TAG POS=1 TYPE=INPUT:TEXT FORM=NAME:InfoConstantFrm ATTR=ID:constantvalue_1 CONTENT=PROD
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:InfoConstantFrm ATTR=CLASS:saveButton
+
+'Back to ActiveView directory
+TAG POS=1 TYPE=A ATTR=Class:navigateUpOneLevel
+
+'Go back to normal speed
+SET !REPLAYSPEED FAST

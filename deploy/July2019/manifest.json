@@ -1,0 +1,21 @@
+{
+    "Config":  {
+       "SkipReset":  "true",
+       "SkipCleanUpLogs":  "true",
+       "SkipStart":  "true",
+       "SkipStop":  "true",
+       "SkipBackup":  "true",
+       "SkipReport":  "true"
+    },
+   "Phase0": [
+		{"ID": "CR2019-0775\\Import", "Type": "CopyItems"}
+   ],
+   "Phase1": [
+		{"ID": "CR2019-0775\\0.9AddFolder", "Type": "IIM", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\1RenameActiveViewVolume", "Type": "IIM", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\2RenameActiveViews", "Type": "IIM", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\3ImportActiveViewVersions", "Type": "IIM", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\4SetConstants", "Type": "IIM", "AdminOnly": "true"},
+		{"ID": "CR2019-0775\\5DeleteFolder", "Type": "IIM", "AdminOnly": "true"}		
+   ]
+}

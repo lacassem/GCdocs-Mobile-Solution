@@ -1,0 +1,18 @@
+﻿ll&objtype=142&objaction=browse
+
+'Slow down to avoid bugs
+SET !REPLAYSPEED MEDIUM
+
+'Go to the ActiveView folder
+TAG POS=1 TYPE=TR ATTR=CLASS:browseListHeader EXTRACT=TXT
+TAG POS=R1 TYPE=A ATTR=TXT:_System<SP>Administration
+TAG POS=1 TYPE=A ATTR=TXT:ActiveView_Volume
+
+TAG POS=1 TYPE=A ATTR=TXT:Mobile_DocumentDelete
+TAG POS=1 TYPE=IMG ATTR=TITLE:Functions
+TAG POS=1 TYPE=A ATTR=ID:subMenuItem_Constants
+TAG POS=1 TYPE=INPUT:HIDDEN FORM=NAME:InfoConstantFrm ATTR=ID:constantFile_ID CONTENT={{!VAR1}}
+TAG POS=1 TYPE=INPUT:BUTTON FORM=NAME:InfoConstantFrm ATTR=CLASS:saveButton
+
+'Go back to normal speed
+SET !REPLAYSPEED FAST
